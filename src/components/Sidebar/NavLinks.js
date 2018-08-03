@@ -1,0 +1,45 @@
+// sidebar nav links
+export default {
+      category1: [
+            {
+                  "menu_title": "Mis Contenidos",
+                  "menu_icon": "ti-folder",
+                  "open": false,
+                  "child_routes": [
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Toliv"
+                        },
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Aeurolav"
+                        }
+                  ]
+            },
+            {
+                  "menu_title": "Compartidos contigo",
+                  "menu_icon": "ti-share-alt",
+                  "open": false,
+                  "child_routes": [
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Toliv"
+                        }
+                  ]
+            },
+            {
+                  "menu_title": "Recientes",
+                  "menu_icon": "ti-timer",
+                  "open": false,
+                  "child_routes": [
+                       
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Aeurolav"
+                        }
+                  ]
+            }
+            
+            
+      ]
+}
