@@ -108,21 +108,24 @@ onCollapse(title) {
     return (
       <div className="dashboard-v1">
         <RctCollapsibleCard>
-        <div className="margen-busqueda">
-          <h3><b>Encuentra tu contenido de forma simple</b></h3>
-          <p>Busca por palabra, frase o palabras compuestas</p>
+          <div className="fondo-busqueda text-white">
+
+          
+        <div className="margen-busqueda text-white padding-top-busqueda">
+          <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+          <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
           </div>
-         <div className="input-group col-md-4">
+         <div className="input-group col-md-4 padding-bottom-busqueda">
         
-            <input className="form-control py-2 border-right-0 border" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+            <input className="form-control py-2 border-right-0 border " type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
             </input>
             <span className="input-group-append">
-                <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary border-left-0 border" type="button">
+                <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary border-left-0 border color-boton-lupa-busqueda" type="button">
                     <i className="fa fa-search"></i>
                 </button>
               </span>
         </div>
-
+        </div>
       </RctCollapsibleCard>
 
         <RctCollapsibleCard>
@@ -220,36 +223,37 @@ onCollapse(title) {
          
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
+
                    <p>Exterior</p>
                 </ContextMenuTrigger>
               </div>
             
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Brazoarmado</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Naturaleza</p>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Playa</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Material jornada Nocturna</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Muestra servicios</p>
                    </ContextMenuTrigger>
               </div>
@@ -312,37 +316,37 @@ onCollapse(title) {
             <div className="row row-eq-height text-center">
             <div className="col-sm-2 col-md-1 col-lg-2">
             <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+            <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Naturaleza</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Muestra servicios</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Brazoarmado</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Material jornada Nocturna</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Playa</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Exterior</p>
                    </ContextMenuTrigger>
               </div>
@@ -372,37 +376,37 @@ onCollapse(title) {
             <div className="row row-eq-height text-center">
             <div className="col-sm-2 col-md-1 col-lg-2">
             <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i contextmenu="colorMenu" className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+            <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Video Muestra</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Mall Plaza</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Video Latam</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Toliv</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Resumen Clientes</p>
                    </ContextMenuTrigger>
               </div>
               <div className="col-sm-2 col-md-1 col-lg-2">
               <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                   <i className="zmdi zmdi-folder-outline zmdi-hc-5x"></i>
+              <img src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
                    <p>Sin titulo</p>
                    </ContextMenuTrigger>
               </div>
