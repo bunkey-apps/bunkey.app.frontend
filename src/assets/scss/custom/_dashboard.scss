@@ -35,14 +35,24 @@
   }
 }
 
+.app-container{
+  background-color: #FFF !important
+}
+
 .titulo-vistas-recientemente{
   color: #4F4793 !important;
 }
 .titulo-vistas-nombre-cliente{
   color: #F9BA00 !important;
+  text-decoration: underline;
 }
 .titulo-vistas-mis-contenidos{
+  color: #008F36 !important;
+  text-decoration: underline;
+}
+.titulo-contenidos-compartidos{
   color: #4F4793 !important;
+  text-decoration: underline;
 }
 .fondo-videos-seleccionado{
   background-color: #182A3B !important;
@@ -52,6 +62,51 @@
   padding-top: 30%;
 }
 
+.click-derecho-bunkey{
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    width: 178px;
+    text-align: left;
+    z-index: 999999999999;
+  
+}
+
+.padding-click-derecho{
+  padding-left: 15px !important;
+}
+
+.padding-top-click-derecho{
+  margin-top: 10px !important;
+}
+.padding-bottom-click-derecho{
+  margin-bottom: 10px !important;
+}
+
+.line-click-derecho {
+  border: 1px solid #E0E0E0;
+  width: 100%;
+  height: 1px;
+}
+
+.react-contextmenu-item.react-contextmenu-item--active, .react-contextmenu-item.react-contextmenu-item--selected {
+  color: #fff !important;
+  background-color: #20a0ff !important;
+  border-color: #20a0ff !important;
+  text-decoration: none !important;
+}
+
+.margen-busqueda{
+  margin-left: 15px;
+}
+
+.select-resultados{
+  border: none !important;
+    box-shadow: none !important;
+    font-weight: bold;
+}
+.border-select-resultado{
+  border-bottom: 2px solid #182A3B;
+}
 .grid-list-videos{
   flex-wrap: nowrap !important;
   transform: translateZ(0) !important;

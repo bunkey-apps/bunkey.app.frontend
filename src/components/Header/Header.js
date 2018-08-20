@@ -78,9 +78,51 @@ class Header extends Component {
                 <MenuIcon />
               </IconButton>
             </li>
-           
-           
+
+            <a href="javascript:void(0)">
+              <i className="zmdi ti-home color-header-bunkey"></i>
+            </a>
+
+
+
           </ul>
+         
+          <ul className="navbar-right list-inline margen-ul-bunkey">
+
+
+
+
+
+            <li className="list-inline-item margen-li-bunkey">
+              <p className="header-bunkey-nuevo">NUEVO</p>
+            </li>
+            <li className="list-inline-item margen-li-bunkey">
+              <a href="javascript:void(0)">
+                <i className="zmdi ti-world color-header-bunkey"></i>
+              </a>
+            </li>
+
+
+            <li className="list-inline-item margen-li-bunkey">
+              <a href="javascript:void(0)">
+                <i className="zmdi ti-folder color-header-bunkey"></i>
+              </a>
+            </li>
+
+            <li className="list-inline-item margen-li-bunkey">
+              <a href="javascript:void(0)" >
+                <i className="zmdi ti-comment-alt color-header-bunkey"></i>
+              </a>
+            </li>
+
+            <li className="list-inline-item margen-li-bunkey">
+              <a href="javascript:void(0)">
+                <i className="zmdi ti-user color-header-bunkey"></i>
+              </a>
+            </li>
+          </ul>
+
+
         </Toolbar>
         <DashboardOverlay
           onClose={() => this.closeDashboardOverlay()}

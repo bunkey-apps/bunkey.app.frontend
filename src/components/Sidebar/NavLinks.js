@@ -13,6 +13,14 @@ export default {
                         {
                               "path": "/app/dashboard",
                               "menu_title": "Aeurolav"
+                        },
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Bunkey"
+                        },
+                        {
+                              "path": "/app/dashboard",
+                              "menu_title": "Favoritos"
                         }
                   ]
             },
@@ -35,7 +43,7 @@ export default {
                        
                         {
                               "path": "/app/dashboard",
-                              "menu_title": "Aeurolav"
+                              "menu_title": "Toliv"
                         }
                   ]
             }

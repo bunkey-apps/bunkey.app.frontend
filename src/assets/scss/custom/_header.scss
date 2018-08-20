@@ -12,6 +12,25 @@
     min-height: $navbar-height;
   }
 }
+
+.header-bunkey-nuevo{
+  
+    color: #3F4E5C !important;
+    font-weight: bold !important;
+   
+ 
+}
+.color-header-bunkey{
+  color: #3F4E5C !important;
+
+}
+
+.margen-li-bunkey{
+  margin-right: 30px !important;
+}
+.margen-ul-bunkey{
+  margin-top: 16px !important;
+}
 header {
   .dropdown-group-link {
     @include border (1px solid, $input-border-color, top bottom left right);
