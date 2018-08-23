@@ -12,7 +12,7 @@ export default [
     img: require('../../../../assets/img/FotosBunkey/2Archivo.jpg'),
     title: 'Gallery 1',
     author: 'author',
-    cols: 1.3,
+    cols: .7,
   },
 
   {
@@ -78,39 +78,6 @@ export default [
 
   {
     img: require('../../../../assets/img/FotosBunkey/12Archivo.jpg'),
-    title: 'Gallery 1',
-    author: 'author',
-    cols: 1.3,
-  },
-
-  {
-    img: require('../../../../assets/img/FotosBunkey/13Archivo.jpg'),
-    title: 'Gallery 1',
-    author: 'author',
-    cols: 1.3,
-  },
-  {
-    img: require('../../../../assets/img/FotosBunkey/14Archivo.jpg'),
-    title: 'Gallery 1',
-    author: 'author',
-    cols: 1.3,
-  },
-  
-  {
-    img: require('../../../../assets/img/FotosBunkey/15Archivo.jpg'),
-    title: 'Gallery 1',
-    author: 'author',
-    cols: 1.3,
-  },
-
-  {
-    img: require('../../../../assets/img/FotosBunkey/16Archivo.jpg'),
-    title: 'Gallery 1',
-    author: 'author',
-    cols: 1.3,
-  },
-  {
-    img: require('../../../../assets/img/FotosBunkey/17Archivo.jpg'),
     title: 'Gallery 1',
     author: 'author',
     cols: 1.3,

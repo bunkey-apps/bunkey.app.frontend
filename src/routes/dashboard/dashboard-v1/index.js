@@ -146,8 +146,9 @@ export default class DashboardOne extends Component {
                     className="select-resultados altura-select-search"
                   >
                     <option value="tipoArchivo">Tipo de Archivo</option>
-                    <option value="Video">Video</option>
-                    <option value="Imagen">Imagen</option>
+                    <option value="Imagen">imágen</option>
+                    <option value="vector">vector</option>
+                    <option value="clip">clip</option>
                   </Input>
                   <i class="fa fa-chevron-down flecha-select-test"></i>
                 </div>
