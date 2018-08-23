@@ -96,7 +96,7 @@
 }
 
 .margen-busqueda{
-  margin-left: 15px;
+  margin-left: 35px;
 }
 
 .margin-top-folder{
@@ -115,6 +115,65 @@
   background-color: #212121 !important;
 }
 
+select {
+  -webkit-appearance: none !important;
+  -webkit-border-radius: 0px !important;
+}
+
+.input-search-form-new{
+    border-radius: 0rem !important;
+    height: 37px!important;
+    box-shadow: none!important;
+    border: none !important;
+}
+
+.select-resultados-flecha{
+  color: #212128 !important;
+  position: absolute !important;
+  margin-top: -25px !important;
+  margin-left: 70% !important;
+}
+
+.padding-left-input-search{
+  padding-left: 50px !important;
+}
+
+.margin-left-select-search{
+  margin-left: -30px !important;
+}
+
+.altura-select-search{
+  height: 37px !important;
+}
+
+.div-separador-search-form{
+  width: 1px;
+  height: 33px;
+  background-color: black;
+  margin-top: 2px;
+}
+
+.flecha-select-test{
+  color: #212128 !important;
+    position: absolute !important;
+    margin-top: 12px !important;
+    margin-left: 70% !important;
+}
+
+
+.div-container-separador-form{
+  background-color: #fff;
+  height: 37px;
+}
+
+.lupa-form-search{
+  border-color: #212121 !important;
+    color: #fff !important;
+    margin-left: -30px !important;
+    width: 58px !important;
+    height: 38px !important;
+    border-radius: 0rem !important;
+}
 
 .select-resultados{
   border: none !important;

@@ -30,6 +30,11 @@ const AsyncResultadosComponent = Loadable({
     loading: () =>   <RctPageLoader />,
 });
 
+const AsyncImagenesComponent = Loadable({
+    loader: () => import("../../routes/imagenes/dashboard-v1"),
+    loading: () =>   <RctPageLoader />,
+});
+
 // Clientes
 const AsyncClientesComponent = Loadable({
     loader: () => import("../../routes/clientes/index.js"),
@@ -594,6 +599,7 @@ export {
     AsyncContratosComponent,
     AsyncClientesComponent,
     AsyncPagosComponent,
-    AsyncResultadosComponent
+    AsyncResultadosComponent,
+    AsyncImagenesComponent
 
 };

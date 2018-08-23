@@ -74,11 +74,11 @@ class UserBlock extends Component {
                 </div>
                 <div className="sidebar-user-block media">
                     <div className="user-profile">
-                        <img src={require('../../assets/img/user-7.jpg')} alt="user profile" className="img-fluid rounded-circle" width="60" height="129" />
+                        <img src={require('../../assets/img/perfil-bunkey.jpg')} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey" width="60" height="129" />
                     </div>
                     <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
                         <DropdownToggle nav>
-                            Lucia Diaz
+                        Felipe A.
                             <i className="ti-angle-down pull-right"></i>
                         </DropdownToggle>
                         <DropdownMenu>

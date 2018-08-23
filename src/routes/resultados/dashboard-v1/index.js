@@ -102,19 +102,46 @@ export default class Resultados extends Component {
     return (
       <div className="dashboard-v1">
         <RctCollapsibleCard>
-        <div className="margen-busqueda">
-          <h3><b>Encuentra tu contenido de forma simple</b></h3>
-          <p>Busca por palabra, frase o palabras compuestas</p>
-          </div>
-          <div className="input-group col-md-4">
-            <input className="form-control py-2 border-right-0 border" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
-            </input>
-            <span className="input-group-append">
-              <button className="btn btn-outline-secondary border-left-0 border" type="button">
-                <i className="fa fa-search"></i>
-              </button>
-            </span>
-          </div>
+        <div className="fondo-busqueda text-white">
+
+
+            <div className="margen-busqueda text-white padding-top-busqueda">
+              <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+              <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+            </div>
+            <div>
+
+
+              <div className="row">
+                <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+
+                  <input className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+                  </input>
+
+                </div>
+                <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+                  <div className="div-separador-search-form"></div>
+                </div>
+                <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+                  <Input type="select"
+                    name="tipoArchivo"
+                    id="tipoArchivo"
+                    className="select-resultados altura-select-search"
+                  >
+                    <option value="tipoArchivo">Tipo de Archivo</option>
+                    <option value="Video">Video</option>
+                    <option value="Imagen">Imagen</option>
+                  </Input>
+                  <i class="fa fa-chevron-down flecha-select-test"></i>
+                </div>
+                <div className="input-group col-md-2 padding-bottom-busqueda">
+                  <button  className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+                    <i className="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+</div>
 
         </RctCollapsibleCard>
 
@@ -126,57 +153,57 @@ export default class Resultados extends Component {
                 <Input type="select"
                   name="tipoArchivo"
                   id="tipoArchivo"
-                  value='tipoArchivorole'
                   className="select-resultados"
                 >
                   <option value="tipoArchivo">Tipo de Archivo</option>
-                  <option value="tipoArchivo">Video</option>
-                  <option value="tipoArchivo">Imagen</option>
+                  <option value="Video">Video</option>
+                  <option value="Imagen">Imagen</option>
                 </Input>
+                <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
             </div>
 
-             <div className="col-sm-1 col-md-1 col-lg-1">
+             <div className="col-sm-2 col-md-1 col-lg-2">
             <FormGroup>
                 <Input type="select"
                   name="lugar"
                   id="lugar"
-                  value='lugar'
                   className="select-resultados"
                 >
                   <option value="lugar">Lugar</option>
                   <option value="Rural">Rural</option>
                   <option value="Playa">Playa</option>
                 </Input>
+                <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
 
             </div>
-            <div className="col-sm-1 col-md-1 col-lg-1">
+            <div className="col-sm-2 col-md-1 col-lg-2">
             <FormGroup>
                 <Input type="select"
                   name="fecha"
                   id="fecha"
-                  value='fecha'
                   className="select-resultados"
                 >
                   <option value="fecha">Fecha</option>
                   <option value="Hoy">Hoy</option>
                   <option value="Ayer">Ayer</option>
                 </Input>
+                <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
             </div>
-            <div className="col-sm-2 col-md-1 col-lg-2">
+            <div className="col-sm-3 col-md-2 col-lg-3">
             <FormGroup>
                 <Input type="select"
                   name="tags"
                   id="tags"
-                  value='tags'
                   className="select-resultados"
                 >
                   <option value="tags">Tags Audiovisuales</option>
                   <option value="dron">Dron</option>
                   <option value="santiago">Santiago</option>
                 </Input>
+                <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
             </div>
 
