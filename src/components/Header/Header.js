@@ -33,7 +33,8 @@ class Header extends Component {
   state = {
     customizer: false
   }
-
+ 
+  
   // function to change the state of collapsed sidebar
   onToggleNavCollapsed = (event) => {
     const val = !this.props.collapsedSidebar;
@@ -79,8 +80,10 @@ class Header extends Component {
               </IconButton>
             </li>
 
-            <a href="javascript:void(0)">
-              <i className="zmdi ti-home color-header-bunkey"></i>
+            <a href="javascript:void(0)" className="margin-home-header-link">
+            <Link to="/app/dashboard">
+              <i  className="zmdi ti-home color-header-bunkey"></i>
+              </Link>
             </a>
 
 
