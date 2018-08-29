@@ -83,6 +83,10 @@ export default class Resultados extends Component {
     index: 0
   }
 
+  closeCollapse(){
+    this.setState({ collapse: false, collapse2: false, collapse3: false });
+
+  }
 
   onCollapse(title, index) {
     console.log('index', index);
@@ -151,50 +155,7 @@ export default class Resultados extends Component {
     const { title } = this.state;
     return (
       <div className="dashboard-v1">
-        <RctCollapsibleCard>
-          <div className="fondo-busqueda text-white">
-
-
-            <div className="margen-busqueda text-white padding-top-busqueda">
-              <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
-              <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
-            </div>
-            <div>
-
-
-              <div className="row">
-                <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
-
-                  <input className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
-                  </input>
-
-                </div>
-                <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
-                  <div className="div-separador-search-form"></div>
-                </div>
-                <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
-                  <Input type="select"
-                    name="tipoArchivo"
-                    id="tipoArchivo"
-                    className="select-resultados altura-select-search"
-                  >
-                    <option value="tipoArchivo">Tipo de Archivo</option>
-                    <option value="Imagen">imágen</option>
-                    <option value="vector">vector</option>
-                    <option value="clip">clip</option>
-                  </Input>
-                  <i class="fa fa-chevron-down flecha-select-test"></i>
-                </div>
-                <div className="input-group col-md-2 padding-bottom-busqueda">
-                  <button className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
-                    <i className="fa fa-search"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </RctCollapsibleCard>
+        
 
 
         <Form >
@@ -307,7 +268,9 @@ export default class Resultados extends Component {
             <Collapse isOpen={collapse}>
               <br></br>
               <br></br>
+
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
+
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
                     <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
@@ -333,8 +296,13 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+
+
+
+                  <div className=" ">
+                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 
@@ -406,8 +374,14 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+                  
+                  
+
+                 
+                 <div className=" ">
+                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 
@@ -482,8 +456,10 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+                  <div className=" ">
+                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 

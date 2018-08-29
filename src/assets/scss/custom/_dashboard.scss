@@ -44,15 +44,12 @@
 }
 .titulo-vistas-nombre-cliente{
   color: #F9BA00 !important;
-  text-decoration: underline;
 }
 .titulo-vistas-mis-contenidos{
   color: #008F36 !important;
-  text-decoration: underline;
 }
 .titulo-contenidos-compartidos{
   color: #4F4793 !important;
-  text-decoration: underline;
 }
 .fondo-videos-seleccionado{
   background-color: #182A3B !important;
@@ -121,6 +118,16 @@ select {
 }
 
 
+.triangulo-equilatero-bottom {
+  width: 0;
+  height: 0;
+  border-right: 100px solid transparent;
+  border-top: 100px solid transparent;
+  border-left: 100px solid transparent;
+  border-bottom: 100px solid #f0ad4e;
+}
+
+
 .volver-collap-video-image-left{
   font-size: 37px !important;
   margin-top: 127px !important;
@@ -132,12 +139,17 @@ select {
   margin-top: 127px !important;
   float: right !important;
 }
+.volver-collap-video-image-right-close{
+  font-size: 17px !important;
+  float: right;
+  margin-top: -170px !important;
+  margin-right: 10px;
+}
 .volver-collap-video-image-right{
   font-size: 37px !important;
   float: right;
   margin-top: -65px;
 }
-
 .imagenes-tam-grid{
   width: 100% !important;
   height: 184px !important;

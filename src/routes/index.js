@@ -28,6 +28,7 @@ import Maps from './maps';
 import DragAndDrop from './drag-drop';
 import Editor from './editor';
 import Ecommerce from './ecommerce';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 
 // async component
 import {
@@ -53,6 +54,12 @@ class MainApp extends Component {
       window.scrollTo(0, 0);
     }
   }
+  goToBusqueda = () => {
+
+    const { match, history } = this.props;
+    history.push('/app/resultados');
+
+  }
 
   render() {
     const { navCollapsed } = this.props.settings;
@@ -64,6 +71,52 @@ class MainApp extends Component {
             <div className="rct-app-content">
               <Header />
               <div className="rct-page">
+              <div className="fondo-busqueda text-white">
+
+
+<div className="margen-busqueda text-white padding-top-busqueda">
+  <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+  <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+</div>
+<div>
+
+
+  <div className="row">
+    <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+
+      <input className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+      </input>
+
+    </div>
+    <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+      <div className="div-separador-search-form"></div>
+    </div>
+    <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+      <Input type="select"
+        name="tipoArchivo"
+        id="tipoArchivo"
+        className="select-resultados altura-select-search"
+      >
+        <option value="tipoArchivo">Tipo de Archivo</option>
+        <option value="Imagen">imágen</option>
+        <option value="vector">vector</option>
+        <option value="clip">clip</option>
+      </Input>
+      <i class="fa fa-chevron-down flecha-select-test"></i>
+    </div>
+    <div className="input-group col-md-2 padding-bottom-busqueda">
+      <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+        <i className="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</div>
                 <div className="rct-page-content">
                   <Route path={`${this.props.match.url}/dashboard`} component={AsyncDashboardComponent} />
                   <Route path={`${this.props.match.url}/tags`} component={AsyncTagsComponent} />

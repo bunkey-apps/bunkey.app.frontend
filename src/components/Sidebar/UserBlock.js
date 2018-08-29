@@ -78,8 +78,11 @@ class UserBlock extends Component {
                     </div>
                     <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
                         <DropdownToggle nav>
-                        Felipe A.
-                            <i className="ti-angle-down pull-right"></i>
+                            <div>
+                            Felipe Aguirre
+                            <i className="ti-angle-down pull-right flecha-name-user"></i>
+                                </div>
+                            
                         </DropdownToggle>
                         <DropdownMenu>
                             <ul className="list-unstyled mb-0">
