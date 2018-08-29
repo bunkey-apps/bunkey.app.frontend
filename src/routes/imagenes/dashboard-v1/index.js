@@ -83,7 +83,7 @@ export default class Resultados extends Component {
     index: 0
   }
 
-  closeCollapse(){
+  closeCollapse() {
     this.setState({ collapse: false, collapse2: false, collapse3: false });
 
   }
@@ -131,7 +131,7 @@ export default class Resultados extends Component {
 
     if (tileData.length >= this.state.index + 1) {
       var video = tileData[this.state.index + 1];
-      this.setState({  urlVideo: video.img, author: video.author, video: video.title, index: this.state.index + 1 });
+      this.setState({ urlVideo: video.img, author: video.author, video: video.title, index: this.state.index + 1 });
 
     }
 
@@ -153,9 +153,10 @@ export default class Resultados extends Component {
     const { urlVideo } = this.state;
     const { author } = this.state;
     const { title } = this.state;
+    const { index } = this.state;
     return (
       <div className="dashboard-v1">
-        
+
 
 
         <Form >
@@ -238,25 +239,25 @@ export default class Resultados extends Component {
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[0].img}>
                     <img className="imagenes-tam-grid" src={tileData[0].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[0], 0)} />
-                    
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[1].img}>
                     <img className="imagenes-tam-grid" src={tileData[1].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[1], 1)} />
-                   
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[2].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[2].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[2], 2)} />
-                   
+                    <img className="imagenes-tam-grid" src={tileData[2].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[2], 2)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[3].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[3].img} alt={tileData[3].title} onClick={() => this.onCollapse(tileData[3], 3)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[3].img} alt={tileData[3].title} onClick={() => this.onCollapse(tileData[3], 3)} />
+
                   </GridListTile>
                 </div>
 
@@ -266,8 +267,32 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse}>
-              <br></br>
-              <br></br>
+
+
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 0 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 1 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 2 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 3 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
+
 
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
 
@@ -280,7 +305,7 @@ export default class Resultados extends Component {
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-6">
                   <div className="embed-responsive embed-responsive-16by9">
-                  <img className="embed-responsive-item" src={urlVideo} ></img>
+                    <img className="embed-responsive-item" src={urlVideo} ></img>
 
 
                   </div>
@@ -300,7 +325,7 @@ export default class Resultados extends Component {
 
 
                   <div className=" ">
-                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
 
                     <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
@@ -317,26 +342,26 @@ export default class Resultados extends Component {
               <div className="row text-white">
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[4].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[4].img} alt={tileData[4].title} onClick={() => this.onCollapse2(tileData[4], 4)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[4].img} alt={tileData[4].title} onClick={() => this.onCollapse2(tileData[4], 4)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[5].img}>
-                    <img className="imagenes-tam-grid"  src={tileData[5].img} alt={tileData[5].title} onClick={() => this.onCollapse2(tileData[5], 5)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[5].img} alt={tileData[5].title} onClick={() => this.onCollapse2(tileData[5], 5)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[6].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[6].img} alt={tileData[6].title} onClick={() => this.onCollapse2(tileData[6], 6)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[6].img} alt={tileData[6].title} onClick={() => this.onCollapse2(tileData[6], 6)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[7].img}>
-                    <img className="imagenes-tam-grid"  src={tileData[7].img} alt={tileData[7].title} onClick={() => this.onCollapse2(tileData[7], 7)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[7].img} alt={tileData[7].title} onClick={() => this.onCollapse2(tileData[7], 7)} />
+
                   </GridListTile>
                 </div>
 
@@ -346,8 +371,29 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse2}>
-              <br></br>
-              <br></br>
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 4 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 5 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 6 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 7 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
@@ -358,7 +404,7 @@ export default class Resultados extends Component {
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-6">
                   <div className="embed-responsive embed-responsive-16by9">
-                  <img className="embed-responsive-item" src={urlVideo} ></img>
+                    <img className="embed-responsive-item" src={urlVideo} ></img>
 
 
                   </div>
@@ -374,12 +420,12 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  
-                  
 
-                 
-                 <div className=" ">
-                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+
+
+                  <div className=" ">
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
 
                     <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
@@ -395,30 +441,30 @@ export default class Resultados extends Component {
 
 
 
-<div className="gallery-wrapper">
+            <div className="gallery-wrapper">
               <div className="row text-white">
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[8].img}>
-                    <img className="imagenes-tam-grid"  src={tileData[8].img} alt={tileData[8].title} onClick={() => this.onCollapse3(tileData[8], 8)} />
-                    
+                    <img className="imagenes-tam-grid" src={tileData[8].img} alt={tileData[8].title} onClick={() => this.onCollapse3(tileData[8], 8)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[9].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[9].img} alt={tileData[9].title} onClick={() => this.onCollapse3(tileData[9], 9)} />
-                   
+                    <img className="imagenes-tam-grid" src={tileData[9].img} alt={tileData[9].title} onClick={() => this.onCollapse3(tileData[9], 9)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[10].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[10].img} alt={tileData[10].title} onClick={() => this.onCollapse3(tileData[10], 10)} />
-                   
+                    <img className="imagenes-tam-grid" src={tileData[10].img} alt={tileData[10].title} onClick={() => this.onCollapse3(tileData[10], 10)} />
+
                   </GridListTile>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[11].img}>
-                    <img  className="imagenes-tam-grid" src={tileData[11].img} alt={tileData[11].title} onClick={() => this.onCollapse3(tileData[11], 11)} />
-                   
+                    <img className="imagenes-tam-grid" src={tileData[11].img} alt={tileData[11].title} onClick={() => this.onCollapse3(tileData[11], 11)} />
+
                   </GridListTile>
                 </div>
 
@@ -428,8 +474,29 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse3}>
-              <br></br>
-              <br></br>
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 8 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 9 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 10 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 11 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
@@ -457,7 +524,7 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
                   <div className=" ">
-                  <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
 
                     <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
@@ -480,7 +547,7 @@ export default class Resultados extends Component {
 
         </RctCollapsibleCard>
 
-      
+
       </div>
     );
   }

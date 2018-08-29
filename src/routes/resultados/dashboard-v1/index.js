@@ -83,7 +83,11 @@ export default class Resultados extends Component {
     index: 0
   }
 
+  closeCollapse() {
+    this.setState({ collapse: false, collapse2: false, collapse3: false });
 
+  }
+  
   onCollapse(title, index) {
     console.log('index', index);
     if (!this.state.collapse) {
@@ -127,7 +131,7 @@ export default class Resultados extends Component {
 
     if (tileData.length >= this.state.index + 1) {
       var video = tileData[this.state.index + 1];
-      this.setState({  urlVideo: video.link, author: video.author, video: video.title, index: this.state.index + 1 });
+      this.setState({ urlVideo: video.link, author: video.author, video: video.title, index: this.state.index + 1 });
 
     }
 
@@ -149,9 +153,11 @@ export default class Resultados extends Component {
     const { urlVideo } = this.state;
     const { author } = this.state;
     const { title } = this.state;
+    const { index } = this.state;
+
     return (
       <div className="dashboard-v1">
-      
+
 
 
         <Form >
@@ -310,8 +316,29 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse}>
-              <br></br>
-              <br></br>
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 0 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 1 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 2 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 3 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
@@ -338,8 +365,10 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+                 <div className=" ">
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 
@@ -431,8 +460,29 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse2}>
-              <br></br>
-              <br></br>
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 4 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 5 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 6 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 7 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
@@ -459,8 +509,10 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+                  <div className=" ">
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 
@@ -474,7 +526,7 @@ export default class Resultados extends Component {
 
 
 
-<div className="gallery-wrapper">
+            <div className="gallery-wrapper">
               <div className="row text-white">
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[8].img}>
@@ -555,8 +607,29 @@ export default class Resultados extends Component {
 
 
             <Collapse isOpen={collapse3}>
-              <br></br>
-              <br></br>
+              <div className="row text-white">
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 8 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 9 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 10 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                  <div className="padding-solpa-video">
+                    {index === 11 ? <div className="triangulo-equilatero-bottom"></div> : ''}
+                  </div>
+                </div>
+
+              </div>
               <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
                 <div className="col-sm-2 col-md-1 col-lg-2">
                   <div className="volver-collap-video-image-left">
@@ -583,8 +656,10 @@ export default class Resultados extends Component {
                     <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
                     <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
                   </div>
-                  <div className="volver-collap-video-image-right">
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white"></i>
+                  <div className=" ">
+                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
 
                   </div>
 

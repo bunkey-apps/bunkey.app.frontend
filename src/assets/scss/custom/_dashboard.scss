@@ -121,12 +121,16 @@ select {
 .triangulo-equilatero-bottom {
   width: 0;
   height: 0;
-  border-right: 100px solid transparent;
-  border-top: 100px solid transparent;
-  border-left: 100px solid transparent;
-  border-bottom: 100px solid #f0ad4e;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid #182A3B;
+  background-color: white;
 }
 
+.padding-solpa-video{
+  padding-left: 47%;
+}
 
 .volver-collap-video-image-left{
   font-size: 37px !important;
