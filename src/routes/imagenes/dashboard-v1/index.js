@@ -205,8 +205,8 @@ export default class Resultados extends Component {
 
 
         <Form >
-          <div className="row row-eq-height">
-            <div className="col-sm-2 col-md-1 col-lg-2">
+        <div className="row row-eq-height">
+            <div className="col-sm-2 col-md-2 col-lg-2">
               <FormGroup className="border-select-resultado">
                 <Input type="select"
                   name="tipoArchivo"
@@ -221,7 +221,7 @@ export default class Resultados extends Component {
               </FormGroup>
             </div>
 
-            <div className="col-sm-2 col-md-1 col-lg-2">
+            <div className="col-sm-2 col-md-2 col-lg-2">
               <FormGroup>
                 <Input type="select"
                   name="lugar"
@@ -236,7 +236,7 @@ export default class Resultados extends Component {
               </FormGroup>
 
             </div>
-            <div className="col-sm-2 col-md-1 col-lg-2">
+            <div className="col-sm-2 col-md-2 col-lg-2">
               <FormGroup>
                 <Input type="select"
                   name="fecha"
@@ -250,7 +250,7 @@ export default class Resultados extends Component {
                 <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
             </div>
-            <div className="col-sm-3 col-md-2 col-lg-3">
+            <div className="col-sm-3 col-md-3 col-lg-3">
               <FormGroup>
                 <Input type="select"
                   name="tags"
@@ -264,8 +264,9 @@ export default class Resultados extends Component {
                 <i class="fa fa-chevron-down select-resultados-flecha"></i>
               </FormGroup>
             </div>
-
-
+            <div className="col-sm-3 col-md-3 col-lg-3">
+            <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history"><a href="#/" class="breadcrumb-item"><span>app</span></a><span href="#/app/imagenes" class="active breadcrumb-item"><span>contenidos</span></span></nav>
+          </div>
           </div>
 
 
