@@ -87,7 +87,7 @@ export default class Resultados extends Component {
     this.setState({ collapse: false, collapse2: false, collapse3: false });
 
   }
-  
+
   onCollapse(title, index) {
     console.log('index', index);
     if (!this.state.collapse) {
@@ -129,9 +129,32 @@ export default class Resultados extends Component {
 
   onNext() {
 
-    if (tileData.length >= this.state.index + 1) {
+    if (tileData.length > this.state.index + 1) {
       var video = tileData[this.state.index + 1];
-      this.setState({ urlVideo: video.link, author: video.author, video: video.title, index: this.state.index + 1 });
+      var collap1 = false;
+      var collap2 = false;
+      var collap3 = false;
+      if(this.state.index + 1 >= 0 && this.state.index + 1  <= 3){
+        collap1 = true;
+        collap2 = false;
+        collap3 = false;
+        window.scrollTo(500, 320);
+ 
+       }
+       if(this.state.index + 1 >= 4 && this.state.index + 1  <= 7){
+         
+         collap1 = false;
+         collap2 = true;
+         collap3 = false;
+         window.scrollTo(500, 600);
+        }
+        if(this.state.index + 1 >= 8 && this.state.index + 1  <= 11){
+         collap1 = false;
+         collap2 = false;
+         collap3 = true;
+         window.scrollTo(500, 800);
+        }
+      this.setState({ urlVideo: video.link, author: video.author, video: video.title, index: this.state.index + 1,  collapse: collap1, collapse2: collap2, collapse3: collap3 });
 
     }
 
@@ -140,7 +163,30 @@ export default class Resultados extends Component {
 
     if (this.state.index - 1 >= 0) {
       var video = tileData[this.state.index - 1];
-      this.setState({ urlVideo: video.link, author: video.author, video: video.title, index: this.state.index - 1 });
+      var collap1 = false;
+      var collap2 = false;
+      var collap3 = false;
+      if(this.state.index - 1 >= 0 && this.state.index - 1  <= 3){
+       collap1 = true;
+       collap2 = false;
+       collap3 = false;
+       window.scrollTo(500, 320);
+
+      }
+      if(this.state.index - 1 >= 4 && this.state.index - 1  <= 7){
+        
+        collap1 = false;
+        collap2 = true;
+        collap3 = false;
+        window.scrollTo(500, 600);
+       }
+       if(this.state.index - 1 >= 8 && this.state.index - 1  <= 11){
+        collap1 = false;
+        collap2 = false;
+        collap3 = true;
+        window.scrollTo(500, 800);
+       }
+      this.setState({ urlVideo: video.link, author: video.author, video: video.title, index: this.state.index - 1,  collapse: collap1, collapse2: collap2, collapse3: collap3 });
 
     }
 
