@@ -41,7 +41,7 @@ export const getUsuarios = () => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.get('v1/admin/users')
+    instance2.get('v1/users')
         .then((response) => {
             console.log('response usuarios2',response);
             dispatch({ type: GET_USUARIOS_SUCCES, payload: response.data });
@@ -65,7 +65,7 @@ export const addUsuario = (user) => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.post('v1/admin/users',{
+    instance2.post('v1/users',{
         email: user.email,
         password: user.password,
         name: user.name,
@@ -97,7 +97,7 @@ export const updateUsuario = (user) => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.put('v1/admin/users/' + user._id,{
+    instance2.put('v1/users/' + user._id,{
         email: user.email,
         
         name: user.name,
@@ -129,7 +129,7 @@ export const deleteUsuario = (user) => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.delete('v1/admin/users/' + user._id)
+    instance2.delete('v1/users/' + user._id)
         .then((response) => {
             console.log('response user',response);
             dispatch({ type: DELETE_USUARIOS_SUCCES });
