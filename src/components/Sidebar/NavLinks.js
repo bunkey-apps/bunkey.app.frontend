@@ -52,6 +52,12 @@ export default {
                   "menu_icon": "ti-user",
                   "path": "/app/usuarios",
                   "child_routes": null
+            },
+            {
+                  "menu_title": "Configuracion",
+                  "menu_icon": "ti-settings",
+                  "path": "/app/configuracion",
+                  "child_routes": null
             }
             
             

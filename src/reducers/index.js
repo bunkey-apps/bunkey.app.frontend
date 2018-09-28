@@ -14,6 +14,7 @@ import usuariosReducer from './UsuariosReducer';
 import clientesReducer from './ClientesReducer';
 import tagsReducer from './TagsReducer';
 import dashboardReducer from './DashboardReducer';
+import configuracionReducer from './ConfiguracionReducer';
 
 
 const reducers = combineReducers({
@@ -28,7 +29,8 @@ const reducers = combineReducers({
   usuarios: usuariosReducer,
   clientes: clientesReducer,
   tags: tagsReducer,
-  dashboard: dashboardReducer
+  dashboard: dashboardReducer,
+  configuracion: configuracionReducer
 });
 
 export default reducers;

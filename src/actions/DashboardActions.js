@@ -83,7 +83,12 @@ export const getFolders = () => (dispatch) => {
 
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
-    const clienteSelectJson = JSON.parse(clienteSelect);
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    if(!clienteSelectJson){
+        clienteSelectJson = {
+            _id : '1'
+        }
+    }
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',

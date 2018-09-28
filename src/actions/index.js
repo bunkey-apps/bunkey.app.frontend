@@ -12,3 +12,5 @@ export * from './UsuariosActions';
 export * from './ClientesActions';
 export * from './TagsActions';
 export * from './DashboardActions';
+export * from './ConfiguracionActions';
+

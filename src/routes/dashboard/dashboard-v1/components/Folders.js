@@ -74,7 +74,7 @@ class Folders extends Component {
   }
 
   componentWillMount() {
-
+    console.log('get folders');
     this.props.getFolders();
     /* this.props.getUserDetails();
 
