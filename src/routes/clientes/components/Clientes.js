@@ -85,7 +85,7 @@ class Clientes extends Component {
        //        history.push(`${match.url}/contratos`); SLIDER
        localStorage.setItem("clienteSelect", JSON.stringify(clienteSelect));
        const { match, history } = this.props;
-        history.push('/app/contratos');
+        history.push('/app/dashboard');
        
       }
 
@@ -232,7 +232,6 @@ toggleEditCustomerModal = () => {
                     <TableCell><b>Tamaño Ocupado</b></TableCell>
                     <TableCell><b>Saldo Atrasado</b></TableCell>
                     <TableCell><b>Usuarios</b></TableCell>
-                    <TableCell><b>Acciones</b></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -247,23 +246,7 @@ toggleEditCustomerModal = () => {
                          <TableCell  onClick={() => this.getContratos(n)}>500 GB Bitacora</TableCell>
                           <TableCell  onClick={() => this.getContratos(n)}>$800.000</TableCell>
                           <TableCell  onClick={() => this.getContratos(n)}>5</TableCell>
-                          <TableCell>
-                          <div className="row">
-                          <div className="col-md-6">
-                          <a href="javascript:void(0)"  onClick={() => this.onEditCustomer(n)}>
-                                        <i className="zmdi zmdi-edit"></i>
-                                    </a>
-                          </div>
-                          <div className="col-md-6">
-                          <a href="javascript:void(0)"   onClick={() => this.onDeleteCustomer(n)}>
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </a>
-                          </div>
-                          </div>
-                                    
-                                   
-
-                          </TableCell>
+                          
                         </TableRow>
                       );
                     })}

@@ -87,7 +87,15 @@ class UserBlock extends Component {
                         <DropdownMenu>
                             <ul className="list-unstyled mb-0">
                               
-                               
+                               <li className="border-top">
+                               <Link to={{
+                                        pathname: '/app/clientes',
+                                        state: { activeTab: 0 }
+                                    }}>
+                                        <i className="ti ti-user"></i>
+                                        <IntlMessages id="Seleccionar Cliente" />
+                                    </Link>
+                               </li>
                                 <li className="border-top">
                                     <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
                                         <i className="ti ti-power-off"></i>

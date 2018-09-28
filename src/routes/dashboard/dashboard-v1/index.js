@@ -44,6 +44,10 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { withRouter } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 
+import Folders from './components/Folders';
+
+
+
 // dashboard data
 import {
   totalEarns,
@@ -128,7 +132,7 @@ export default class DashboardOne extends Component {
 
 
 
-
+        
 
 
 
@@ -201,100 +205,7 @@ export default class DashboardOne extends Component {
         </RctCollapsibleCard>
 
 
-        <RctCollapsibleCard>
-          <div className={'rct-block-title'}>
-            <h4 className="titulo-vistas-nombre-cliente"><b>Bunkey</b></h4>
-            <div className="contextual-link">
-              <a>Ver más <i className="ti-plus"></i></a>
-            </div>
-          </div>
-
-          <div>
-
-            <div className="row row-eq-height text-center">
-
-              <div className="col-sm-2 col-md-1 col-lg-2">
-                <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                  <img  onClick={() => this.goToImagenes()} src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-
-                  <p>Exterior</p>
-                </ContextMenuTrigger>
-              </div>
-
-              <div className="col-sm-2 col-md-1 col-lg-2">
-                <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                  <img  onClick={() => this.goToImagenes()} src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-                  <p>Brazoarmado</p>
-                </ContextMenuTrigger>
-              </div>
-              <div className="col-sm-2 col-md-1 col-lg-2">
-              <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                <img onClick={() => this.goToImagenes()}  src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-                <p>Naturaleza</p>
-                </ContextMenuTrigger>
-              </div>
-              <div className="col-sm-2 col-md-1 col-lg-2">
-                <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                  <img  onClick={() => this.goToImagenes()} src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-                  <p>Playa</p>
-                </ContextMenuTrigger>
-              </div>
-              <div className="col-sm-2 col-md-1 col-lg-2">
-                <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                  <img onClick={() => this.goToImagenes()}  src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-                  <p>Material jornada Nocturna</p>
-                </ContextMenuTrigger>
-              </div>
-              <div className="col-sm-2 col-md-1 col-lg-2">
-                <ContextMenuTrigger id="SIMPLE" holdToDisplay={1000}>
-                  <img  onClick={() => this.goToImagenes()} src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-                  <p>Muestra servicios</p>
-                </ContextMenuTrigger>
-              </div>
-
-            </div>
-
-
-
-
-          </div>
-
-
-          <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
-              <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Descargar</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Compartir</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Cambiar Nombre</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Mover</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Agregar a favoritos</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-              <span className="padding-click-derecho">Eliminar</span>
-            </MenuItem>
-          </ContextMenu>
-        </RctCollapsibleCard>
-
-
+       <Folders/>
 
 
         <RctCollapsibleCard>
