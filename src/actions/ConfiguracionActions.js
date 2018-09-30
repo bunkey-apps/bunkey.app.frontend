@@ -60,7 +60,6 @@ export const addImage = (urlImage,file) => (dispatch) => {
     var instance2 = axios.create({
         baseURL: urlImage,
         timeout: 3000,
-        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
         body: file
       });
    
