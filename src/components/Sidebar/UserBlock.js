@@ -21,12 +21,22 @@ import IntlMessages from '../../util/IntlMessages';
 import AppConfig from '../../constants/AppConfig';
 
 class UserBlock extends Component {
-
-    state = {
+    constructor(props) {
+        super()
+        console.log('props.name',props.name);
+    this.state = {
         userDropdownMenu: false,
-        isSupportModal: false
+        isSupportModal: false,
+        name : props.name,
+        imagen : props.imagen
     }
 
+}
+componentWillReceiveProps(nextProps) {
+    console.log('porpsppspspssp',nextProps.name);
+    this.setState({ name: nextProps.name, imagen: nextProps.imagen });
+
+}
     /**
      * Logout User
      */
@@ -63,6 +73,10 @@ class UserBlock extends Component {
         NotificationManager.success('Message has been sent successfully!');
     }
 
+
+  
+
+
     render() {
         return (
             <div className="top-sidebar">
@@ -74,12 +88,12 @@ class UserBlock extends Component {
                 </div>
                 <div className="sidebar-user-block media">
                     <div className="user-profile">
-                        <img src={require('../../assets/img/perfil-bunkey.jpg')} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey" width="60" height="129" />
+                        <img src={this.state.imagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey" width="60" height="129" />
                     </div>
                     <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
                         <DropdownToggle nav>
                             <div>
-                            Felipe Aguirre
+                           {this.state.name}
                             <i className="ti-angle-down pull-right flecha-name-user"></i>
                                 </div>
                             

@@ -103,7 +103,7 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
             background = clienteSelectJson.acountSetting.background;
       }else{
         background = rutaImagen;
-        logo = clienteSelectJson.acountSetting.background;
+        logo = clienteSelectJson.acountSetting.logo;
       }
    
     instance2.put('v1/clients/' + clienteSelectJson._id,{
@@ -116,6 +116,18 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
     })
         .then((response) => {
             console.log('response user',response);
+            clienteSelectJson.acountSetting =  {
+                logo: logo,
+                background: background,
+                language: 'es'
+            };
+
+            console.log('clienteSelectJson',clienteSelectJson);
+
+
+            localStorage.setItem("clienteSelect", JSON.stringify(clienteSelectJson));
+
+
             dispatch({ type: PUT_SETTING_SUCCES });
         })
         .catch(error => {

@@ -18,6 +18,8 @@ import SidebarContent from './SidebarContent';
 
 class Sidebar extends Component {
 
+	
+
 	componentWillMount() {
 		this.updateDimensions();
 	}
@@ -31,6 +33,12 @@ class Sidebar extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+		if(clienteSelectJson){
+			console.log('clienteSelectJson.name',clienteSelectJson.name);
+			this.setState({name : clienteSelectJson.name, imagen : clienteSelectJson.acountSetting.logo});
+		}
 		const { windowWidth } = this.state;
 		const { collapsedSidebar } = this.props;
 		if (nextProps.location !== this.props.location) {
@@ -51,7 +59,7 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		const { windowWidth, windowHeight } = this.state;
+		const { windowWidth, windowHeight, name, imagen } = this.state;
 		const { sidebarActiveFilter, enableSidebarBackgroundImage, selectedSidebarImage, rtlLayout } = this.props;
 		return (
 			<Drawer
@@ -67,7 +75,7 @@ class Sidebar extends Component {
 				<Scrollbars autoHeight autoHeightMin={100} autoHeightMax={windowHeight} autoHide autoHideDuration={100}>
 					
 						<div className={`rct-sidebar-wrap`}>
-							<UserBlock />
+							<UserBlock name={name} imagen = {imagen}/>
 							<SidebarContent />
 						</div>
 					
