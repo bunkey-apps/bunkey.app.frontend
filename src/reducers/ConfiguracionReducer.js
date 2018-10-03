@@ -12,6 +12,9 @@ import {
     PUT_IMAGE,
     PUT_IMAGE_FAILURE,
     PUT_IMAGE_SUCCES,
+    PUT_SETTING,
+    PUT_SETTING_FAILURE,
+    PUT_SETTING_SUCCES
 } from '../actions/types';
 
 /**
@@ -38,7 +41,7 @@ export default (state = INIT_STATE, action) => {
                 items: action.payload,
                 loading: false
             };
-            case PUT_IMAGE:
+        case PUT_IMAGE:
             return { ...state, loading: true };
 
         case PUT_IMAGE_FAILURE:
@@ -48,6 +51,18 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 items: action.payload,
+                loading: false
+            };
+
+        case PUT_SETTING:
+            return { ...state, loading: true };
+
+        case PUT_SETTING_FAILURE:
+            return { ...state, loading: false };
+        // get Contratos
+        case PUT_SETTING_SUCCES:
+            return {
+                ...state,
                 loading: false
             };
         default: return { ...state };

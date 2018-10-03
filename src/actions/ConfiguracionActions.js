@@ -9,6 +9,9 @@ import {
     PUT_IMAGE,
     PUT_IMAGE_FAILURE,
     PUT_IMAGE_SUCCES,
+    PUT_SETTING,
+    PUT_SETTING_FAILURE,
+    PUT_SETTING_SUCCES
     
 } from './types';
 
@@ -50,7 +53,8 @@ export const getUrlFile = () => (dispatch) => {
 }
 
 export const addImage = (urlImage,file) => (dispatch) => {
-    console.log('PUT_IMAGE FORM');
+    console.log('PUT_IMAGE FORM',file);
+
     dispatch({ type: PUT_IMAGE });
     const token = localStorage.getItem('user_id');
 
@@ -63,14 +67,60 @@ export const addImage = (urlImage,file) => (dispatch) => {
         body: file
       });
    
-    instance2.put()
+    
+      var instance = axios.create();
+
+      instance.put(urlImage, file, {headers: {'Content-Type': file.type}})
+          .then(function (result) {
+              console.log(result);
+              dispatch({ type: PUT_IMAGE_SUCCES});
+          })
+          .catch(function (err) {
+              console.log(err);
+              dispatch({ type: PUT_IMAGE_FAILURE});
+          });
+}
+
+
+export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
+    console.log('PUT_SETTING FORM');
+    dispatch({ type: PUT_SETTING });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+      var logo;
+      var background;
+      if(tipo === 'logo'){
+            logo = rutaImagen;
+            background = clienteSelectJson.acountSetting.background;
+      }else{
+        background = rutaImagen;
+        logo = clienteSelectJson.acountSetting.background;
+      }
+   
+    instance2.put('v1/clients/' + clienteSelectJson._id,{
+        acountSetting: {
+            logo: logo,
+            background: background,
+            language: 'es'
+        }
+       
+    })
         .then((response) => {
-            console.log('response bod',response);
-            dispatch({ type: PUT_IMAGE_SUCCES });
+            console.log('response user',response);
+            dispatch({ type: PUT_SETTING_SUCCES });
         })
         .catch(error => {
             // error handling
-            dispatch({ type: PUT_IMAGE_FAILURE});
+            dispatch({ type: PUT_SETTING_FAILURE});
         })
 }
 

@@ -27,7 +27,8 @@ import AppConfig from '../../../constants/AppConfig';
 // redux action
 import {
   getUrlFile,
-  addImage
+  addImage,
+  updateAcountSetting
 } from '../../../actions';
 
 
@@ -50,8 +51,31 @@ class Configuracion extends Component {
 
   constructor() {
     super()
-    this.state = { file: '', imagePreviewUrl: '', isRequired: 'required' };
-    this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
+    this.state = { file: '', imagePreviewUrl: '', isRequired: 'required', fileBackground: '', imageBackgroundPreviewUrl: '' };
+    this.handleSubmitAdd = this.handleSubmitAdd.bind(this); 
+    this.handleSubmitAddBackground = this.handleSubmitAddBackground.bind(this);
+  
+  }
+  handleSubmitAddBackground(event) {
+    event.preventDefault();
+    this.onSubmitAddBackgroundCustomerForm();
+  }
+  onSubmitAddBackgroundCustomerForm() {
+    this.props.getUrlFile();
+
+    setTimeout(() => {
+      const { items} = this.props;
+      console.log('items',items);
+      this.props.addImage(items.url, this.state.fileBackground);
+      
+      setTimeout(() => {
+        this.props.updateAcountSetting('background', items.futureFileURL);
+        
+  
+    }, 3000);
+
+  }, 3000);
+
   }
   handleSubmitAdd(event) {
     event.preventDefault();
@@ -65,10 +89,34 @@ class Configuracion extends Component {
       console.log('items',items);
       this.props.addImage(items.url, this.state.file);
       
+      setTimeout(() => {
+        this.props.updateAcountSetting('logo', items.futureFileURL);
+        
+  
+    }, 3000);
 
   }, 3000);
 
   }
+
+  handleImageBackgroundChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        fileBackground: file,
+        imageBackgroundPreviewUrl: reader.result
+      });
+      console.log(this.state);
+    }
+    reader.readAsDataURL(file)
+
+  }
+
+
   handleImageChange(e) {
     e.preventDefault();
 
@@ -116,6 +164,19 @@ class Configuracion extends Component {
             </div>
           </Form>
 
+           <Form id="formAddBBackground" onSubmit={this.handleSubmitAddBackground}>
+            <FormGroup>
+              <Label for="File">Mofificar Background</Label>
+              <Input required={this.state.isRequired} name="background" className="fileInput"
+                type="file"
+                onChange={(e) => this.handleImageBackgroundChange(e)} />
+
+            </FormGroup>
+            <div>
+              <Button form="formAddBBackground" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Cambiar Logo" /></Button>{' '}
+            </div>
+          </Form>
+
         </RctCollapsibleCard>
 
       </div>
@@ -129,5 +190,5 @@ const mapStateToProps = ({ configuracion }) => {
 }
 
 export default connect(mapStateToProps, {
-  getUrlFile, addImage
+  getUrlFile, addImage, updateAcountSetting
 })(Configuracion);
