@@ -14,7 +14,13 @@ import {
     GET_USER_BY_ID_SUCCES,
     GET_FOLDERS,
     GET_FOLDERS_FAILURE,
-    GET_FOLDERS_SUCCES
+    GET_FOLDERS_SUCCES,
+    UPDATE_FOLDERS,
+    UPDATE_FOLDERS_FAILURE,
+    UPDATE_FOLDERS_SUCCES,
+    DELETE_FOLDERS,
+    DELETE_FOLDERS_FAILURE,
+    DELETE_FOLDERS_SUCCES
 } from '../actions/types';
 
 /**
@@ -64,6 +70,29 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 items: action.payload,
+                loading: false
+            };
+        case UPDATE_FOLDERS:
+            return { ...state, loading: true };
+
+        case UPDATE_FOLDERS_FAILURE:
+            return { ...state, loading: false };
+        // get Contratos
+        case UPDATE_FOLDERS_SUCCES:
+            return {
+                ...state,
+                loading: false
+            };
+
+        case DELETE_FOLDERS:
+            return { ...state, loading: true };
+
+        case DELETE_FOLDERS_FAILURE:
+            return { ...state, loading: false };
+        // get Contratos
+        case DELETE_FOLDERS_SUCCES:
+            return {
+                ...state,
                 loading: false
             };
         default: return { ...state };

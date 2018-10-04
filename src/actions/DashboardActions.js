@@ -11,7 +11,13 @@ import {
     GET_USER_BY_ID_SUCCES,
     GET_FOLDERS,
     GET_FOLDERS_FAILURE,
-    GET_FOLDERS_SUCCES
+    GET_FOLDERS_SUCCES,
+    UPDATE_FOLDERS,
+    UPDATE_FOLDERS_FAILURE,
+    UPDATE_FOLDERS_SUCCES,
+    DELETE_FOLDERS,
+    DELETE_FOLDERS_FAILURE,
+    DELETE_FOLDERS_SUCCES
     
 } from './types';
 
@@ -134,7 +140,7 @@ export const createFolder = (caperta) => (dispatch) => {
 }
 
 export const cambiarNombreObject = (caperta) => (dispatch) => {
-    dispatch({ type: GET_FOLDERS });
+    dispatch({ type: UPDATE_FOLDERS });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -152,7 +158,7 @@ export const cambiarNombreObject = (caperta) => (dispatch) => {
     })
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES',response);
-            dispatch({ type: GET_FOLDERS_SUCCES });
+            dispatch({ type: UPDATE_FOLDERS_SUCCES });
         })
         .catch(error => {
             // error handling
@@ -160,7 +166,7 @@ export const cambiarNombreObject = (caperta) => (dispatch) => {
 }
 
 export const daleteObject = (caperta) => (dispatch) => {
-    dispatch({ type: GET_FOLDERS });
+    dispatch({ type: DELETE_FOLDERS });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -177,8 +183,8 @@ export const daleteObject = (caperta) => (dispatch) => {
        
     })
         .then((response) => {
-            console.log('response GET_FOLDERS_SUCCES',response);
-            dispatch({ type: GET_FOLDERS_SUCCES });
+            console.log('response DELETE_FOLDERS_SUCCES',response);
+            dispatch({ type: DELETE_FOLDERS_SUCCES });
         })
         .catch(error => {
             // error handling

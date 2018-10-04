@@ -135,6 +135,11 @@ class Folders extends Component {
     console.log('handleClickChangeName', folder);
     this.props.daleteObject(folder);
 
+    setTimeout(() => {
+      this.props.getFolders();
+    }, 1000);
+
+
   }
 
   onSubmitCustomerEditDetailForm() {
