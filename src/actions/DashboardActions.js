@@ -132,3 +132,55 @@ export const createFolder = (caperta) => (dispatch) => {
             // error handling
         })
 }
+
+export const cambiarNombreObject = (caperta) => (dispatch) => {
+    dispatch({ type: GET_FOLDERS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.put('/v1/clients/' + clienteSelectJson._id + '/objects/' +  caperta._id,{
+        'name': caperta.name
+    })
+        .then((response) => {
+            console.log('response GET_FOLDERS_SUCCES',response);
+            dispatch({ type: GET_FOLDERS_SUCCES });
+        })
+        .catch(error => {
+            // error handling
+        })
+}
+
+export const daleteObject = (caperta) => (dispatch) => {
+    dispatch({ type: GET_FOLDERS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.delete('/v1/clients/' + clienteSelectJson._id + '/objects/' +  caperta._id,{
+       
+    })
+        .then((response) => {
+            console.log('response GET_FOLDERS_SUCCES',response);
+            dispatch({ type: GET_FOLDERS_SUCCES });
+        })
+        .catch(error => {
+            // error handling
+        })
+}
