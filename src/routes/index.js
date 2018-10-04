@@ -62,8 +62,33 @@ class MainApp extends Component {
 
   }
 
+  componentWillMount() {
+    const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+		if(clienteSelectJson){
+			console.log('header',clienteSelectJson.acountSetting.background);
+			this.setState({background : clienteSelectJson.acountSetting.background});
+		}else{
+      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg'});
+    }
+	}
+
+
+  componentWillReceiveProps(nextProps) {
+		const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+		if(clienteSelectJson){
+			console.log('header',clienteSelectJson.acountSetting.background);
+			this.setState({background : clienteSelectJson.acountSetting.background});
+		}else{
+      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg'});
+    }
+	
+	}
+
   render() {
     const { navCollapsed } = this.props.settings;
+    const { background } = this.state;
     return (
       <div className={classnames('app', { 'collapsed-sidebar': navCollapsed })}>
         <div className="app-container">
@@ -72,7 +97,11 @@ class MainApp extends Component {
             <div className="rct-app-content">
               <Header />
               <div className="rct-page">
-              <div className="fondo-busqueda text-white">
+              <div className="fondo-busqueda text-white"
+              style={{ backgroundImage: `url(${background})` }}
+
+              
+              >
 
 
 <div className="margen-busqueda text-white padding-top-busqueda">
