@@ -44,7 +44,6 @@ export default (state = INIT_STATE, action) => {
         case GET_USER_DETAILS_SUCCES:
             return {
                 ...state,
-                items: action.payload,
                 loading: false
             };
         case GET_USER_BY_ID:

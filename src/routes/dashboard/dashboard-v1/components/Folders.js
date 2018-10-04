@@ -79,9 +79,9 @@ class Folders extends Component {
   componentWillMount() {
     console.log('get folders');
     this.props.getFolders();
-    /* this.props.getUserDetails();
+    this.props.getUserDetails();
 
-     setTimeout(() => {
+    /*  setTimeout(() => {
          const { items} = this.props;
          console.log('items',items);
          this.props.getUserById(items._id);

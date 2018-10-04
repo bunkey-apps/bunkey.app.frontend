@@ -47,7 +47,8 @@ export const getUserDetails = () => (dispatch) => {
     instance2.get('v1/users/me')
         .then((response) => {
             console.log('response GET_USER_DETAILS',response);
-            dispatch({ type: GET_USER_DETAILS_SUCCES, payload: response.data });
+            localStorage.setItem("user_me", JSON.stringify(response.data));
+            dispatch({ type: GET_USER_DETAILS_SUCCES });
         })
         .catch(error => {
             // error handling
