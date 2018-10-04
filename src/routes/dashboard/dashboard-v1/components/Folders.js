@@ -12,6 +12,8 @@ import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle, }
 import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
+import { Route, withRouter } from 'react-router-dom';
+
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -131,9 +133,11 @@ class Folders extends Component {
 
   }
 
-  handleClickDelete(folder) {
-    console.log('handleClickChangeName', folder);
-    this.props.daleteObject(folder);
+  deleteCustomer() {
+    this.setState({ alertDialog: false});
+ 
+    console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
+    this.props.daleteObject(this.state.selectedDeletedCustomer);
 
     setTimeout(() => {
       this.props.getFolders();
@@ -141,6 +145,12 @@ class Folders extends Component {
 
 
   }
+
+  // close alert
+handleClose = () => {
+  console.log('handleClose');
+this.setState({ alertDialog: false });
+}
 
   onSubmitCustomerEditDetailForm() {
     const { editCustomer } = this.state;
@@ -194,8 +204,17 @@ class Folders extends Component {
     });
   }
 
-  // edit customer
+  handleClickDelete(customer) {
+    this.setState({ alertDialog: true, selectedDeletedCustomer: customer });
+    }
 
+
+    goToImagenes= () => {
+
+      const { match, history } = this.props;
+    history.push('/app/resultados');
+  
+    }
 
   render() {
     const { items, loading, userById } = this.props;
@@ -209,7 +228,7 @@ class Folders extends Component {
           <div className={'rct-block-title'}>
             <h4 className="titulo-vistas-nombre-cliente"><b>Bunkey</b></h4>
             <div className="contextual-link">
-              <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>Ver más <i className="ti-plus"></i></a>
+              <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>Nueva Carpeta <i className="ti-plus"></i></a>
 
             </div>
           </div>
@@ -312,7 +331,25 @@ class Folders extends Component {
 
 
 
-
+<Dialog
+                    open={alertDialog}
+                    onClose={this.handleClose}
+                >
+                    <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                           Estas seguro de eliminarlo de forma permanente.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="raised"  onClick={this.handleClose} className="btn-danger text-white">
+                            <IntlMessages id="button.cancel" />
+                        </Button>
+                        <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
+                            <IntlMessages id="button.yes" />
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
         {editCustomerModal &&
           <Modal
@@ -386,6 +423,6 @@ const mapStateToProps = ({ dashboard }) => {
   return dashboard;
 }
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject
-})(Folders);
+})(Folders));
