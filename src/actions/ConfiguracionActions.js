@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
+
 import {
     GET_URL,
     GET_URL_FAILURE,
@@ -22,7 +24,7 @@ import AppConfig from '../constants/AppConfig';
 
 
 
-export const getUrlFile = () => (dispatch) => {
+export const getUrlFile = (file, tipo) => (dispatch) => {
     console.log('GET_URL FORM');
     dispatch({ type: GET_URL });
     const token = localStorage.getItem('user_id');
@@ -43,7 +45,8 @@ export const getUrlFile = () => (dispatch) => {
     })
         .then((response) => {
             console.log('response user',response);
-            dispatch({ type: GET_URL_SUCCES, payload: response.data });
+            dispatch(addImage(response.data.url,file,tipo,response.data.futureFileURL))
+            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
         })
         .catch(error => {
@@ -52,10 +55,10 @@ export const getUrlFile = () => (dispatch) => {
         })
 }
 
-export const addImage = (urlImage,file) => (dispatch) => {
+export const addImage = (urlImage,file,tipo,futureFileURL) => (dispatch) => {
     console.log('PUT_IMAGE FORM',file);
 
-    dispatch({ type: PUT_IMAGE });
+   // dispatch({ type: PUT_IMAGE });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -73,11 +76,12 @@ export const addImage = (urlImage,file) => (dispatch) => {
       instance.put(urlImage, file, {headers: {'Content-Type': file.type}})
           .then(function (result) {
               console.log(result);
-              dispatch({ type: PUT_IMAGE_SUCCES});
+              dispatch(updateAcountSetting(tipo,futureFileURL));
+              //dispatch({ type: PUT_IMAGE_SUCCES});
           })
           .catch(function (err) {
               console.log(err);
-              dispatch({ type: PUT_IMAGE_FAILURE});
+              dispatch({ type: GET_URL_FAILURE})
           });
 }
 
@@ -128,11 +132,12 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
             localStorage.setItem("clienteSelect", JSON.stringify(clienteSelectJson));
 
 
-            dispatch({ type: PUT_SETTING_SUCCES });
+            dispatch({ type: GET_URL_SUCCES });
+            NotificationManager.success('Actualizado correctamente');
         })
         .catch(error => {
             // error handling
-            dispatch({ type: PUT_SETTING_FAILURE});
+            dispatch({ type: GET_URL_FAILURE})
         })
 }
 

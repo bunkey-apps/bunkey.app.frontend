@@ -38,7 +38,6 @@ export default (state = INIT_STATE, action) => {
         case GET_URL_SUCCES:
             return {
                 ...state,
-                items: action.payload,
                 loading: false
             };
         case PUT_IMAGE:
@@ -50,7 +49,6 @@ export default (state = INIT_STATE, action) => {
         case PUT_IMAGE_SUCCES:
             return {
                 ...state,
-                items: action.payload,
                 loading: false
             };
 

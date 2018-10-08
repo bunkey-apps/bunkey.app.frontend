@@ -61,8 +61,8 @@ class Configuracion extends Component {
     this.onSubmitAddBackgroundCustomerForm();
   }
   onSubmitAddBackgroundCustomerForm() {
-    this.props.getUrlFile();
-
+    this.props.getUrlFile(this.state.file,'background');
+/*
     setTimeout(() => {
       const { items} = this.props;
       console.log('items',items);
@@ -74,7 +74,7 @@ class Configuracion extends Component {
   
     }, 3000);
 
-  }, 3000);
+  }, 3000);*/
 
   }
   handleSubmitAdd(event) {
@@ -82,8 +82,8 @@ class Configuracion extends Component {
     this.onSubmitAddNewCustomerForm();
   }
   onSubmitAddNewCustomerForm() {
-    this.props.getUrlFile();
-
+    this.props.getUrlFile(this.state.file,'logo');
+/*
     setTimeout(() => {
       const { items} = this.props;
       console.log('items',items);
@@ -95,7 +95,7 @@ class Configuracion extends Component {
   
     }, 3000);
 
-  }, 3000);
+  }, 3000);*/
 
   }
 
