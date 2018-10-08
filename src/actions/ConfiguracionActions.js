@@ -37,11 +37,15 @@ export const getUrlFile = (file, tipo) => (dispatch) => {
         timeout: 3000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
       });
+
+
+      console.log('file.type',file.type);
+      var tipoArr = file.type.split('/');
    
     instance2.post('/v1/url-signature',{
         clientId: clienteSelectJson._id,
-        extention: 'png',
-        mimeType: 'image/png'
+        extention: tipoArr[1],
+        mimeType: file.type
     })
         .then((response) => {
             console.log('response user',response);
