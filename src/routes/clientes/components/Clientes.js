@@ -226,12 +226,10 @@ toggleEditCustomerModal = () => {
               <Table>
                 <TableHead>
                   <TableRow hover>
+                    <TableCell className="logo-col-clientes"><b>Logo</b></TableCell>
                     <TableCell><b>RUT</b></TableCell>
                     <TableCell><b>Datos Contacto</b></TableCell>
                     <TableCell><b>Estado</b></TableCell>
-                    <TableCell><b>Tamaño Ocupado</b></TableCell>
-                    <TableCell><b>Saldo Atrasado</b></TableCell>
-                    <TableCell><b>Usuarios</b></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -239,14 +237,16 @@ toggleEditCustomerModal = () => {
                     {items.map((n, index) => {
                       return (
                         <TableRow hover key={index} >
+                         <TableCell  onClick={() => this.getContratos(n)}>
+                         <div>
+                         <img src={n.acountSetting.logo} className="logo-menu-rect" />
+                         </div>
+                        </TableCell>
                           <TableCell  onClick={() => this.getContratos(n)}>{n.dni}</TableCell>
                           <TableCell  onClick={() => this.getContratos(n)}><div>{n.name}</div> <div>{n.email}</div></TableCell>
                           {n.status ?  <TableCell  onClick={() => this.getContratos(n)}>Activo</TableCell> : <TableCell>Pendiente</TableCell>}
 
-                         <TableCell  onClick={() => this.getContratos(n)}>500 GB Bitacora</TableCell>
-                          <TableCell  onClick={() => this.getContratos(n)}>$800.000</TableCell>
-                          <TableCell  onClick={() => this.getContratos(n)}>5</TableCell>
-                          
+                       
                         </TableRow>
                       );
                     })}

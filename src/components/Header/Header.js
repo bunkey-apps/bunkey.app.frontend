@@ -202,11 +202,7 @@ class Header extends Component {
               </IconButton>
             </li>
 
-            <a href="javascript:void(0)" className="margin-home-header-link">
-              <Link to="/app/dashboard">
-                <i className="zmdi ti-home color-header-bunkey"></i>
-              </Link>
-            </a>
+           
 
 
 
@@ -219,14 +215,11 @@ class Header extends Component {
 
 
             <li className="list-inline-item margen-li-bunkey">
-              <p className="header-bunkey-nuevo">NUEVO</p>
-            </li>
-            <li className="list-inline-item margen-li-bunkey">
               <a href="javascript:void(0)">
-                <i className="zmdi ti-world color-header-bunkey"></i>
+                <i className="zmdi ti-home color-header-bunkey"></i>
               </a>
             </li>
-
+            
 
             <li className="list-inline-item margen-li-bunkey">
               <a href="javascript:void(0)">
