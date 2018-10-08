@@ -52,29 +52,29 @@ class Configuracion extends Component {
   constructor() {
     super()
     this.state = { file: '', imagePreviewUrl: '', isRequired: 'required', fileBackground: '', imageBackgroundPreviewUrl: '' };
-    this.handleSubmitAdd = this.handleSubmitAdd.bind(this); 
+    this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitAddBackground = this.handleSubmitAddBackground.bind(this);
-  
+
   }
   handleSubmitAddBackground(event) {
     event.preventDefault();
     this.onSubmitAddBackgroundCustomerForm();
   }
   onSubmitAddBackgroundCustomerForm() {
-    this.props.getUrlFile(this.state.file,'background');
-/*
-    setTimeout(() => {
-      const { items} = this.props;
-      console.log('items',items);
-      this.props.addImage(items.url, this.state.fileBackground);
+    this.props.getUrlFile(this.state.fileBackground, 'background');
+    /*
+        setTimeout(() => {
+          const { items} = this.props;
+          console.log('items',items);
+          this.props.addImage(items.url, this.state.fileBackground);
+          
+          setTimeout(() => {
+            this.props.updateAcountSetting('background', items.futureFileURL);
+            
       
-      setTimeout(() => {
-        this.props.updateAcountSetting('background', items.futureFileURL);
-        
-  
-    }, 3000);
-
-  }, 3000);*/
+        }, 3000);
+    
+      }, 3000);*/
 
   }
   handleSubmitAdd(event) {
@@ -82,20 +82,20 @@ class Configuracion extends Component {
     this.onSubmitAddNewCustomerForm();
   }
   onSubmitAddNewCustomerForm() {
-    this.props.getUrlFile(this.state.file,'logo');
-/*
-    setTimeout(() => {
-      const { items} = this.props;
-      console.log('items',items);
-      this.props.addImage(items.url, this.state.file);
+    this.props.getUrlFile(this.state.file, 'logo');
+    /*
+        setTimeout(() => {
+          const { items} = this.props;
+          console.log('items',items);
+          this.props.addImage(items.url, this.state.file);
+          
+          setTimeout(() => {
+            this.props.updateAcountSetting('logo', items.futureFileURL);
+            
       
-      setTimeout(() => {
-        this.props.updateAcountSetting('logo', items.futureFileURL);
-        
-  
-    }, 3000);
-
-  }, 3000);*/
+        }, 3000);
+    
+      }, 3000);*/
 
   }
 
@@ -142,42 +142,88 @@ class Configuracion extends Component {
 
 
       <div>
-
+ {loading &&
+            <div className="d-flex justify-content-center loader-overlay">
+              <CircularProgress />
+            </div>
+          }
 
         <RctCollapsibleCard>
-
           <div className={'rct-block-title'}>
-           
+            <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
+
+              <div className="row row-eq-height text-center">
+              <div className="col-sm-4 col-md-3 col-lg-4">
+                <h4 className="titulo-vistas-mis-contenidos configuracion-titulo-card"><b>Cambiar Logo</b></h4>
+            </div>
+
+                <div className="col-sm-4 col-md-3 col-lg-4">
+                <FormGroup>
+                  <Input required={this.state.isRequired} name="photo" className="fileInput configuracion-padding-file"
+                    type="file"
+                    onChange={(e) => this.handleImageChange(e)} />
+ </FormGroup>
+                </div>
+                <div className="col-sm-4 col-md-3 col-lg-4">
+
+                  <Button form="formAdd" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir Logo" /></Button>{' '}
+
+                </div>
+
+
+
+              </div>
+
+            </Form>
+
+
+
+
 
           </div>
-
-          <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
-            <FormGroup>
-              <Label for="File">Mofificar Logo</Label>
-              <Input required={this.state.isRequired} name="photo" className="fileInput"
-                type="file"
-                onChange={(e) => this.handleImageChange(e)} />
-
-            </FormGroup>
-            <div>
-              <Button form="formAdd" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Cambiar Logo" /></Button>{' '}
-            </div>
-          </Form>
-
-           <Form id="formAddBBackground" onSubmit={this.handleSubmitAddBackground}>
-            <FormGroup>
-              <Label for="File">Mofificar Background</Label>
-              <Input required={this.state.isRequired} name="background" className="fileInput"
-                type="file"
-                onChange={(e) => this.handleImageBackgroundChange(e)} />
-
-            </FormGroup>
-            <div>
-              <Button form="formAddBBackground" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Cambiar Logo" /></Button>{' '}
-            </div>
-          </Form>
+         
 
         </RctCollapsibleCard>
+
+<RctCollapsibleCard>
+          <div className={'rct-block-title'}>
+          <Form id="formAddBBackground" onSubmit={this.handleSubmitAddBackground}>
+
+              <div className="row row-eq-height text-center">
+              <div className="col-sm-4 col-md-3 col-lg-4">
+                <h4 className="titulo-vistas-mis-contenidos configuracion-titulo-card"><b>Cambiar Background</b></h4>
+              </div>
+
+                <div className="col-sm-4 col-md-3 col-lg-4">
+                            <FormGroup>
+                <Input required={this.state.isRequired} name="background" className="fileInput configuracion-padding-file"
+              type="file"
+              onChange={(e) => this.handleImageBackgroundChange(e)} />
+            </FormGroup>
+                </div>
+                <div className="col-sm-4 col-md-3 col-lg-4">
+
+            <Button form="formAddBBackground" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir Background" /></Button>{' '}
+
+                </div>
+
+
+
+              </div>
+
+            </Form>
+
+
+
+
+
+          </div>
+       
+
+        </RctCollapsibleCard>
+
+
+
 
       </div>
     )

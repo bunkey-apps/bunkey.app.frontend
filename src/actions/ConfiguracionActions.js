@@ -52,6 +52,8 @@ export const getUrlFile = (file, tipo) => (dispatch) => {
         .catch(error => {
             // error handling
             dispatch({ type: GET_URL_FAILURE});
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
         })
 }
 
@@ -82,6 +84,8 @@ export const addImage = (urlImage,file,tipo,futureFileURL) => (dispatch) => {
           .catch(function (err) {
               console.log(err);
               dispatch({ type: GET_URL_FAILURE})
+              NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
           });
 }
 
@@ -138,6 +142,7 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
         .catch(error => {
             // error handling
             dispatch({ type: GET_URL_FAILURE})
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
         })
 }
 
