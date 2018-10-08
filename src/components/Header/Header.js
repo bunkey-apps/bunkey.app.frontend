@@ -215,9 +215,11 @@ class Header extends Component {
 
 
             <li className="list-inline-item margen-li-bunkey">
+            <Link to="/app/dashboard">
               <a href="javascript:void(0)">
                 <i className="zmdi ti-home color-header-bunkey"></i>
               </a>
+              </Link>
             </li>
             
 
