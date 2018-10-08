@@ -12,7 +12,10 @@ import {
   ACTIVATE_SIDEBAR_FILTER,
   TOGGLE_SIDEBAR_IMAGE,
   SET_SIDEBAR_IMAGE,
-  SET_LANGUAGE
+  SET_LANGUAGE,
+  CHANGE_PASSWORD,
+    CHANGE_PASSWORD_SUCCES,
+    CHANGE_PASSWORD_FAILURE
 } from '../actions/types';
 
 // app config
@@ -22,6 +25,7 @@ import AppConfig from '../constants/AppConfig';
  * initial app settings
  */
 const INIT_STATE = {
+  loading: false,
   navCollapsed: AppConfig.navCollapsed,
   darkMode: AppConfig.darkMode,
   boxLayout: AppConfig.boxLayout,
@@ -200,7 +204,23 @@ export default (state = INIT_STATE, action) => {
     case SET_LANGUAGE:
       NotificationManager.success(`App Language ${action.payload.name} Selected Successfully!`);
       return { ...state, locale: action.payload };
+    
+    
+    
+      case CHANGE_PASSWORD:
+      return { ...state, loading: true };
 
+  case CHANGE_PASSWORD_SUCCES:
+  NotificationManager.success('Clave actualizada correctamente');
+      return { ...state, loading: false };
+  // get Contratos
+  case CHANGE_PASSWORD_FAILURE:
+  NotificationManager.error('Ocurrio un error, intente más tarde');
+
+      return {
+          ...state,
+          loading: false
+      };
     default: return { ...state };
   }
 }

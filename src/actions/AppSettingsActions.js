@@ -1,6 +1,11 @@
 /**
  * Redux App Settings Actions
  */
+
+import axios from 'axios';
+import AppConfig from '../constants/AppConfig';
+
+
 import {
     COLLAPSED_SIDEBAR,
     DARK_MODE,
@@ -12,7 +17,10 @@ import {
     ACTIVATE_SIDEBAR_FILTER,
     TOGGLE_SIDEBAR_IMAGE,
     SET_SIDEBAR_IMAGE,
-    SET_LANGUAGE
+    SET_LANGUAGE,
+    CHANGE_PASSWORD,
+    CHANGE_PASSWORD_SUCCES,
+    CHANGE_PASSWORD_FAILURE
 } from './types';
 
 /**
@@ -104,3 +112,35 @@ export const setLanguage = (language) => ({
     type: SET_LANGUAGE,
     payload: language
 });
+
+
+
+export const changePassword = (clave) => (dispatch) => {
+
+    dispatch({ type: CHANGE_PASSWORD });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('tokenJson5',tokenJson.accessToken);
+    const userMe = localStorage.getItem('user_me');
+    const userMeJson = JSON.parse(userMe);
+    
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.put('v1/users/me',{
+        password: clave
+    })
+        .then((response) => {
+            console.log('response usuarios4',response);
+            dispatch({ type: CHANGE_PASSWORD_SUCCES });
+        })
+        .catch(error => {
+            // error handling
+            dispatch({ type: CHANGE_PASSWORD_FAILURE });
+        })
+}
