@@ -139,9 +139,7 @@ class Folders extends Component {
     console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
     this.props.daleteObject(this.state.selectedDeletedCustomer);
 
-    setTimeout(() => {
-      this.props.getFolders();
-    }, 1000);
+
 
 
   }
@@ -159,10 +157,7 @@ this.setState({ alertDialog: false });
       this.setState({ editCustomerModal: false });
       console.log('editCustomer', editCustomer);
       this.props.cambiarNombreObject(editCustomer);
-      // test despues borrrar y detectar cuando responde el crear
-      setTimeout(() => {
-        this.props.getFolders();
-      }, 1000);
+     
 
     }
   }
@@ -172,10 +167,7 @@ this.setState({ alertDialog: false });
       this.setState({ editCustomerModal: false });
       console.log('addNewCustomerDetails', addNewCustomerDetails);
       this.props.createFolder(addNewCustomerDetails);
-      // test despues borrrar y detectar cuando responde el crear
-      setTimeout(() => {
-        this.props.getFolders();
-      }, 1000);
+  
     }
   }
   onChangeCustomerAddNewForm(key, value) {
@@ -232,6 +224,13 @@ this.setState({ alertDialog: false });
 
             </div>
           </div>
+
+
+           {loading &&
+            <div className="d-flex justify-content-center loader-overlay">
+              <CircularProgress />
+            </div>
+          }
           <div className="row row-eq-height text-center">
             {items.map((n, index) => {
 

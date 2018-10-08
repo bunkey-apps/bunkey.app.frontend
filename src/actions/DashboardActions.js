@@ -133,8 +133,8 @@ export const createFolder = (caperta) => (dispatch) => {
     })
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES',response);
-            dispatch({ type: GET_FOLDERS_SUCCES, payload: response.data.children });
-        })
+            dispatch(getFolders());
+                })
         .catch(error => {
             // error handling
         })
@@ -159,7 +159,7 @@ export const cambiarNombreObject = (caperta) => (dispatch) => {
     })
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES',response);
-            dispatch({ type: UPDATE_FOLDERS_SUCCES });
+            dispatch(getFolders());
         })
         .catch(error => {
             // error handling
@@ -185,7 +185,7 @@ export const daleteObject = (caperta) => (dispatch) => {
     })
         .then((response) => {
             console.log('response DELETE_FOLDERS_SUCCES',response);
-            dispatch({ type: DELETE_FOLDERS_SUCCES });
+            dispatch(getFolders());
         })
         .catch(error => {
             // error handling
