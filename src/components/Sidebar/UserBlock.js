@@ -89,21 +89,21 @@ class UserBlock extends Component {
                     </Link>
                 </div>
 
-{this.state.imagenCliente &&
-                <div>
-
+                {this.state.imagenCliente &&
                     <div>
-                        <img src={this.state.imagenCliente} className="img-fluid logo-menu-rect" />
+
+                        <div>
+                            <img src={this.state.imagenCliente} className="img-fluid logo-menu-rect" />
+
+                        </div>
+                        <div className="text-center nombre-cliente-menu">
+                            {this.state.nameCliente}
+
+                        </div>
 
                     </div>
-                    <div className="text-center nombre-cliente-menu">
-                        {this.state.nameCliente}
 
-                    </div>
-
-                </div>
-
-}
+                }
 
                 <div className="sidebar-user-block media">
                     <div className="user-profile">
