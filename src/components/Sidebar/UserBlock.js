@@ -23,20 +23,22 @@ import AppConfig from '../../constants/AppConfig';
 class UserBlock extends Component {
     constructor(props) {
         super()
-        console.log('props.name',props.name);
-    this.state = {
-        userDropdownMenu: false,
-        isSupportModal: false,
-        name : props.name,
-        imagen : props.imagen
+        console.log('props.name', props.name);
+        this.state = {
+            userDropdownMenu: false,
+            isSupportModal: false,
+            name: props.name,
+            imagen: props.imagen,
+            nameCliente: props.nameCliente,
+            imagenCliente: props.imagenCliente
+        }
+
     }
+    componentWillReceiveProps(nextProps) {
+        console.log('porpsppspspssp', nextProps.name);
+        this.setState({ name: nextProps.name, imagen: nextProps.imagen, nameCliente: nextProps.nameCliente, imagenCliente: nextProps.imagenCliente });
 
-}
-componentWillReceiveProps(nextProps) {
-    console.log('porpsppspspssp',nextProps.name);
-    this.setState({ name: nextProps.name, imagen: nextProps.imagen });
-
-}
+    }
     /**
      * Logout User
      */
@@ -74,18 +76,35 @@ componentWillReceiveProps(nextProps) {
     }
 
 
-  
+
 
 
     render() {
         return (
             <div className="top-sidebar">
                 <div className="site-logo">
-                   
+
                     <Link to="/" className="logo-normal user-title-menu">
-                        <img src={require('../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo"/>
+                        <img src={require('../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
                     </Link>
                 </div>
+
+{this.state.imagenCliente &&
+                <div>
+
+                    <div>
+                        <img src={this.state.imagenCliente} className="img-fluid logo-menu-rect" />
+
+                    </div>
+                    <div className="text-center nombre-cliente-menu">
+                        {this.state.nameCliente}
+
+                    </div>
+
+                </div>
+
+}
+
                 <div className="sidebar-user-block media">
                     <div className="user-profile">
                         <img src={this.state.imagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey" width="60" height="129" />
@@ -93,23 +112,23 @@ componentWillReceiveProps(nextProps) {
                     <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
                         <DropdownToggle nav>
                             <div>
-                           {this.state.name}
-                            <i className="ti-angle-down pull-right flecha-name-user"></i>
-                                </div>
-                            
+                                {this.state.name}
+                                <i className="ti-angle-down pull-right flecha-name-user"></i>
+                            </div>
+
                         </DropdownToggle>
                         <DropdownMenu>
                             <ul className="list-unstyled mb-0">
-                              
-                               <li className="border-top">
-                               <Link to={{
+
+                                <li className="border-top">
+                                    <Link to={{
                                         pathname: '/app/clientes',
                                         state: { activeTab: 0 }
                                     }}>
                                         <i className="ti ti-user"></i>
                                         <IntlMessages id="Seleccionar Cliente" />
                                     </Link>
-                               </li>
+                                </li>
                                 <li className="border-top">
                                     <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
                                         <i className="ti ti-power-off"></i>
