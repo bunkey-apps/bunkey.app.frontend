@@ -19,7 +19,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import $ from 'jquery';
 
 // actions
-import { collapsedSidebarAction, changePassword } from '../../actions';
+import { collapsedSidebarAction, changePassword, changeAvatar } from '../../actions';
 
 // components
 import Notifications from './Notifications';
@@ -45,6 +45,8 @@ class Header extends Component {
       editCustomer: null,
       selectedDeletedCustomer: null,
       alertDialog: false,
+      file: '', 
+      imagePreviewUrl: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -61,34 +63,39 @@ class Header extends Component {
   }
   handleSubmitEdit(event) {
     event.preventDefault();
-    //  this.onSubmitCustomerEditDetailForm();
+   this.onSubmitCustomerEditDetailForm();
   }
   handleSubmitAdd(event) {
     event.preventDefault();
-     this.onSubmitAddNewCustomerForm();
+    this.onSubmitAddNewCustomerForm();
+  }
+
+  onSubmitCustomerEditDetailForm() {
+    console.log('cambio avatar');
+    this.props.changeAvatar(this.state.file);
   }
 
 
   onSubmitAddNewCustomerForm() {
     const { addNewCustomerDetails } = this.state;
-      console.log('cambio');
-        if(addNewCustomerDetails.password === addNewCustomerDetails.passwordRepeat){
-          //  this.setState({ editCustomerModal: false});
-            console.log('addNewCustomerDetails',addNewCustomerDetails);
-            this.props.changePassword(addNewCustomerDetails.password);
-           
-            
-        }else{
-            console.log('claves distintas');
-            addNewCustomerDetails.passInvalid = true;
-            this.setState({
-                addNewCustomerDetails:addNewCustomerDetails
-            })
-        }
-       
-        
-    
-}
+    console.log('cambio');
+    if (addNewCustomerDetails.password === addNewCustomerDetails.passwordRepeat) {
+      //  this.setState({ editCustomerModal: false});
+      console.log('addNewCustomerDetails', addNewCustomerDetails);
+      this.props.changePassword(addNewCustomerDetails.password);
+
+
+    } else {
+      console.log('claves distintas');
+      addNewCustomerDetails.passInvalid = true;
+      this.setState({
+        addNewCustomerDetails: addNewCustomerDetails
+      })
+    }
+
+
+
+  }
 
 
 
@@ -102,8 +109,13 @@ class Header extends Component {
 
   cambiarClave() {
     console.log('ddd');
-    console.log('this ss', this.state.password);
     this.setState({ editCustomerModal: true, addNewCustomerForm: true });
+    // this.props.changePassword();
+  }
+
+  cambiarAvatar() {
+    console.log('ddd');
+    this.setState({ editCustomerModal: true, addNewCustomerForm: false });
     // this.props.changePassword();
   }
   // function to change the state of collapsed sidebar
@@ -137,12 +149,38 @@ class Header extends Component {
 
   onChangeCustomerAddNewForm(key, value) {
     this.setState({
-        addNewCustomerDetails: {
-            ...this.state.addNewCustomerDetails,
-            [key]: value
-        }
+      addNewCustomerDetails: {
+        ...this.state.addNewCustomerDetails,
+        [key]: value
+      }
     })
-}
+  }
+
+  onChangeCustomerDetails(key, value) {
+    this.setState({
+      editCustomer: {
+        ...this.state.editCustomer,
+        [key]: value
+      }
+    });
+  }
+
+  handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+      console.log(this.state);
+    }
+    reader.readAsDataURL(file)
+
+  }
 
   render() {
     $('body').click(function () {
@@ -151,11 +189,11 @@ class Header extends Component {
       $('body').css('overflow', '');
     });
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
-    const {  loading } = this.props;
+    const { loading } = this.props;
     return (
 
       <AppBar position="fixed" className="rct-header">
-       
+
         <Toolbar className="d-flex justify-content-between w-100">
           <ul className="list-inline mb-0 navbar-left">
             <li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
@@ -220,7 +258,7 @@ class Header extends Component {
                       </a>
                     </li>
                     <li>
-                      <a href="javascript:void(0)">
+                      <a href="javascript:void(0)" onClick={() => this.cambiarAvatar()}>
                         <i className="ti-image"></i>
                         <IntlMessages id="Cambiar Avatar" />
                       </a>
@@ -247,17 +285,17 @@ class Header extends Component {
               {addNewCustomerForm ? 'Cambiar Clave' : 'Cambiar Avatar'}
             </ModalHeader>
             <ModalBody>
-           
+
               {addNewCustomerForm ?
                 <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
-                 {loading &&
-                <div className="d-flex justify-content-center loader-overlay">
-                  <CircularProgress />
-                </div>
-              }
-             
+                  {loading &&
+                    <div className="d-flex justify-content-center loader-overlay">
+                      <CircularProgress />
+                    </div>
+                  }
+
                   <FormGroup>
-                
+
                     <Label for="name">Nueva Clave</Label>
                     <Input
                       required="true"
@@ -284,16 +322,17 @@ class Header extends Component {
 
                 </Form>
                 : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >
+                   {loading &&
+                    <div className="d-flex justify-content-center loader-overlay">
+                      <CircularProgress />
+                    </div>
+                  }
+
                   <FormGroup>
-                    <Label for="name">Nombre</Label>
-                    <Input
-                      required="true"
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={editCustomer.name}
-                      onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
-                    />
+                  <Label for="avatar">Avatar</Label>
+                    <Input required="true" name="avatar" className="fileInput"
+                      type="file"
+                      onChange={(e) => this.handleImageChange(e)} />
                   </FormGroup>
                 </Form>
               }
@@ -327,5 +366,5 @@ const mapStateToProps = ({ settings }) => ({
 });
 
 export default connect(mapStateToProps, {
-  collapsedSidebarAction, changePassword
+  collapsedSidebarAction, changePassword, changeAvatar
 })(Header);

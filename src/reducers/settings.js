@@ -15,7 +15,10 @@ import {
   SET_LANGUAGE,
   CHANGE_PASSWORD,
     CHANGE_PASSWORD_SUCCES,
-    CHANGE_PASSWORD_FAILURE
+    CHANGE_PASSWORD_FAILURE,
+    CHANGE_AVATAR,
+    CHANGE_AVATAR_SUCCES,
+    CHANGE_AVATAR_FAILURE
 } from '../actions/types';
 
 // app config
@@ -215,6 +218,16 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false };
   // get Contratos
   case CHANGE_PASSWORD_FAILURE:
+  NotificationManager.error('Ocurrio un error, intente más tarde');
+
+  case CHANGE_AVATAR:
+      return { ...state, loading: true };
+
+  case CHANGE_AVATAR_SUCCES:
+  NotificationManager.success('Avatar actualizado correctamente');
+      return { ...state, loading: false };
+  // get Contratos
+  case CHANGE_AVATAR_FAILURE:
   NotificationManager.error('Ocurrio un error, intente más tarde');
 
       return {
