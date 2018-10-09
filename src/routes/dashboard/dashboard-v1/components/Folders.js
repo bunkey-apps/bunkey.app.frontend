@@ -68,6 +68,7 @@ class Folders extends Component {
       alertDialog: false,
       file: '', 
       imagePreviewUrl: '',
+      nombreCliente: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -90,12 +91,23 @@ class Folders extends Component {
     this.props.getFolders();
     this.props.getUserDetails();
 
-    /*  setTimeout(() => {
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if(clienteSelectJson){
+      this.setState({nombreCliente : clienteSelectJson.name});
+
+    }else{
+      this.setState({nombreCliente : 'Bunkey'});
+
+    }
+      /*  setTimeout(() => {
          const { items} = this.props;
          console.log('items',items);
          this.props.getUserById(items._id);
      }, 1000);*/
   }
+
+  
 
   onAddCarpeta() {
     this.setState({
@@ -283,7 +295,7 @@ this.setState({ alertDialog: false });
       <div>
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
-            <h4 className="titulo-vistas-nombre-cliente"><b>Bunkey</b></h4>
+            <h4 className="titulo-vistas-nombre-cliente"><b>{this.state.nombreCliente}</b></h4>
             <div className="contextual-link">
             <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav className="dropdown-group-link">
