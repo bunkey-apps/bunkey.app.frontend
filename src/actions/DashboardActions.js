@@ -191,3 +191,108 @@ export const daleteObject = (caperta) => (dispatch) => {
             // error handling
         })
 }
+
+
+
+
+
+
+export const subirArchivo = (detalle, file) => (dispatch) => {
+    console.log('GET_URL FORM');
+    dispatch({ type: GET_FOLDERS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
+      });
+
+
+      console.log('file.type',file.type);
+      var tipoArr = file.type.split('/');
+   
+    instance2.post('/v1/url-signature',{
+        clientId: clienteSelectJson._id,
+        extention: tipoArr[1],
+        mimeType: file.type
+    })
+        .then((response) => {
+            console.log('response user',response);
+            dispatch(addObject(response.data.url,file,response.data.futureFileURL, detalle, tipoArr[0], response.data.uuid))
+            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
+
+        })
+        .catch(error => {
+            // error handling
+            dispatch({ type: GET_FOLDERS_FAILURE})
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+        })
+}
+
+export const addObject = (urlImage,file,futureFileURL, detalle, tipo, guid) => (dispatch) => {
+    console.log('PUT_IMAGE FORM',file);
+
+   // dispatch({ type: PUT_IMAGE });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('urlImage',urlImage);
+    var instance2 = axios.create({
+        baseURL: urlImage,
+        timeout: 3000,
+        body: file
+      });
+   
+    
+      var instance = axios.create();
+
+      instance.put(urlImage, file, {headers: {'Content-Type': file.type}})
+          .then(function (result) {
+              console.log(result);
+              dispatch(updateObjeto(futureFileURL, detalle, tipo, guid));
+              //dispatch({ type: PUT_IMAGE_SUCCES});
+          })
+          .catch(function (err) {
+              console.log(err);
+              dispatch({ type: GET_FOLDERS_FAILURE})
+              NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+          });
+}
+
+
+export const updateObjeto = (futureFileURL, detalle, tipo, guid) => (dispatch) => {
+    dispatch({ type: GET_FOLDERS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.post('/v1/clients/' + clienteSelectJson._id + '/objects/' +  clienteSelectJson.root,{
+        'name': detalle.name,
+        "type": tipo,
+        "originalURL": futureFileURL,
+        "guid": guid
+    })
+        .then((response) => {
+            console.log('response GET_FOLDERS_SUCCES',response);
+            dispatch(getFolders());
+                })
+        .catch(error => {
+            dispatch({ type: GET_FOLDERS_FAILURE})
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+        })
+}

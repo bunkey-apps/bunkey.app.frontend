@@ -13,6 +13,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
 import { Route, withRouter } from 'react-router-dom';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
@@ -34,7 +35,8 @@ import {
   getFolders,
   createFolder,
   cambiarNombreObject,
-  daleteObject
+  daleteObject,
+  subirArchivo
 } from '../../../../actions';
 
 
@@ -60,9 +62,12 @@ class Folders extends Component {
     this.state = {
       addNewCustomerForm: false,
       editCustomerModal: false,
+      archivoModal: false,
       editCustomer: null,
       selectedDeletedCustomer: null,
       alertDialog: false,
+      file: '', 
+      imagePreviewUrl: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -76,6 +81,8 @@ class Folders extends Component {
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+    this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
+    
   }
 
   componentWillMount() {
@@ -111,6 +118,27 @@ class Folders extends Component {
 
   }
 
+  cambiarAvatar() {
+    console.log('ddd');
+    this.setState({
+      archivoModal: true,
+      addNewCustomerForm: true,
+      editCustomer: null,
+      addNewCustomerDetails: {
+        email: '',
+        password: '',
+        name: '',
+        role: 'client',
+        workspace: '',
+        clietntOwner: '',
+        passwordRepeat: '',
+        passInvalid: false
+      }
+    });
+
+    // this.props.changePassword();
+  }
+
   handleSubmitEdit(event) {
     event.preventDefault();
     this.onSubmitCustomerEditDetailForm();
@@ -120,7 +148,11 @@ class Folders extends Component {
     this.onSubmitAddNewCustomerForm();
   }
 
-
+  
+  handleSubmitSubir(event) {
+    event.preventDefault();
+    this.onSubmitAddArchiveForm();
+  }
   onEditCustomer(customer) {
     this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
   }
@@ -170,6 +202,18 @@ this.setState({ alertDialog: false });
   
     }
   }
+  onSubmitAddArchiveForm() {
+    const { addNewCustomerDetails } = this.state;
+    if (addNewCustomerDetails.name !== '') {
+      this.setState({ archivoModal: false });
+      console.log('onSubmitAddArchiveForm', addNewCustomerDetails);
+      this.props.subirArchivo(addNewCustomerDetails,this.state.file);
+  
+    }
+  
+  }
+
+  
   onChangeCustomerAddNewForm(key, value) {
     this.setState({
       addNewCustomerDetails: {
@@ -184,7 +228,11 @@ this.setState({ alertDialog: false });
       editCustomerModal: !this.state.editCustomerModal
     });
   }
-
+  toggleArchivoModal = () => {
+    this.setState({
+      archivoModal: !this.state.archivoModal
+    });
+  }
 
 
   onChangeCustomerDetails(key, value) {
@@ -208,9 +256,26 @@ this.setState({ alertDialog: false });
   
     }
 
+    handleImageChange(e) {
+      e.preventDefault();
+  
+      let reader = new FileReader();
+      let file = e.target.files[0];
+  
+      reader.onloadend = () => {
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result
+        });
+        console.log(this.state);
+      }
+      reader.readAsDataURL(file)
+  
+    }
+
   render() {
     const { items, loading, userById } = this.props;
-    const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
+    const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
     return (
 
@@ -220,7 +285,28 @@ this.setState({ alertDialog: false });
           <div className={'rct-block-title'}>
             <h4 className="titulo-vistas-nombre-cliente"><b>Bunkey</b></h4>
             <div className="contextual-link">
-              <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>Nueva Carpeta <i className="ti-plus"></i></a>
+            <UncontrolledDropdown className="list-inline-item rct-dropdown">
+                <DropdownToggle caret nav className="dropdown-group-link">
+                <a href="javascript:void(0)">Nuevo</a>
+
+                </DropdownToggle>
+                <DropdownMenu className="mt-15" right>
+                  <ul className="list-unstyled mb-0">
+                    <li>
+                      <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>
+                        <i className="ti-folder"></i>
+                        <IntlMessages id="Crear Carpeta" />
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onClick={() => this.cambiarAvatar()}>
+                        <i className="ti-archive"></i>
+                        <IntlMessages id="Subir Archivo" />
+                      </a>
+                    </li>
+                  </ul>
+                </DropdownMenu>
+              </UncontrolledDropdown>
 
             </div>
           </div>
@@ -283,7 +369,48 @@ this.setState({ alertDialog: false });
                 </div>
 
 
-                : ''
+                : 
+                
+
+                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
+                  <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+                    <img onClick={() => this.goToImagenes()} src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
+
+                    <p>{n.name}</p>
+                  </ContextMenuTrigger>
+                  <ContextMenu id={index + ''} className="click-derecho-bunkey">
+                    <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+                      <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                      <span className="padding-click-derecho">Descargar {index}</span>
+                    </MenuItem>
+                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                      <span className="padding-click-derecho">Compartir</span>
+                    </MenuItem>
+                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                      <span className="padding-click-derecho">Cambiar Nombre</span>
+                    </MenuItem>
+
+                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                      <span className="padding-click-derecho">Mover</span>
+                    </MenuItem>
+
+                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                      <span className="padding-click-derecho">Agregar a favoritos</span>
+                    </MenuItem>
+                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+                    </MenuItem>
+                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                      <span className="padding-click-derecho">Eliminar</span>
+                    </MenuItem>
+                  </ContextMenu>
+                </div>
 
 
 
@@ -387,6 +514,7 @@ this.setState({ alertDialog: false });
                       onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
                     />
                   </FormGroup>
+                  
                 </Form>
               }
             </ModalBody>
@@ -405,7 +533,48 @@ this.setState({ alertDialog: false });
           </Modal>
         }
 
+        {archivoModal &&
+        <Modal
+        isOpen={archivoModal}
+        toggle={this.toggleArchivoModal}
+      >
+        <ModalHeader toggle={this.toggleArchivoModal}>
+            Subir Archivo
+        </ModalHeader>
+        <ModalBody>
+          <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+              <FormGroup>
+                <Label for="name">Nombre</Label>
+                <Input
+                  required="true"
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={addNewCustomerDetails.name}
+                  onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup>
+                  <Label for="avatar">Archivo</Label>
+                    <Input required="true" name="avatar" className="fileInput"
+                      type="file"
+                      onChange={(e) => this.handleImageChange(e)} />
+                  </FormGroup>
+            </Form>
+          
+        </ModalBody>
+        <ModalFooter>
+         
+             <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
+              <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
+          
 
+
+        </ModalFooter>
+      </Modal>
+      
+      
+      }
 
 
 
@@ -423,5 +592,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo
 })(Folders));
