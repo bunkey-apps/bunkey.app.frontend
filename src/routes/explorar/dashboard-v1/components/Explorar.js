@@ -30,13 +30,11 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 // redux action
 import {
-  getUserDetails,
-  getUserById,
-  getFolders,
-  createFolder,
-  cambiarNombreObject,
-  daleteObject,
-  subirArchivo
+  getObjects,
+  createObject,
+  cambiarObject,
+  removeObject,
+  uploadArchivo
 } from '../../../../actions';
 
 
@@ -55,7 +53,7 @@ const data = [
 
 
 
-class Folders extends Component {
+class Explorar extends Component {
 
   constructor() {
     super()
@@ -66,9 +64,10 @@ class Folders extends Component {
       editCustomer: null,
       selectedDeletedCustomer: null,
       alertDialog: false,
-      file: '', 
+      file: '',
       imagePreviewUrl: '',
       nombreCliente: '',
+      nombreFolder: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -83,31 +82,26 @@ class Folders extends Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
-    
+
   }
 
   componentWillMount() {
     console.log('get folders');
-    this.props.getFolders();
-    this.props.getUserDetails();
+    this.props.getObjects();
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    if(clienteSelectJson){
-      this.setState({nombreCliente : clienteSelectJson.name});
+    if (clienteSelectJson) {
+      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
-    }else{
-      this.setState({nombreCliente : 'Bunkey'});
+    } else {
+      this.setState({ nombreCliente: 'Bunkey',  nombreFolder: 'Bunkey' });
 
     }
-      /*  setTimeout(() => {
-         const { items} = this.props;
-         console.log('items',items);
-         this.props.getUserById(items._id);
-     }, 1000);*/
+
   }
 
-  
+
 
   onAddCarpeta() {
     this.setState({
@@ -126,7 +120,7 @@ class Folders extends Component {
       }
 
     });
-   
+
 
   }
 
@@ -160,7 +154,7 @@ class Folders extends Component {
     this.onSubmitAddNewCustomerForm();
   }
 
-  
+
   handleSubmitSubir(event) {
     event.preventDefault();
     this.onSubmitAddArchiveForm();
@@ -173,15 +167,14 @@ class Folders extends Component {
   handleClickChangeName(folder) {
     console.log('handleClickChangeName', folder);
     this.onEditCustomer(folder);
-    // this.props.cambiarNombreObject(folder, 'test');
 
   }
 
   deleteCustomer() {
-    this.setState({ alertDialog: false});
- 
-    console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
-    this.props.daleteObject(this.state.selectedDeletedCustomer);
+    this.setState({ alertDialog: false });
+
+    console.log('this.state.selectedDeletedCustomer', this.state.selectedDeletedCustomer);
+    this.props.removeObject(this.state.selectedDeletedCustomer);
 
 
 
@@ -189,10 +182,10 @@ class Folders extends Component {
   }
 
   // close alert
-handleClose = () => {
-  console.log('handleClose');
-this.setState({ alertDialog: false });
-}
+  handleClose = () => {
+    console.log('handleClose');
+    this.setState({ alertDialog: false });
+  }
 
   onSubmitCustomerEditDetailForm() {
     const { editCustomer } = this.state;
@@ -200,8 +193,8 @@ this.setState({ alertDialog: false });
     if (editCustomer.name !== '') {
       this.setState({ editCustomerModal: false });
       console.log('editCustomer', editCustomer);
-      this.props.cambiarNombreObject(editCustomer);
-     
+      this.props.cambiarObject(editCustomer);
+
 
     }
   }
@@ -210,8 +203,8 @@ this.setState({ alertDialog: false });
     if (addNewCustomerDetails.name !== '') {
       this.setState({ editCustomerModal: false });
       console.log('addNewCustomerDetails', addNewCustomerDetails);
-      this.props.createFolder(addNewCustomerDetails);
-  
+      this.props.createObject(addNewCustomerDetails);
+
     }
   }
   onSubmitAddArchiveForm() {
@@ -219,13 +212,13 @@ this.setState({ alertDialog: false });
     if (addNewCustomerDetails.name !== '') {
       this.setState({ archivoModal: false });
       console.log('onSubmitAddArchiveForm', addNewCustomerDetails);
-      this.props.subirArchivo(addNewCustomerDetails,this.state.file);
-  
+      this.props.uploadArchivo(addNewCustomerDetails, this.state.file);
+
     }
-  
+
   }
 
-  
+
   onChangeCustomerAddNewForm(key, value) {
     this.setState({
       addNewCustomerDetails: {
@@ -258,49 +251,72 @@ this.setState({ alertDialog: false });
 
   handleClickDelete(customer) {
     this.setState({ alertDialog: true, selectedDeletedCustomer: customer });
-    }
+  }
 
 
-    goToImagenes= (n) => {
-      console.log('objecto',n);
-      localStorage.setItem("folderSelect", JSON.stringify(n));
-      const { match, history } = this.props;
-    history.push('/app/exlporar');
-  
+  goToImagenes = (n) => {
+    console.log('objecto', n);
+    localStorage.setItem("folderSelect", JSON.stringify(n));
+    console.log('get folders');
+    this.props.getObjects();
+
+    const folderSelect = localStorage.getItem('folderSelect');
+    var folderSelectJson = JSON.parse(folderSelect);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if (folderSelectJson && clienteSelectJson) {
+      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name });
+
     }
 
-    handleImageChange(e) {
-      e.preventDefault();
-  
-      let reader = new FileReader();
-      let file = e.target.files[0];
-  
-      reader.onloadend = () => {
-        this.setState({
-          file: file,
-          imagePreviewUrl: reader.result
-        });
-        console.log(this.state);
-      }
-      reader.readAsDataURL(file)
-  
+  }
+
+  handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+      console.log(this.state);
     }
+    reader.readAsDataURL(file)
+
+  }
 
   render() {
-    const { items, loading, userById } = this.props;
+    const { items, loading, userById, parents } = this.props;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
     return (
 
 
       <div>
+ <div className="row row-eq-height">
+ <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
+          {parents.map((padre, index) => {
+            return (
+              <a href="javascript:void(0)" class="breadcrumb-item" onClick={() => this.goToImagenes(padre)}>
+              {index === 0 ? <span>{this.state.nombreCliente}</span> : <span>{padre.name}</span>}
+              </a>
+            );
+            
+          })}
+        </nav>
+</div>
+        
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
-            <h4 className="titulo-vistas-nombre-cliente"><b>{this.state.nombreCliente}</b></h4>
+         
+            <h4 className="titulo-vistas-nombre-cliente"><b>{this.state.nombreFolder}</b></h4>
             <div className="contextual-link">
-            <UncontrolledDropdown className="list-inline-item rct-dropdown">
+              <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav className="dropdown-group-link">
-                <a href="javascript:void(0)">Nuevo</a>
+                  <a href="javascript:void(0)">Nuevo</a>
 
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
@@ -325,7 +341,7 @@ this.setState({ alertDialog: false });
           </div>
 
 
-           {loading &&
+          {loading &&
             <div className="d-flex justify-content-center loader-overlay">
               <CircularProgress />
             </div>
@@ -382,8 +398,8 @@ this.setState({ alertDialog: false });
                 </div>
 
 
-                : 
-                
+                :
+
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
                   <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
@@ -470,25 +486,25 @@ this.setState({ alertDialog: false });
 
 
 
-<Dialog
-                    open={alertDialog}
-                    onClose={this.handleClose}
-                >
-                    <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                           Estas seguro de eliminarlo de forma permanente.
+        <Dialog
+          open={alertDialog}
+          onClose={this.handleClose}
+        >
+          <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Estas seguro de eliminarlo de forma permanente.
                         </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="raised"  onClick={this.handleClose} className="btn-danger text-white">
-                            <IntlMessages id="button.cancel" />
-                        </Button>
-                        <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
-                            <IntlMessages id="button.yes" />
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="raised" onClick={this.handleClose} className="btn-danger text-white">
+              <IntlMessages id="button.cancel" />
+            </Button>
+            <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
+              <IntlMessages id="button.yes" />
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {editCustomerModal &&
           <Modal
@@ -527,7 +543,7 @@ this.setState({ alertDialog: false });
                       onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
                     />
                   </FormGroup>
-                  
+
                 </Form>
               }
             </ModalBody>
@@ -547,47 +563,47 @@ this.setState({ alertDialog: false });
         }
 
         {archivoModal &&
-        <Modal
-        isOpen={archivoModal}
-        toggle={this.toggleArchivoModal}
-      >
-        <ModalHeader toggle={this.toggleArchivoModal}>
-            Subir Archivo
+          <Modal
+            isOpen={archivoModal}
+            toggle={this.toggleArchivoModal}
+          >
+            <ModalHeader toggle={this.toggleArchivoModal}>
+              Subir Archivo
         </ModalHeader>
-        <ModalBody>
-          <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-              <FormGroup>
-                <Label for="name">Nombre</Label>
-                <Input
-                  required="true"
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={addNewCustomerDetails.name}
-                  onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup>
+            <ModalBody>
+              <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+                <FormGroup>
+                  <Label for="name">Nombre</Label>
+                  <Input
+                    required="true"
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={addNewCustomerDetails.name}
+                    onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
                   <Label for="avatar">Archivo</Label>
-                    <Input required="true" name="avatar" className="fileInput"
-                      type="file"
-                      onChange={(e) => this.handleImageChange(e)} />
-                  </FormGroup>
-            </Form>
-          
-        </ModalBody>
-        <ModalFooter>
-         
-             <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
-              <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
-          
+                  <Input required="true" name="avatar" className="fileInput"
+                    type="file"
+                    onChange={(e) => this.handleImageChange(e)} />
+                </FormGroup>
+              </Form>
+
+            </ModalBody>
+            <ModalFooter>
+
+              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
+                <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
 
 
-        </ModalFooter>
-      </Modal>
-      
-      
-      }
+
+            </ModalFooter>
+          </Modal>
+
+
+        }
 
 
 
@@ -600,10 +616,10 @@ this.setState({ alertDialog: false });
 }
 
 // map state to props
-const mapStateToProps = ({ dashboard }) => {
-  return dashboard;
+const mapStateToProps = ({ explorar }) => {
+  return explorar;
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo
-})(Folders));
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo
+})(Explorar));
