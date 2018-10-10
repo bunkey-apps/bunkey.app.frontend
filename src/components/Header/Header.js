@@ -19,7 +19,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import $ from 'jquery';
 
 // actions
-import { collapsedSidebarAction, changePassword, changeAvatar } from '../../actions';
+import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe } from '../../actions';
 
 // components
 import Notifications from './Notifications';
@@ -47,6 +47,8 @@ class Header extends Component {
       alertDialog: false,
       file: '', 
       imagePreviewUrl: '',
+      name: '',
+      imagen: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -98,6 +100,14 @@ class Header extends Component {
   }
 
 
+  componentWillMount() {
+    console.log('entrrr4');
+
+    this.props.getUserMe();
+		
+
+		
+	}
 
 
 
@@ -182,14 +192,18 @@ class Header extends Component {
 
   }
 
+  logoutUser() {
+    this.props.logoutUserFromFirebase();
+}
+
   render() {
     $('body').click(function () {
       $('.dashboard-overlay').removeClass('show');
       $('.dashboard-overlay').addClass('d-none');
       $('body').css('overflow', '');
     });
-    const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
-    const { loading } = this.props;
+    const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
+    const { loading, userMeName, userMeImagen } = this.props;
     return (
 
       <AppBar position="fixed" className="rct-header">
@@ -203,11 +217,15 @@ class Header extends Component {
             </li>
 
            
-
+           <li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
+              <div className=" color-header-bunkey"> Bienvenido {userMeName}</div>
+            </li>
 
 
           </ul>
 
+
+        
           <ul className="navbar-right list-inline margen-ul-bunkey">
 
 
@@ -239,9 +257,12 @@ class Header extends Component {
 
 
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
-                <DropdownToggle caret nav className="dropdown-group-link">
+                <DropdownToggle caret nav >
                   <a href="javascript:void(0)">
-                    <i className="zmdi ti-user color-header-bunkey"></i>
+                    
+                  <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
+
+                    
                   </a>
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
@@ -258,6 +279,12 @@ class Header extends Component {
                         <IntlMessages id="Cambiar Avatar" />
                       </a>
                     </li>
+                    <li className="border-top">
+                                    <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
+                                        <i className="ti ti-power-off"></i>
+                                        Salir
+                                    </a>
+                                </li>
                   </ul>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -357,9 +384,11 @@ class Header extends Component {
 const mapStateToProps = ({ settings }) => ({
   collapsedSidebar: settings.navCollapsed,
   rtlLayout: settings.rtlLayout,
-  loading: settings.loading
+  loading: settings.loading,
+  userMeName: settings.userMeName, 
+  userMeImagen : settings.userMeImagen
 });
 
 export default connect(mapStateToProps, {
-  collapsedSidebarAction, changePassword, changeAvatar
+  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe
 })(Header);

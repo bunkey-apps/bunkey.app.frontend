@@ -89,7 +89,7 @@ class Folders extends Component {
   componentWillMount() {
     console.log('get folders');
     this.props.getFolders();
-    this.props.getUserDetails();
+    //this.props.getUserDetails();
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);

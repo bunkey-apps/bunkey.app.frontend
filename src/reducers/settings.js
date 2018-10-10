@@ -18,7 +18,9 @@ import {
     CHANGE_PASSWORD_FAILURE,
     CHANGE_AVATAR,
     CHANGE_AVATAR_SUCCES,
-    CHANGE_AVATAR_FAILURE
+    CHANGE_AVATAR_FAILURE,
+    GET_USER_ME,
+    GET_USER_ME_SUCCES
 } from '../actions/types';
 
 // app config
@@ -29,6 +31,8 @@ import AppConfig from '../constants/AppConfig';
  */
 const INIT_STATE = {
   loading: false,
+  userMeName: '',
+  userMeImagen: '',
   navCollapsed: AppConfig.navCollapsed,
   darkMode: AppConfig.darkMode,
   boxLayout: AppConfig.boxLayout,
@@ -229,6 +233,19 @@ export default (state = INIT_STATE, action) => {
   // get Contratos
   case CHANGE_AVATAR_FAILURE:
   NotificationManager.error('Ocurrio un error, intente más tarde');
+
+  case GET_USER_ME:
+      return { ...state, loading: false };
+
+  case GET_USER_ME_SUCCES:
+
+  return {
+    ...state,
+    userMeName: action.payload.name,
+    userMeImagen: action.payload.avatar
+};
+
+
 
       return {
           ...state,
