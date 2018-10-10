@@ -53,6 +53,7 @@ export const logoutUserFromFirebase = () => (dispatch) => {
             localStorage.removeItem('user_id');
             localStorage.removeItem('clienteSelect');
             localStorage.removeItem('user_me');
+            localStorage.removeItem('folderSelect');
             NotificationManager.success('Adios');
         })
         .catch((error) => {

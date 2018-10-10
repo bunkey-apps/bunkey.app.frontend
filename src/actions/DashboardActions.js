@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
+
 import {
     GET_USER_DETAILS,
     GET_USER_DETAILS_FAILURE,
@@ -109,7 +111,7 @@ export const getFolders = () => (dispatch) => {
             dispatch({ type: GET_FOLDERS_SUCCES, payload: response.data.children });
         })
         .catch(error => {
-            // error handling
+            dispatch({ type: GET_FOLDERS_FAILURE });
         })
 }
 

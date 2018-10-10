@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
+
 import {
     GET_OBJECT,
     GET_OBJECT_FAILURE,
@@ -57,7 +59,8 @@ export const getObjects = () => (dispatch) => {
             
         })
         .catch(error => {
-            // error handling
+            dispatch({ type: GET_OBJECT_FAILURE})
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
         })
 }
 

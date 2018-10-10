@@ -92,7 +92,7 @@ class UserBlock extends Component {
                 {this.state.imagenCliente &&
                     <div>
 
-                        <div>
+                        <div className="text-center">
                             <img src={this.state.imagenCliente} className="img-fluid logo-menu-rect" />
 
                         </div>
@@ -107,7 +107,7 @@ class UserBlock extends Component {
 
                 <div className="sidebar-user-block media">
                     <div className="user-profile">
-                        <img src={this.state.imagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey" width="60" height="129" />
+                        <img src={this.state.imagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
                     </div>
                     <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
                         <DropdownToggle nav>
