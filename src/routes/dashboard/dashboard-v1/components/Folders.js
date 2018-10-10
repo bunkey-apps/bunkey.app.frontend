@@ -387,7 +387,7 @@ this.setState({ alertDialog: false });
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
                   <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-                    <img onClick={() => this.goToImagenes(n)} src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
+                    <img  src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
 
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
