@@ -235,12 +235,13 @@ export default (state = INIT_STATE, action) => {
   NotificationManager.error('Ocurrio un error, intente más tarde');
 
   case GET_USER_ME:
-      return { ...state, loading: false };
+      return { ...state, loading: true };
 
   case GET_USER_ME_SUCCES:
 
   return {
     ...state,
+    loading: false,
     userMeName: action.payload.name,
     userMeImagen: action.payload.avatar
 };

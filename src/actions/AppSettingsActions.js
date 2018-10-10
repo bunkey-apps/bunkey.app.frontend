@@ -246,7 +246,7 @@ export const actualizarAvatar = (url) => (dispatch) => {
             console.log('response usuarios4', response);
             localStorage.setItem("user_me", JSON.stringify(userMeJson));
 
-            dispatch({ type: CHANGE_AVATAR_SUCCES });
+            dispatch(getUserMe());
         })
         .catch(error => {
             // error handling
