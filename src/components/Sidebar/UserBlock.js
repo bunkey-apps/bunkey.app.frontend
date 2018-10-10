@@ -105,39 +105,23 @@ class UserBlock extends Component {
 
                 }
 
+               
+
                 <div className="sidebar-user-block media">
-                    <div className="user-profile">
-                        <img src={this.state.imagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
-                    </div>
-                    <Dropdown isOpen={this.state.userDropdownMenu} toggle={() => this.toggleUserDropdownMenu()} className="rct-dropdown media-body pt-10">
-                        <DropdownToggle nav>
-                            <div>
-                                {this.state.name}
-                                <i className="ti-angle-down pull-right flecha-name-user"></i>
-                            </div>
-
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <ul className="list-unstyled mb-0">
-
-                                <li className="border-top">
-                                    <Link to={{
-                                        pathname: '/app/clientes',
-                                        state: { activeTab: 0 }
-                                    }}>
-                                        <i className="ti ti-user"></i>
-                                        <IntlMessages id="Seleccionar Cliente" />
+                {this.state.imagenCliente &&
+                        <div className="text-center nombre-cliente-menu">
+                                    <Link to="/app/clientes" className="logo-normal user-title-menu">
+                                    Cambiar cliente
                                     </Link>
-                                </li>
-                                <li className="border-top">
-                                    <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
-                                        <i className="ti ti-power-off"></i>
-                                        Salir
-                                    </a>
-                                </li>
-                            </ul>
-                        </DropdownMenu>
-                    </Dropdown>
+                                </div>
+                }
+                {!this.state.imagenCliente &&
+                        <div className="text-center nombre-cliente-menu">
+                                    <Link to="/app/clientes" className="logo-normal user-title-menu">
+                                    Seleccionar cliente
+                                    </Link>
+                                </div>
+                }
                 </div>
                 <SupportPage
                     isOpen={this.state.isSupportModal}
