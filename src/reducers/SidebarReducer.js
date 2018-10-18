@@ -7,8 +7,15 @@ import { TOGGLE_MENU } from '../actions/types';
 // nav links
 import navLinks from '../components/Sidebar/NavLinks';
 
+var menuLoad = localStorage.getItem('menuLoad');
+var menuLoadJson = JSON.parse(menuLoad);
+if(menuLoadJson){
+       menuLoadJson;
+}else{
+      menuLoadJson = navLinks;
+}
 const INIT_STATE = {
-      sidebarMenus: navLinks
+      sidebarMenus: menuLoadJson
 };
 
 export default (state = INIT_STATE, action) => {
@@ -62,6 +69,13 @@ export default (state = INIT_STATE, action) => {
                         }
                   });
             default:
-                  return { ...state };
+            var menuLoad = localStorage.getItem('menuLoad');
+                  var menuLoadJson = JSON.parse(menuLoad);
+                  if(menuLoadJson){
+                        menuLoadJson;
+                  }else{
+                        menuLoadJson = navLinks;
+                  }
+                  return { ...state, sidebarMenus: menuLoadJson};
       }
 }
