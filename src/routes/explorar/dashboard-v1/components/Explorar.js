@@ -136,7 +136,36 @@ class Explorar extends Component {
   }
 
 
+  componentWillReceiveProps(nextProps) {
 
+    if (nextProps.location !== this.props.location) {
+      console.log('nueva urll!!!!');
+      console.log('get folders');
+      console.log('get folders2');
+      var query = window.location.href;
+      console.log('query', query);
+      var qs = this.parseUrlstring(query);
+      console.log('qs.id', qs.id);
+  
+      if (qs.id) {
+        this.props.getObjectsByID(qs.id);
+  
+      } else {
+        this.props.getObjects();
+      }
+  
+  
+      const clienteSelect = localStorage.getItem('clienteSelect');
+      const clienteSelectJson = JSON.parse(clienteSelect);
+      if (clienteSelectJson) {
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
+  
+      } else {
+        this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
+  
+      }
+		}
+	}
   onAddCarpeta() {
     this.setState({
       editCustomerModal: true,
@@ -334,7 +363,7 @@ class Explorar extends Component {
     this.refs['player' + id].play();
   }
   mouseOut(id) {
-    console.log("Mouse out!!!", id);
+    console.log("Mouse out!!!", this.refs['player' + id]);
     this.refs['player' + id].pause();
   }
   render() {
