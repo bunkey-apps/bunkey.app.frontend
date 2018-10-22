@@ -15,6 +15,7 @@ import moment from 'moment';
 import { Route, withRouter } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
+import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -329,11 +330,11 @@ class Explorar extends Component {
   }
 
   mouseOver(id) {
-    console.log("Mouse over!!!",id);
+    console.log("Mouse over!!!", id);
     this.refs['player' + id].play();
   }
   mouseOut(id) {
-    console.log("Mouse out!!!",id);
+    console.log("Mouse out!!!", id);
     this.refs['player' + id].pause();
   }
   render() {
@@ -446,28 +447,36 @@ class Explorar extends Component {
                 </div>
 
 
-                :
+                : ''
+            })}
+            {items.map((n, index) => {
 
+              return n.type === 'image' ?
 
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2" onmouseover="Play()">
+                <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
                   <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
                     {n.type === 'image' &&
-                      <img src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
+                  
+                      <GridListTile key={index}>
+                      <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} />
+
+                    </GridListTile>
+                   
                     }
                     {n.type === 'video' &&
                       <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                        <Player ref={'player' + index}  preload="auto"  >
+                        <Player ref={'player' + index} preload="auto"  >
                           <BigPlayButton position="center" />
                           <source src={n.originalURL} />
                         </Player>
 
                       </div>
                     }
-                    <p>{n.name}</p>
+                    <p className="color-texto-carpetas-explorar">{n.name}</p>
 
 
                   </ContextMenuTrigger>
-                  <ContextMenu id={index + ''} className="click-derecho-bunkey">
+                  <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Descargar {index}</span>
@@ -501,11 +510,76 @@ class Explorar extends Component {
                   </ContextMenu>
                 </div>
 
-
-
-
-
+                : ''
             })}
+
+
+
+
+  {items.map((n, index) => {
+
+return n.type === 'video' ?
+
+  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
+    <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+      
+    
+        <GridListTile key={index}>
+       <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+          <Player ref={'player' + index} preload="auto"  >
+            <BigPlayButton position="center" />
+            <source src={n.originalURL} />
+          </Player>
+
+        </div>
+
+      </GridListTile>
+     
+      
+     
+      <p className="color-texto-carpetas-explorar">{n.name}</p>
+
+
+    </ContextMenuTrigger>
+    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
+      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+        <span className="padding-click-derecho">Descargar {index}</span>
+      </MenuItem>
+      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+        <span className="padding-click-derecho">Compartir</span>
+      </MenuItem>
+      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+        <span className="padding-click-derecho">Cambiar Nombre</span>
+      </MenuItem>
+
+      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+        <span className="padding-click-derecho">Mover</span>
+      </MenuItem>
+
+      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+        <span className="padding-click-derecho">Agregar a favoritos</span>
+      </MenuItem>
+      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+        <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+      </MenuItem>
+      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+        <span className="padding-click-derecho">Eliminar</span>
+      </MenuItem>
+    </ContextMenu>
+  </div>
+
+  : ''
+})}
+
+
+
 
           </div>
           <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
