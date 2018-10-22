@@ -14,7 +14,7 @@ import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
 import { Route, withRouter } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-
+import { Player, BigPlayButton, ControlBar } from 'video-react';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -34,7 +34,8 @@ import {
   createObject,
   cambiarObject,
   removeObject,
-  uploadArchivo
+  uploadArchivo,
+  getObjectsByID
 } from '../../../../actions';
 
 
@@ -84,10 +85,42 @@ class Explorar extends Component {
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
 
   }
-
+  parseUrlstring(query) {
+    var vars = query.split("?");
+    var query_string = {};
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split("=");
+      var key = decodeURIComponent(pair[0]);
+      var value = decodeURIComponent(pair[1]);
+      // If first entry with this name
+      if (typeof query_string[key] === "undefined") {
+        query_string[key] = decodeURIComponent(value);
+        // If second entry with this name
+      } else if (typeof query_string[key] === "string") {
+        var arr = [query_string[key], decodeURIComponent(value)];
+        query_string[key] = arr;
+        // If third or later entry with this name
+      } else {
+        query_string[key].push(decodeURIComponent(value));
+      }
+    }
+    return query_string;
+  }
   componentWillMount() {
     console.log('get folders');
-    this.props.getObjects();
+    console.log('get folders2');
+    var query = window.location.href;
+    console.log('query', query);
+    var qs = this.parseUrlstring(query);
+    console.log('qs.id', qs.id);
+
+    if (qs.id) {
+      this.props.getObjectsByID(qs.id);
+
+    } else {
+      this.props.getObjects();
+    }
+
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
@@ -95,7 +128,7 @@ class Explorar extends Component {
       this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
     } else {
-      this.setState({ nombreCliente: 'Bunkey',  nombreFolder: 'Bunkey' });
+      this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
 
     }
 
@@ -269,6 +302,13 @@ class Explorar extends Component {
 
     }
 
+    function Play() {
+      console.log('mouse over');
+    }
+
+    /*const { match, history } = this.props;
+   history.push('/app/exlporar');*/
+
   }
 
   handleImageChange(e) {
@@ -288,6 +328,14 @@ class Explorar extends Component {
 
   }
 
+  mouseOver(id) {
+    console.log("Mouse over!!!",id);
+    this.refs['player' + id].play();
+  }
+  mouseOut(id) {
+    console.log("Mouse out!!!",id);
+    this.refs['player' + id].pause();
+  }
   render() {
     const { items, loading, userById, parents } = this.props;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -296,22 +344,22 @@ class Explorar extends Component {
 
 
       <div>
- <div className="row row-eq-height">
- <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
-          {parents.map((padre, index) => {
-            return (
-              <a href="javascript:void(0)" class="breadcrumb-item" onClick={() => this.goToImagenes(padre)}>
-              {index === 0 ? <span>{this.state.nombreCliente}</span> : <span>{padre.name}</span>}
-              </a>
-            );
-            
-          })}
-        </nav>
-</div>
-        
+        <div className="row row-eq-height">
+          <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
+            {parents.map((padre, index) => {
+              return (
+                <a href="javascript:void(0)" class="breadcrumb-item" onClick={() => this.goToImagenes(padre)}>
+                  {index === 0 ? <span>{this.state.nombreCliente}</span> : <span>{padre.name}</span>}
+                </a>
+              );
+
+            })}
+          </nav>
+        </div>
+
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
-         
+
             <h4 className="titulo-vistas-nombre-cliente"><b>{this.state.nombreFolder}</b></h4>
             <div className="contextual-link">
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
@@ -401,11 +449,23 @@ class Explorar extends Component {
                 :
 
 
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
+                <div key={index} className="col-sm-2 col-md-1 col-lg-2" onmouseover="Play()">
                   <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-                    <img  src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
+                    {n.type === 'image' &&
+                      <img src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
+                    }
+                    {n.type === 'video' &&
+                      <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                        <Player ref={'player' + index}  preload="auto"  >
+                          <BigPlayButton position="center" />
+                          <source src={n.originalURL} />
+                        </Player>
 
+                      </div>
+                    }
                     <p>{n.name}</p>
+
+
                   </ContextMenuTrigger>
                   <ContextMenu id={index + ''} className="click-derecho-bunkey">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
@@ -621,5 +681,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID
 })(Explorar));

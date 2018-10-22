@@ -23,6 +23,45 @@ import AppConfig from '../constants/AppConfig';
 
 
 
+export const getObjectsByID = (idUrl) => (dispatch) => {
+    dispatch({ type: GET_OBJECT });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+
+    const folderSelect = localStorage.getItem('folderSelect');
+    var   folderSelectJson = JSON.parse(folderSelect);
+
+    console.log('folderSelectJson',folderSelectJson);
+
+    if(!clienteSelectJson){
+        clienteSelectJson = {
+            _id : '1'
+        }
+    }
+
+   
+
+
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects/' +  idUrl)
+        .then((response) => {
+            console.log('response GET_OBJECT_SUCCES',response);
+            dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents });
+            
+        })
+        .catch(error => {
+            dispatch({ type: GET_OBJECT_FAILURE})
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+        })
+}
 
 
 /**

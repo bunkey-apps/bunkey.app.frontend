@@ -98,7 +98,7 @@ function cargarMenu(carpetas) {
 
         var hijos = {
             'menu_title': carpetas[i].name,
-            "path": "/app/dashboard",
+            "path": "/app/exlporar?id=" + carpetas[i]._id
         }
 
         child_routes.push(hijos);
