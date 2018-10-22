@@ -415,7 +415,7 @@ class Explorar extends Component {
                   <ContextMenu id={index + ''} className="click-derecho-bunkey">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Descargar {index}</span>
+                      <span className="padding-click-derecho">Descargar </span>
                     </MenuItem>
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
@@ -449,6 +449,9 @@ class Explorar extends Component {
 
                 : ''
             })}
+             </div>
+             <div className="gallery-wrapper">
+             <div className="row row-eq-height text-center">
             {items.map((n, index) => {
 
               return n.type === 'image' ?
@@ -479,7 +482,7 @@ class Explorar extends Component {
                   <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Descargar {index}</span>
+                      <span className="padding-click-derecho">Descargar </span>
                     </MenuItem>
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
@@ -513,9 +516,10 @@ class Explorar extends Component {
                 : ''
             })}
 
-
-
-
+ </div>
+ </div>
+ <div className="gallery-wrapper">
+ <div className="row row-eq-height text-center">
   {items.map((n, index) => {
 
 return n.type === 'video' ?
@@ -544,7 +548,7 @@ return n.type === 'video' ?
     <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
       <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Descargar {index}</span>
+        <span className="padding-click-derecho">Descargar </span>
       </MenuItem>
       <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
         <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
@@ -580,7 +584,7 @@ return n.type === 'video' ?
 
 
 
-
+ </div>
           </div>
           <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
             <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
