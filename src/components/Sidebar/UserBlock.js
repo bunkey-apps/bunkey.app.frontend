@@ -77,19 +77,8 @@ class UserBlock extends Component {
 
 
 
-
-
-    render() {
-        return (
-            <div className="top-sidebar">
-                <div className="site-logo">
-
-                    <Link to="/" className="logo-normal user-title-menu">
-                        <img src={require('../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
-                    </Link>
-                </div>
-
-                {this.state.imagenCliente &&
+/*
+ {this.state.imagenCliente &&
                     <div>
 
                         <div className="text-center">
@@ -104,6 +93,20 @@ class UserBlock extends Component {
                     </div>
 
                 }
+
+                */
+
+    render() {
+        return (
+            <div className="top-sidebar">
+                <div className="site-logo">
+
+                    <Link to="/" className="logo-normal user-title-menu">
+                        <img src={require('../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
+                    </Link>
+                </div>
+
+               
 
                
 
