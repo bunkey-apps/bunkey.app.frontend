@@ -54,7 +54,26 @@ export const getObjectsByID = (idUrl) => (dispatch) => {
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects/' +  idUrl)
         .then((response) => {
             console.log('response GET_OBJECT_SUCCES',response);
-            dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents });
+
+            var arrImageVideo = [];
+            if(response.data.children){
+                for(var i=0;i<response.data.children.length;i++){
+                    if(response.data.children[i].type === 'image'){
+                        console.log('response.data.children[i]',response.data.children[i]);
+                        arrImageVideo.push(response.data.children[i]);
+                    }
+                }
+                console.log('arrImageVideo',arrImageVideo);
+                for(var j=0;j<response.data.children.length;j++){
+                    if(response.data.children[j].type === 'video'){
+                        arrImageVideo.push(response.data.children[j]);
+                    }
+                }
+            }
+            
+
+
+            dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents, imageVideos: arrImageVideo });
             
         })
         .catch(error => {
@@ -94,7 +113,22 @@ export const getObjects = () => (dispatch) => {
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects/' +  folderSelectJson._id)
         .then((response) => {
             console.log('response GET_OBJECT_SUCCES',response);
-            dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents });
+            var arrImageVideo = [];
+            if(response.data.children){
+                for(var i=0;i<response.data.children.length;i++){
+                    if(response.data.children[i].type === 'image'){
+                        console.log('response.data.children[i]',response.data.children[i]);
+                        arrImageVideo.push(response.data.children[i]);
+                    }
+                }
+                console.log('arrImageVideo',arrImageVideo);
+                for(var j=0;j<response.data.children.length;j++){
+                    if(response.data.children[j].type === 'video'){
+                        arrImageVideo.push(response.data.children[j]);
+                    }
+                }
+            }
+            dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents, imageVideos: arrImageVideo  });
             
         })
         .catch(error => {

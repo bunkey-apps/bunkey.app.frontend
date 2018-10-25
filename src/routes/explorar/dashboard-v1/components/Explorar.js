@@ -146,26 +146,26 @@ class Explorar extends Component {
       console.log('query', query);
       var qs = this.parseUrlstring(query);
       console.log('qs.id', qs.id);
-  
+
       if (qs.id) {
         this.props.getObjectsByID(qs.id);
-  
+
       } else {
         this.props.getObjects();
       }
-  
-  
+
+
       const clienteSelect = localStorage.getItem('clienteSelect');
       const clienteSelectJson = JSON.parse(clienteSelect);
       if (clienteSelectJson) {
         this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
-  
+
       } else {
         this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
-  
+
       }
-		}
-	}
+    }
+  }
   onAddCarpeta() {
     this.setState({
       editCustomerModal: true,
@@ -367,9 +367,8 @@ class Explorar extends Component {
     this.refs['player' + id].pause();
   }
   render() {
-    const { items, loading, userById, parents } = this.props;
+    const { items, loading, userById, parents, imageVideos } = this.props;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
-
     return (
 
 
@@ -478,143 +477,80 @@ class Explorar extends Component {
 
                 : ''
             })}
-             </div>
-             <div className="gallery-wrapper">
-             <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
-
-              return n.type === 'image' ?
-
-                <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
-                  <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-                    {n.type === 'image' &&
-                  
-                      <GridListTile key={index}>
-                      <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} />
-
-                    </GridListTile>
-                   
-                    }
-                    {n.type === 'video' &&
-                      <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                        <Player ref={'player' + index} preload="auto"  >
-                          <BigPlayButton position="center" />
-                          <source src={n.originalURL} />
-                        </Player>
-
-                      </div>
-                    }
-                    <p className="color-texto-carpetas-explorar">{n.name}</p>
-
-
-                  </ContextMenuTrigger>
-                  <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                    <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
-                      <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Descargar </span>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Compartir</span>
-                    </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                    </MenuItem>
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
-                    </MenuItem>
-                  </ContextMenu>
-                </div>
-
-                : ''
-            })}
-
- </div>
- </div>
- <div className="gallery-wrapper">
- <div className="row row-eq-height text-center">
-  {items.map((n, index) => {
-
-return n.type === 'video' ?
-
-  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
-    <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-      
-    
-        <GridListTile key={index}>
-       <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-          <Player ref={'player' + index} preload="auto"  >
-            <BigPlayButton position="center" />
-            <source src={n.originalURL} />
-          </Player>
-
-        </div>
-
-      </GridListTile>
-     
-      
-     
-      <p className="color-texto-carpetas-explorar">{n.name}</p>
-
-
-    </ContextMenuTrigger>
-    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
-        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Descargar </span>
-      </MenuItem>
-      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Compartir</span>
-      </MenuItem>
-      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Cambiar Nombre</span>
-      </MenuItem>
-
-      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Mover</span>
-      </MenuItem>
-
-      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-        <span className="padding-click-derecho">Agregar a favoritos</span>
-      </MenuItem>
-      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-        <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-      </MenuItem>
-      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-        <span className="padding-click-derecho">Eliminar</span>
-      </MenuItem>
-    </ContextMenu>
-  </div>
-
-  : ''
-})}
-
-
-
- </div>
           </div>
+          <div className="gallery-wrapper">
+            <div className="row row-eq-height text-center">
+              {imageVideos.map((n, index) => {
+
+                return n.type !== 'folder' ?
+
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
+                    <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+
+                      {n.type === 'image' &&
+                        <GridListTile key={index}>
+                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} />
+
+                        </GridListTile>
+
+                      }
+                      {n.type === 'video' &&
+                        <GridListTile key={index}>
+                          <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                            <Player ref={'player' + index} preload="auto"  >
+                              <BigPlayButton position="center" />
+                              <source src={n.originalURL} />
+                            </Player>
+
+                          </div>
+
+                        </GridListTile>
+
+                      }
+                      <p className="color-texto-carpetas-explorar">{n.name}</p>
+
+
+                    </ContextMenuTrigger>
+                    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+                        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Descargar </span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Compartir</span>
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Mover</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Agregar a favoritos</span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                        <span className="padding-click-derecho">Eliminar</span>
+                      </MenuItem>
+                    </ContextMenu>
+                  </div>
+
+                  : ''
+              })}
+
+            </div>
+          </div>
+          
           <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
             <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
               <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>

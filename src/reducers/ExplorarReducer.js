@@ -24,7 +24,8 @@ const INIT_STATE = {
     loading: false,
     items: [],
     userById: [],
-    parents: []
+    parents: [],
+    imageVideos: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -38,12 +39,13 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false };
         // get Contratos
         case GET_OBJECT_SUCCES:
-        console.log('reduc',action.parents);
+        console.log('imageVideos',action.imageVideos);
             return {
                 ...state,
                 items: action.payload,
                 loading: false,
-                parents: action.parents
+                parents: action.parents,
+                imageVideos: action.imageVideos
             };
         case UPDATE_OBJECT:
             return { ...state, loading: true };
