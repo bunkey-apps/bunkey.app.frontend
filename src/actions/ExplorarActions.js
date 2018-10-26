@@ -114,11 +114,36 @@ export const getObjects = () => (dispatch) => {
         .then((response) => {
             console.log('response GET_OBJECT_SUCCES',response);
             var arrImageVideo = [];
+            var cont = 0;
             if(response.data.children){
                 for(var i=0;i<response.data.children.length;i++){
                     if(response.data.children[i].type === 'image'){
                         console.log('response.data.children[i]',response.data.children[i]);
+                        
+                        if(cont === 4){
+                            cont = 0;
+                        }
+
+
+                        if(cont === 0){
+                            response.data.children[i].marginLeft = '0%';
+                            response.data.children[i].paddingLeft = '10%';
+                        }
+                        if(cont === 1){
+                            response.data.children[i].marginLeft = '-110%';
+                            response.data.children[i].paddingLeft = '36%';
+                        }
+                        if(cont === 2){
+                            response.data.children[i].marginLeft = '-220%';
+                            response.data.children[i].paddingLeft = '62%';
+                        }
+                        if(cont === 3){
+                            response.data.children[i].marginLeft = '-330%';
+                            response.data.children[i].paddingLeft = '87%';
+                        }
+
                         arrImageVideo.push(response.data.children[i]);
+                        cont++;
                     }
                 }
                 console.log('arrImageVideo',arrImageVideo);

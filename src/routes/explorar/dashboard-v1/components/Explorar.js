@@ -28,7 +28,7 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 // app config
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
-
+import { Collapse } from 'reactstrap';
 // redux action
 import {
   getObjects,
@@ -70,6 +70,10 @@ class Explorar extends Component {
       imagePreviewUrl: '',
       nombreCliente: '',
       nombreFolder: '',
+      collapse: -1,
+      urlVideo: '',
+       author: '',
+       marginLeftCollap: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -366,8 +370,32 @@ class Explorar extends Component {
     console.log("Mouse out!!!", this.refs['player' + id]);
     this.refs['player' + id].pause();
   }
+
+
+
+  onCollapse(objecto, index) {
+    console.log('index', index);
+    
+    if(this.state.collapse === index){
+      this.setState({ collapse: -1});
+    }else{
+      this.setState({ collapse: index, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft});
+    }
+
+    
+    
+
+
+  }
+
+
+
   render() {
     const { items, loading, userById, parents, imageVideos } = this.props;
+    const { collapse } = this.state;
+    const { urlVideo } = this.state;
+    const { author } = this.state;
+    const {marginLeftCollap} = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -489,7 +517,7 @@ class Explorar extends Component {
 
                       {n.type === 'image' &&
                         <GridListTile key={index}>
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} />
+                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)}/>
 
                         </GridListTile>
 
@@ -511,6 +539,77 @@ class Explorar extends Component {
 
 
                     </ContextMenuTrigger>
+                   
+                   
+<Collapse isOpen={collapse === index} className={"anchoCollapseExplorar " + ((collapse !== index && collapse !== -1) ? 'display-none-explorar ' : '')}
+style={{ marginLeft: n.marginLeft }}
+
+>
+
+
+ <div style={{ paddingLeft: n.paddingLeft }}>
+ <div className="triangulo-equilatero-bottom"></div>
+</div>
+
+
+<div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+
+
+>
+
+  <div className="col-sm-2 col-md-1 col-lg-2">
+    <div className="volver-collap-video-image-left">
+      <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+
+    </div>
+
+  </div>
+  <div className="col-sm-6 col-md-5 col-lg-6">
+    <div className="embed-responsive embed-responsive-16by9">
+      <img className="embed-responsive-item" src={urlVideo}></img>
+
+
+    </div>
+  </div>
+  <div className="col-sm-4 col-md-3 col-lg-4">
+    <div className="fondo-videos-padding-top-desc">
+      <h3 className="text-white">{author}</h3>
+
+    </div>
+    <div>
+      <b className="text-white"></b>
+      <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+      <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
+      <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+    </div>
+
+
+
+    <div className=" ">
+      <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+      <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+    </div>
+
+  </div>
+
+</div>
+
+</Collapse>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
                       <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
