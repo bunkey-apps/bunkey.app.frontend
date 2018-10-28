@@ -70,7 +70,8 @@ class Explorar extends Component {
       imagePreviewUrl: '',
       nombreCliente: '',
       nombreFolder: '',
-      collapse: -1,
+      collapse: '-1',
+      posicion: -1,
       urlVideo: '',
        author: '',
        marginLeftCollap: '',
@@ -374,26 +375,54 @@ class Explorar extends Component {
 
 
   onCollapse(objecto, index) {
-    console.log('index', index);
+    console.log('objecto', objecto);
     
-    if(this.state.collapse === index){
-      this.setState({ collapse: -1});
+    if(this.state.collapse === objecto.rowCollapse && this.state.posicion === index){
+      this.setState({ collapse: '-1', posicion: -1});
     }else{
-      this.setState({ collapse: index, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft});
+      this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index});
     }
-
-    
-    
-
 
   }
 
+  closeCollapse() {
+    this.setState({ collapse: '-1', posicion: -1});
+
+  }
+
+  onBack() {
+    const { imageVideos } = this.props;
+    
+    console.log('bkacj imageVideos',imageVideos);
+
+    if(this.state.posicion > 0){
+      var index = this.state.posicion -1;
+      console.log('entra', imageVideos[index].name);
+      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index});
 
 
+    }
+
+  }
+  onNext() {
+    const { imageVideos } = this.props;
+    
+    console.log('next imageVideos',imageVideos);
+
+    if(imageVideos.length > this.state.posicion){
+      var index = this.state.posicion + 1;
+      console.log('entra', imageVideos[index].name);
+      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index});
+
+
+    }
+
+  }
   render() {
-    const { items, loading, userById, parents, imageVideos } = this.props;
+    const { items, loading, userById, parents, imageVideos  } = this.props;
     const { collapse } = this.state;
     const { urlVideo } = this.state;
+    const { posicion } = this.state;
     const { author } = this.state;
     const {marginLeftCollap} = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -517,7 +546,7 @@ class Explorar extends Component {
 
                       {n.type === 'image' &&
                         <GridListTile key={index}>
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)}/>
+                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n,index)}/>
 
                         </GridListTile>
 
@@ -537,20 +566,29 @@ class Explorar extends Component {
                       }
                       <p className="color-texto-carpetas-explorar">{n.name}</p>
 
-
+ {(posicion === index && !n.createRowCollapse) &&
+                         <div className={"paddin-center-trinagulo-rows"}>
+                         <div className="triangulo-equilatero-bottom"></div>
+                        </div>
+                      }
                     </ContextMenuTrigger>
-                   
-                   
-<Collapse isOpen={collapse === index} className={"anchoCollapseExplorar " + ((collapse !== index && collapse !== -1) ? 'display-none-explorar ' : '')}
+
+                     
+
+
+    {n.createRowCollapse &&
+                
+<Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
 style={{ marginLeft: n.marginLeft }}
 
 >
 
-
- <div style={{ paddingLeft: n.paddingLeft }}>
- <div className="triangulo-equilatero-bottom"></div>
-</div>
-
+{(posicion === index && n.createRowCollapse) &&
+  <div className="padding-left-first-row-collapse-triangulo">
+                          <div className="triangulo-equilatero-bottom"></div>
+                         </div>
+ 
+ }
 
 <div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
 
@@ -571,7 +609,7 @@ style={{ marginLeft: n.marginLeft }}
 
     </div>
   </div>
-  <div className="col-sm-4 col-md-3 col-lg-4">
+  <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
     <div className="fondo-videos-padding-top-desc">
       <h3 className="text-white">{author}</h3>
 
@@ -597,6 +635,8 @@ style={{ marginLeft: n.marginLeft }}
 </div>
 
 </Collapse>
+    }               
+       
 
 
 

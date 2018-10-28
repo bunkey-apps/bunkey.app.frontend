@@ -115,6 +115,7 @@ export const getObjects = () => (dispatch) => {
             console.log('response GET_OBJECT_SUCCES',response);
             var arrImageVideo = [];
             var cont = 0;
+            var collapseRows = 0;
             if(response.data.children){
                 for(var i=0;i<response.data.children.length;i++){
                     if(response.data.children[i].type === 'image'){
@@ -122,12 +123,15 @@ export const getObjects = () => (dispatch) => {
                         
                         if(cont === 4){
                             cont = 0;
+                            collapseRows ++;
                         }
 
 
                         if(cont === 0){
                             response.data.children[i].marginLeft = '0%';
                             response.data.children[i].paddingLeft = '10%';
+                            response.data.children[i].createRowCollapse = true;
+                            
                         }
                         if(cont === 1){
                             response.data.children[i].marginLeft = '-110%';
@@ -141,6 +145,7 @@ export const getObjects = () => (dispatch) => {
                             response.data.children[i].marginLeft = '-330%';
                             response.data.children[i].paddingLeft = '87%';
                         }
+                        response.data.children[i].rowCollapse = 'collapse' + collapseRows;
 
                         arrImageVideo.push(response.data.children[i]);
                         cont++;
