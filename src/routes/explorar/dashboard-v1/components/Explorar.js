@@ -385,6 +385,14 @@ class Explorar extends Component {
       this.setState({ collapse: '-1', posicion: -1});
     }else{
       this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type});
+   
+      setTimeout(() => {
+        console.log('objecto[index].rowCollapse',objecto.rowCollapse);
+        this.refs[objecto.rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
+
+    }, 500);
+
+   
     }
 
   }
@@ -409,22 +417,28 @@ class Explorar extends Component {
       var index = this.state.posicion -1;
       console.log('entra', imageVideos[index].name);
       this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
 
+    }, 500);
 
     }
 
   }
   onNext() {
     const { imageVideos } = this.props;
-    
     console.log('next imageVideos',imageVideos);
 
     if(imageVideos.length > this.state.posicion){
       var index = this.state.posicion + 1;
+
       console.log('entra', imageVideos[index].name);
       this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
 
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
 
+    }, 500);
     }
 
   }
@@ -589,7 +603,7 @@ class Explorar extends Component {
 
     {n.createRowCollapse &&
                 
-<Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+<Collapse   isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
 style={{ marginLeft: n.marginLeft }}
 
 >
@@ -601,7 +615,7 @@ style={{ marginLeft: n.marginLeft }}
  
  }
 
-<div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+<div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
 
 
 >
