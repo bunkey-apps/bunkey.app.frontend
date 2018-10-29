@@ -74,8 +74,8 @@ class Explorar extends Component {
       posicion: -1,
       tipoObject: '',
       urlVideo: '',
-       author: '',
-       marginLeftCollap: '',
+      author: '',
+      marginLeftCollap: '',
       addNewCustomerDetails: {
         email: '',
         password: '',
@@ -377,79 +377,146 @@ class Explorar extends Component {
 
   onCollapse(objecto, index) {
     console.log('objecto', objecto);
-    
-    if(this.state.collapse === objecto.rowCollapse && this.state.posicion === index){
-      if(this.state.tipoObject === 'video'){
+
+    if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
+      if (this.state.tipoObject === 'video') {
         this.refs.playerCollapse.pause();
       }
-      this.setState({ collapse: '-1', posicion: -1});
-    }else{
-      this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type});
-   
+      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+    } else {
+
+
+      if(objecto.type === 'video'){
+         
+        this.setState({ tipoObject: 'image' });
+       
+       
+        setTimeout(() => {
+         
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+
+
+        }, 100);
+      }else{
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+
+      }
+
+
+
+
+
+
+
+
+
+
       setTimeout(() => {
-        console.log('objecto[index].rowCollapse',objecto.rowCollapse);
-        this.refs[objecto.rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
+        console.log('objecto[index].rowCollapse', objecto.rowCollapse);
+        this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
 
-    }, 500);
+      }, 500);
 
-   
+
     }
 
   }
 
   closeCollapse() {
 
-    if(this.state.tipoObject === 'video'){
+    if (this.state.tipoObject === 'video') {
       this.refs.playerCollapse.pause();
     }
 
 
-    this.setState({ collapse: '-1', posicion: -1});
+    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
 
   }
 
   onBack() {
     const { imageVideos } = this.props;
-    
-    console.log('bkacj imageVideos',imageVideos);
 
-    if(this.state.posicion > 0){
-      var index = this.state.posicion -1;
+    console.log('bkacj imageVideos', imageVideos);
+
+    if (this.state.posicion > 0) {
+      var index = this.state.posicion - 1;
       console.log('entra', imageVideos[index].name);
-      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
-      setTimeout(() => {
-        this.refs[imageVideos[index].rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
 
-    }, 500);
+
+      if(imageVideos[index].type === 'video'){
+         
+        this.setState({ tipoObject: 'image' });
+       
+       
+        setTimeout(() => {
+         
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+
+
+        }, 100);
+      }else{
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+
+      }
+
+
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+      }, 500);
 
     }
 
   }
   onNext() {
     const { imageVideos } = this.props;
-    console.log('next imageVideos',imageVideos);
+    console.log('next imageVideos', imageVideos);
 
-    if(imageVideos.length > this.state.posicion){
-      var index = this.state.posicion + 1;
+    if (imageVideos.length - 1 > this.state.posicion) {
 
-      console.log('entra', imageVideos[index].name);
-      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
 
-      setTimeout(() => {
-        this.refs[imageVideos[index].rowCollapse].scrollIntoView({block: 'center', behavior: 'smooth'});
+     
+        var index = this.state.posicion + 1;
 
-    }, 500);
+        console.log('entra', imageVideos[index].name);
+
+        if(imageVideos[index].type === 'video'){
+         
+          this.setState({ tipoObject: 'image' });
+         
+         
+          setTimeout(() => {
+           
+            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+
+
+          }, 100);
+        }else{
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+
+        }
+
+
+  
+        setTimeout(() => {
+          this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  
+  
+
+      }, 500);
+
+      
     }
 
   }
   render() {
-    const { items, loading, userById, parents, imageVideos  } = this.props;
+    const { items, loading, userById, parents, imageVideos } = this.props;
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
-    const { author } = this.state; 
+    const { author } = this.state;
     const { tipoObject } = this.state;
-    const {marginLeftCollap} = this.state;
+    const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -571,15 +638,15 @@ class Explorar extends Component {
 
                       {n.type === 'image' &&
                         <GridListTile key={index}>
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n,index)}/>
+                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
 
                         </GridListTile>
 
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
-                          <div  onClick={() => this.onCollapse(n,index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                            <Player ref={'player' + index}  fluid={false} width={'100%'} height={184}  >
+                          <div onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                            <Player ref={'player' + index} fluid={false} width={'100%'} height={184}  >
                               <BigPlayButton position="center" />
                               <source src={n.originalURL} />
                             </Player>
@@ -591,92 +658,92 @@ class Explorar extends Component {
                       }
                       <p className="color-texto-carpetas-explorar">{n.name}</p>
 
- {(posicion === index && !n.createRowCollapse) &&
-                         <div className={"paddin-center-trinagulo-rows"}>
-                         <div className="triangulo-equilatero-bottom"></div>
+                      {(posicion === index && !n.createRowCollapse) &&
+                        <div className={"paddin-center-trinagulo-rows"}>
+                          <div className="triangulo-equilatero-bottom"></div>
                         </div>
                       }
                     </ContextMenuTrigger>
 
-                     
-
-
-    {n.createRowCollapse &&
-                
-<Collapse   isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
-style={{ marginLeft: n.marginLeft }}
-
->
-
-{(posicion === index && n.createRowCollapse) &&
-  <div className="padding-left-first-row-collapse-triangulo">
-                          <div className="triangulo-equilatero-bottom"></div>
-                         </div>
- 
- }
-
-<div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
-
-
->
-
-  <div className="col-sm-2 col-md-1 col-lg-2">
-    <div className="volver-collap-video-image-left">
-      <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
-
-    </div>
-
-  </div>
-  <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close" >
-  <div>
-    {tipoObject === 'image' &&
-     
-      <img className="collapse-image-width-center " src={urlVideo}></img>
-      
-    }
-    
-   
-    {tipoObject === 'video' &&
-   
-        <Player  ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
-          <BigPlayButton position="center" />
-          <source src={urlVideo} />
-        </Player>
-
-
-   
-
-  }
-  </div>
-  </div>
-  <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
-    <div className="fondo-videos-padding-top-desc">
-      <h3 className="text-white">{author}</h3>
-
-    </div>
-    <div>
-      <b className="text-white"></b>
-      <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-      <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-      <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
-    </div>
 
 
 
-    <div className=" ">
-      <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                    {n.createRowCollapse &&
 
-      <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+                      <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+                        style={{ marginLeft: n.marginLeft }}
 
-    </div>
+                      >
 
-  </div>
+                        {(posicion === index && n.createRowCollapse) &&
+                          <div className="padding-left-first-row-collapse-triangulo">
+                            <div className="triangulo-equilatero-bottom"></div>
+                          </div>
 
-</div>
+                        }
 
-</Collapse>
-    }               
-       
+                        <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+
+
+                        >
+
+                          <div className="col-sm-2 col-md-1 col-lg-2">
+                            <div className="volver-collap-video-image-left">
+                              <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+
+                            </div>
+
+                          </div>
+                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close" >
+                            <div>
+                              {tipoObject === 'image' &&
+
+                                <img className="collapse-image-width-center " src={urlVideo}></img>
+
+                              }
+
+
+                              {tipoObject === 'video' &&
+
+                                <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
+                                  <BigPlayButton position="center" />
+                                  <source src={urlVideo} />
+                                </Player>
+
+
+
+
+                              }
+                            </div>
+                          </div>
+                          <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                            <div className="fondo-videos-padding-top-desc">
+                              <h3 className="text-white">{author}</h3>
+
+                            </div>
+                            <div>
+                              <b className="text-white"></b>
+                              <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                              <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                            </div>
+
+
+
+                            <div className=" ">
+                              <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+                              <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </Collapse>
+                    }
+
 
 
 
@@ -729,7 +796,7 @@ style={{ marginLeft: n.marginLeft }}
 
             </div>
           </div>
-          
+
           <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
             <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
               <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
