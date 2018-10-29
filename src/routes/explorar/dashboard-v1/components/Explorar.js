@@ -72,6 +72,7 @@ class Explorar extends Component {
       nombreFolder: '',
       collapse: '-1',
       posicion: -1,
+      tipoObject: '',
       urlVideo: '',
        author: '',
        marginLeftCollap: '',
@@ -378,14 +379,23 @@ class Explorar extends Component {
     console.log('objecto', objecto);
     
     if(this.state.collapse === objecto.rowCollapse && this.state.posicion === index){
+      if(this.state.tipoObject === 'video'){
+        this.refs.playerCollapse.pause();
+      }
       this.setState({ collapse: '-1', posicion: -1});
     }else{
-      this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index});
+      this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type});
     }
 
   }
 
   closeCollapse() {
+
+    if(this.state.tipoObject === 'video'){
+      this.refs.playerCollapse.pause();
+    }
+
+
     this.setState({ collapse: '-1', posicion: -1});
 
   }
@@ -398,7 +408,7 @@ class Explorar extends Component {
     if(this.state.posicion > 0){
       var index = this.state.posicion -1;
       console.log('entra', imageVideos[index].name);
-      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index});
+      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
 
 
     }
@@ -412,7 +422,7 @@ class Explorar extends Component {
     if(imageVideos.length > this.state.posicion){
       var index = this.state.posicion + 1;
       console.log('entra', imageVideos[index].name);
-      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index});
+      this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type});
 
 
     }
@@ -423,7 +433,8 @@ class Explorar extends Component {
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
-    const { author } = this.state;
+    const { author } = this.state; 
+    const { tipoObject } = this.state;
     const {marginLeftCollap} = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
@@ -541,7 +552,7 @@ class Explorar extends Component {
 
                 return n.type !== 'folder' ?
 
-                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" onmouseover="Play()">
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
 
                       {n.type === 'image' &&
@@ -553,8 +564,8 @@ class Explorar extends Component {
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
-                          <div onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                            <Player ref={'player' + index} preload="auto"  >
+                          <div  onClick={() => this.onCollapse(n,index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                            <Player ref={'player' + index}  fluid={false} width={'100%'} height={184}  >
                               <BigPlayButton position="center" />
                               <source src={n.originalURL} />
                             </Player>
@@ -602,12 +613,27 @@ style={{ marginLeft: n.marginLeft }}
     </div>
 
   </div>
-  <div className="col-sm-6 col-md-5 col-lg-6">
-    <div className="embed-responsive embed-responsive-16by9">
-      <img className="embed-responsive-item" src={urlVideo}></img>
+  <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close" >
+  <div>
+    {tipoObject === 'image' &&
+     
+      <img className="collapse-image-width-center " src={urlVideo}></img>
+      
+    }
+    
+   
+    {tipoObject === 'video' &&
+   
+        <Player  ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
+          <BigPlayButton position="center" />
+          <source src={urlVideo} />
+        </Player>
 
 
-    </div>
+   
+
+  }
+  </div>
   </div>
   <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
     <div className="fondo-videos-padding-top-desc">

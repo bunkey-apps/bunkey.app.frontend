@@ -118,7 +118,7 @@ export const getObjects = () => (dispatch) => {
             var collapseRows = 0;
             if(response.data.children){
                 for(var i=0;i<response.data.children.length;i++){
-                    if(response.data.children[i].type === 'image'){
+                    if(response.data.children[i].type !== 'folder'){
                         console.log('response.data.children[i]',response.data.children[i]);
                         
                         if(cont === 4){
@@ -151,12 +151,7 @@ export const getObjects = () => (dispatch) => {
                         cont++;
                     }
                 }
-                console.log('arrImageVideo',arrImageVideo);
-                for(var j=0;j<response.data.children.length;j++){
-                    if(response.data.children[j].type === 'video'){
-                        arrImageVideo.push(response.data.children[j]);
-                    }
-                }
+                
             }
             dispatch({ type: GET_OBJECT_SUCCES, payload: response.data.children, parents: response.data.parents, imageVideos: arrImageVideo  });
             
