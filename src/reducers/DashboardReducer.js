@@ -20,7 +20,10 @@ import {
     UPDATE_FOLDERS_SUCCES,
     DELETE_FOLDERS,
     DELETE_FOLDERS_FAILURE,
-    DELETE_FOLDERS_SUCCES
+    DELETE_FOLDERS_SUCCES,
+    ADD_FAVORITOS,
+    ADD_FAVORITOS_SUCCES,
+    ADD_FAVORITOS_FAILURE
 } from '../actions/types';
 
 /**
@@ -90,6 +93,18 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false };
         // get Contratos
         case DELETE_FOLDERS_SUCCES:
+            return {
+                ...state,
+                loading: false
+            };
+
+            case ADD_FAVORITOS:
+            return { ...state, loading: true };
+
+        case ADD_FAVORITOS_SUCCES:
+            return { ...state, loading: false };
+        // get Contratos
+        case ADD_FAVORITOS_FAILURE:
             return {
                 ...state,
                 loading: false

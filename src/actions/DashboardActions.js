@@ -19,7 +19,10 @@ import {
     UPDATE_FOLDERS_SUCCES,
     DELETE_FOLDERS,
     DELETE_FOLDERS_FAILURE,
-    DELETE_FOLDERS_SUCCES
+    DELETE_FOLDERS_SUCCES,
+    ADD_FAVORITOS,
+    ADD_FAVORITOS_SUCCES,
+    ADD_FAVORITOS_FAILURE
 
 } from './types';
 
@@ -159,7 +162,104 @@ function cargarMenu(carpetas) {
             "open": false,
             "child_routes": child_routes
         }
-    
+        localStorage.setItem("seccionCliente", JSON.stringify(seccion));
+        menu.category1.push(seccion);
+        const seccionFavoritos = localStorage.getItem('seccionFavoritos');
+    const seccionFavoritosJson = JSON.parse(seccionFavoritos);
+    menu.category1.push(seccionFavoritosJson);
+
+    }
+
+   
+    menu.category1.push(compartidos);
+    menu.category1.push(recientes);
+    menu.category1.push(usuarios);
+    menu.category1.push(configuracion);
+
+    localStorage.setItem("menuLoad", JSON.stringify(menu));
+}
+
+
+function cargarMenuFavoritos(carpetas) {
+    console.log('Carga el menu');
+
+    var menu = {
+        'category1': []
+    };
+
+    console.log('carpetas', carpetas);
+
+    var child_routes = [];
+    for (var i = 0; i < carpetas.length; i++) {
+        console.log('carpetas[i]', carpetas[i].name);
+
+        var hijos = {
+            'menu_title': carpetas[i].name,
+            "path": "/app/exlporar?id=" + carpetas[i]._id
+        }
+
+        child_routes.push(hijos);
+    }
+   
+
+
+   
+
+
+
+    var compartidos = {
+        "menu_title": "Compartidos contigo",
+        "menu_icon": "ti-share-alt",
+        "open": false,
+        "child_routes": [
+            {
+                "path": "/app/dashboard",
+                "menu_title": "Toliv"
+            }
+        ]
+    };
+
+    var recientes = {
+        "menu_title": "Recientes",
+        "menu_icon": "ti-timer",
+        "open": false,
+        "child_routes": [
+
+            {
+                "path": "/app/dashboard",
+                "menu_title": "Toliv"
+            }
+        ]
+    };
+
+    var usuarios = {
+        "menu_title": "Usuarios",
+        "menu_icon": "ti-user",
+        "path": "/app/usuarios",
+        "child_routes": null
+    };
+
+    var configuracion = {
+        "menu_title": "Configuracion",
+        "menu_icon": "ti-settings",
+        "path": "/app/configuracion",
+        "child_routes": null
+    };
+
+    var seccion;
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if(clienteSelectJson){
+         seccion = {
+            "menu_title": 'Favoritos',
+            "menu_icon": "ti-star",
+            "open": false,
+            "child_routes": child_routes
+        }
+        const seccionCliente = localStorage.getItem('seccionCliente');
+        const seccionClienteJson = JSON.parse(seccionCliente);
+        menu.category1.push(seccionClienteJson);
+        localStorage.setItem("seccionFavoritos", JSON.stringify(seccion));
         menu.category1.push(seccion);
 
     }
@@ -171,6 +271,65 @@ function cargarMenu(carpetas) {
     menu.category1.push(configuracion);
 
     localStorage.setItem("menuLoad", JSON.stringify(menu));
+}
+
+export const addFavoritos = (caperta) => (dispatch) => {
+    dispatch({ type: ADD_FAVORITOS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    
+    console.log('clienteSelectJson._id', clienteSelectJson._id);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.put('/v1/users/me/clients/' + clienteSelectJson._id + '/workspaces/objects', {
+        'target': 'favorites',
+        'object': caperta._id
+    })
+        .then((response) => {
+            console.log('response ADD_FAVORITOS', response);
+            dispatch(getFavoritos());
+        })
+        .catch(error => {
+            dispatch({ type: ADD_FAVORITOS_FAILURE});
+        })
+}
+
+export const getFavoritos = () => (dispatch) => {
+    dispatch({ type: ADD_FAVORITOS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    if (!clienteSelectJson) {
+        clienteSelectJson = {
+            _id: '1'
+        }
+    }
+    console.log('clienteSelectJson getFavoritos', clienteSelectJson);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/workspaces')
+        .then((response) => {
+            console.log('response getFavoritos', response);
+             cargarMenuFavoritos(response.data.favorites);
+            dispatch({ type: ADD_FAVORITOS_SUCCES});
+        })
+        .catch(error => {
+            dispatch({ type: ADD_FAVORITOS_FAILURE });
+        })
 }
 
 /**

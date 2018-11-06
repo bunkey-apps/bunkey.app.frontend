@@ -36,7 +36,9 @@ import {
   createFolder,
   cambiarNombreObject,
   daleteObject,
-  subirArchivo
+  subirArchivo,
+  addFavoritos,
+  getFavoritos
 } from '../../../../actions';
 
 
@@ -88,7 +90,7 @@ class Folders extends Component {
 
   
   componentWillMount() {
-   
+    this.props.getFavoritos();
     this.props.getFolders();
     //this.props.getUserDetails();
 
@@ -178,6 +180,14 @@ class Folders extends Component {
 
   }
 
+  
+
+  handleClickFavoritos(folder) {
+    console.log('handleClickFavoritos', folder);
+    this.props.addFavoritos(folder);
+    
+
+  }
   deleteCustomer() {
     this.setState({ alertDialog: false});
  
@@ -367,7 +377,7 @@ this.setState({ alertDialog: false });
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Agregar a favoritos</span>
                     </MenuItem>
@@ -606,5 +616,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos
 })(Folders));
