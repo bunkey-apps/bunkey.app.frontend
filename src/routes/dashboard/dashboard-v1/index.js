@@ -45,6 +45,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 
 import Folders from './components/Folders';
+import Favoritos from './components/Favoritos';
 
 
 
@@ -206,7 +207,7 @@ export default class DashboardOne extends Component {
 
 
        <Folders/>
-
+       <Favoritos/>
 
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>

@@ -38,7 +38,8 @@ import {
   daleteObject,
   subirArchivo,
   addFavoritos,
-  getFavoritos
+  getFavoritos,
+  daleteFavoritos
 } from '../../../../actions';
 
 
@@ -57,7 +58,7 @@ const data = [
 
 
 
-class Folders extends Component {
+class Favoritos extends Component {
 
   constructor() {
     super()
@@ -90,19 +91,10 @@ class Folders extends Component {
 
   
   componentWillMount() {
-    //this.props.getFavoritos();
-    this.props.getFolders();
+    this.props.getFavoritos();
+  //  this.props.getFolders();
     //this.props.getUserDetails();
 
-    const clienteSelect = localStorage.getItem('clienteSelect');
-    const clienteSelectJson = JSON.parse(clienteSelect);
-    if(clienteSelectJson){
-      this.setState({nombreCliente : clienteSelectJson.name});
-
-    }else{
-      this.setState({nombreCliente : 'Bunkey'});
-
-    }
       /*  setTimeout(() => {
          const { items} = this.props;
          console.log('items',items);
@@ -192,7 +184,7 @@ class Folders extends Component {
     this.setState({ alertDialog: false});
  
     console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
-    this.props.daleteObject(this.state.selectedDeletedCustomer);
+    this.props.daleteFavoritos(this.state.selectedDeletedCustomer);
 
 
 
@@ -267,7 +259,7 @@ this.setState({ alertDialog: false });
     });
   }
 
-  handleClickDelete(customer) {
+  handleClickDeleteFavoritos(customer) {
     this.setState({ alertDialog: true, selectedDeletedCustomer: customer });
     }
 
@@ -298,7 +290,7 @@ this.setState({ alertDialog: false });
     }
 
   render() {
-    const { items, loading, userById } = this.props;
+    const { loadingFavoritos, userById, favoritos } = this.props;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
     return (
@@ -307,42 +299,18 @@ this.setState({ alertDialog: false });
       <div>
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
-            <h4 className="titulo-vistas-nombre-cliente"><b>{this.state.nombreCliente}</b></h4>
-            <div className="contextual-link">
-            <UncontrolledDropdown className="list-inline-item rct-dropdown">
-                <DropdownToggle caret nav className="dropdown-group-link">
-                <a href="javascript:void(0)">Nuevo</a>
-
-                </DropdownToggle>
-                <DropdownMenu className="mt-15" right>
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>
-                        <i className="ti-folder"></i>
-                        <IntlMessages id="Crear Carpeta" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)" onClick={() => this.cambiarAvatar()}>
-                        <i className="ti-archive"></i>
-                        <IntlMessages id="Subir Archivo" />
-                      </a>
-                    </li>
-                  </ul>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
-            </div>
+            <h4 className="titulo-vistas-nombre-cliente"><b>Favoritos</b></h4>
+            
           </div>
 
 
-           {loading &&
+           {loadingFavoritos &&
             <div className="d-flex justify-content-center loader-overlay">
               <CircularProgress />
             </div>
           }
           <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
+            {favoritos.map((n, index) => {
 
               return n.type === 'folder' ?
 
@@ -353,12 +321,12 @@ this.setState({ alertDialog: false });
 
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                  <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+                  <ContextMenuTrigger id={index + 'favoritos'} holdToDisplay={1000}>
                     <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
 
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
-                  <ContextMenu id={index + ''} className="click-derecho-bunkey">
+                  <ContextMenu id={index + 'favoritos'} className="click-derecho-bunkey">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Descargar {index}</span>
@@ -367,27 +335,16 @@ this.setState({ alertDialog: false });
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
+                   
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
+                    
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
+                      <span className="padding-click-derecho">Eliminar de Favoritos</span>
                     </MenuItem>
                   </ContextMenu>
                 </div>
@@ -397,12 +354,12 @@ this.setState({ alertDialog: false });
                 
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                  <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+                  <ContextMenuTrigger id={index + 'favoritos'} holdToDisplay={1000}>
                     <img  src={n.originalURL} className="margin-top-folder folder-imagen-dashboard" />
 
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
-                  <ContextMenu id={index + ''} className="click-derecho-bunkey">
+                  <ContextMenu id={index + 'favoritos'} className="click-derecho-bunkey">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Descargar {index}</span>
@@ -411,27 +368,16 @@ this.setState({ alertDialog: false });
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
+                   
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
+                    
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
+                      <span className="padding-click-derecho">Eliminar de Favoritos</span>
                     </MenuItem>
                   </ContextMenu>
                 </div>
@@ -443,38 +389,7 @@ this.setState({ alertDialog: false });
             })}
 
           </div>
-          <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
-              <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Descargar</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Compartir</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Cambiar Nombre</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Mover</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Agregar a favoritos</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-              <span className="padding-click-derecho">Eliminar</span>
-            </MenuItem>
-          </ContextMenu>
+         
         </RctCollapsibleCard>
 
 
@@ -485,10 +400,10 @@ this.setState({ alertDialog: false });
                     open={alertDialog}
                     onClose={this.handleClose}
                 >
-                    <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+                    <DialogTitle>{"Estas seguro de eliminarlo de favoritos?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                           Estas seguro de eliminarlo de forma permanente.
+                           Estas seguro de eliminarlo de favoritos.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -616,5 +531,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos
-})(Folders));
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, daleteFavoritos
+})(Favoritos));

@@ -31,8 +31,10 @@ import {
  */
 const INIT_STATE = {
     loading: false,
+    loadingFavoritos: false,
     items: [],
-    userById: []
+    userById: [],
+    favoritos: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -99,15 +101,16 @@ export default (state = INIT_STATE, action) => {
             };
 
             case ADD_FAVORITOS:
-            return { ...state, loading: true };
+            return { ...state, loadingFavoritos: true };
 
         case ADD_FAVORITOS_SUCCES:
-            return { ...state, loading: false };
+            return { ...state, loadingFavoritos: false,favoritos: action.favoritos };
         // get Contratos
         case ADD_FAVORITOS_FAILURE:
             return {
                 ...state,
-                loading: false
+                loadingFavoritos: false
+                
             };
         default: return { ...state };
     }
