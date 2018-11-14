@@ -52,13 +52,6 @@ export default class TourComponent extends Component {
           position: 'left'
         },
         {
-          title: 'Dynamic Breadcrumbs',
-          text: 'Dynamic breadcrumbs to go back to your required page.',
-          textAlign: 'left',
-          selector: '.tour-step-6',
-          position: 'left'
-        },
-        {
           title: 'Dynamic To do List',
           text: 'Fully functional widget with working add, delete, refresh and cancel buttons.',
           textAlign: 'left',

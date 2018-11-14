@@ -79,7 +79,7 @@ class App extends Component {
       if (this.props.user === null) {
         return (<Redirect to={'/signin'} />);
       } else {
-        return (<Redirect to={'/app/dashboard'} />);
+        return (<Redirect to={'/app/clientes'} />);
       }
     }
     const currentAppLocale = AppLocale[locale.locale];
