@@ -101,7 +101,7 @@ function cargarMenu(carpetas) {
 
         var hijos = {
             'menu_title': carpetas[i].name,
-            "path": "/app/exlporar?id=" + carpetas[i]._id
+            "path": "/app/exlporar?id=" + carpetas[i]._id + '?name=' + carpetas[i].name
         }
 
         child_routes.push(hijos);
@@ -203,7 +203,7 @@ function cargarMenuFavoritos(carpetas) {
 
         var hijos = {
             'menu_title': carpetas[i].name,
-            "path": "/app/exlporar?id=" + carpetas[i]._id
+            "path": "/app/exlporar?id=" + carpetas[i]._id + '?name=' + carpetas[i].name
         }
 
         child_routes.push(hijos);

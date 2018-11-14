@@ -121,7 +121,7 @@ class Explorar extends Component {
     console.log('query', query);
     var qs = this.parseUrlstring(query);
     console.log('qs.id', qs.id);
-
+    console.log('qs.name', qs.name);
     if (qs.id) {
       this.props.getObjectsByID(qs.id);
 
@@ -132,7 +132,10 @@ class Explorar extends Component {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    if (clienteSelectJson) {
+    if(qs.name){
+      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name });
+
+    }else if (clienteSelectJson) {
       this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
     } else {
@@ -153,7 +156,7 @@ class Explorar extends Component {
       console.log('query', query);
       var qs = this.parseUrlstring(query);
       console.log('qs.id', qs.id);
-
+      console.log('qs.name', qs.name);
       if (qs.id) {
         this.props.getObjectsByID(qs.id);
 
@@ -164,13 +167,17 @@ class Explorar extends Component {
 
       const clienteSelect = localStorage.getItem('clienteSelect');
       const clienteSelectJson = JSON.parse(clienteSelect);
-      if (clienteSelectJson) {
+      if(qs.name){
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name });
+
+      }else if (clienteSelectJson) {
         this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
       } else {
         this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
 
       }
+      
     }
   }
   onAddCarpeta() {
