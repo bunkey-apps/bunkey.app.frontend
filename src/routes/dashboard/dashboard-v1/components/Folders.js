@@ -421,7 +421,7 @@ this.setState({ alertDialog: false });
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem  onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Agregar a favoritos</span>
                     </MenuItem>
@@ -462,7 +462,7 @@ this.setState({ alertDialog: false });
               <span className="padding-click-derecho">Mover</span>
             </MenuItem>
 
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+            <MenuItem  onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
               <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
               <span className="padding-click-derecho">Agregar a favoritos</span>
             </MenuItem>

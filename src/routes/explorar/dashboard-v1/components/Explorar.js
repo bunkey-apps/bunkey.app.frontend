@@ -36,7 +36,8 @@ import {
   cambiarObject,
   removeObject,
   uploadArchivo,
-  getObjectsByID
+  getObjectsByID,
+  agregarFavoritos
 } from '../../../../actions';
 
 
@@ -373,7 +374,12 @@ class Explorar extends Component {
     this.refs['player' + id].pause();
   }
 
+  handleClickFavoritos(folder) {
+    console.log('handleClickFavoritos', folder);
+    this.props.agregarFavoritos(folder);
+    
 
+  }
 
   onCollapse(objecto, index) {
     console.log('objecto', objecto);
@@ -608,7 +614,7 @@ class Explorar extends Component {
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Agregar a favoritos</span>
                     </MenuItem>
@@ -776,7 +782,7 @@ class Explorar extends Component {
                         <span className="padding-click-derecho">Mover</span>
                       </MenuItem>
 
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem  onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Agregar a favoritos</span>
                       </MenuItem>
@@ -970,5 +976,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos
 })(Explorar));

@@ -14,7 +14,10 @@ import {
     UPDATE_OBJECT_SUCCES,
     DELETE_OBJECT,
     DELETE_OBJECT_FAILURE,
-    DELETE_OBJECT_SUCCES
+    DELETE_OBJECT_SUCCES,
+    AGREGAR_FAVORITOS,
+    AGREGAR_FAVORITOS_FAILURE,
+    AGREGAR_FAVORITOS_SUCCES
 } from '../actions/types';
 
 /**
@@ -66,6 +69,18 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false };
         // get Contratos
         case DELETE_OBJECT_SUCCES:
+            return {
+                ...state,
+                loading: false
+            };
+
+            case AGREGAR_FAVORITOS:
+            return { ...state, loading: true };
+
+        case AGREGAR_FAVORITOS_FAILURE:
+            return { ...state, loading: false };
+        // get Contratos
+        case AGREGAR_FAVORITOS_SUCCES:
             return {
                 ...state,
                 loading: false
