@@ -164,9 +164,17 @@ function cargarMenu(carpetas) {
         }
         localStorage.setItem("seccionCliente", JSON.stringify(seccion));
         menu.category1.push(seccion);
-        const seccionFavoritos = localStorage.getItem('seccionFavoritos');
-    const seccionFavoritosJson = JSON.parse(seccionFavoritos);
-    menu.category1.push(seccionFavoritosJson);
+        try{
+            const seccionFavoritos = localStorage.getItem('seccionFavoritos');
+            const seccionFavoritosJson = JSON.parse(seccionFavoritos);
+            if(seccionFavoritosJson){
+                menu.category1.push(seccionFavoritosJson);
+            }
+        }catch(e){
+            
+        }
+        
+   
 
     }
 
@@ -256,9 +264,15 @@ function cargarMenuFavoritos(carpetas) {
             "open": false,
             "child_routes": child_routes
         }
-        const seccionCliente = localStorage.getItem('seccionCliente');
-        const seccionClienteJson = JSON.parse(seccionCliente);
-        menu.category1.push(seccionClienteJson);
+        try{
+            const seccionCliente = localStorage.getItem('seccionCliente');
+            const seccionClienteJson = JSON.parse(seccionCliente);
+        if(seccionClienteJson){
+            menu.category1.push(seccionClienteJson);
+        }
+        }catch(e){}
+        
+       
         localStorage.setItem("seccionFavoritos", JSON.stringify(seccion));
         menu.category1.push(seccion);
 

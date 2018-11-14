@@ -85,7 +85,10 @@ class Clientes extends Component {
        //        history.push(`${match.url}/contratos`); SLIDER
        localStorage.setItem("clienteSelect", JSON.stringify(clienteSelect));
        const { match, history } = this.props;
+     
         history.push('/app/dashboard');
+
+       
        
       }
 

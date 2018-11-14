@@ -69,7 +69,8 @@ export default (state = INIT_STATE, action) => {
                         }
                   });
             default:
-            var menuLoad = localStorage.getItem('menuLoad');
+            try{
+                  var menuLoad = localStorage.getItem('menuLoad');
                   var menuLoadJson = JSON.parse(menuLoad);
                   if(menuLoadJson){
                         menuLoadJson;
@@ -77,5 +78,11 @@ export default (state = INIT_STATE, action) => {
                         menuLoadJson = navLinks;
                   }
                   return { ...state, sidebarMenus: menuLoadJson};
+            }catch(e){
+                  return { ...state, sidebarMenus: navLinks};
+            }
+
+            
+                 
       }
 }
