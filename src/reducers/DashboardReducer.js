@@ -34,7 +34,11 @@ const INIT_STATE = {
     loadingFavoritos: false,
     items: [],
     userById: [],
-    favoritos: []
+    favoritos: [],
+    parents: [],
+    imageVideos: [],
+    parentsFavoritos: [],
+    imageVideosFavoritos: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -74,7 +78,9 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 items: action.payload,
-                loading: false
+                loading: false,
+                parents: action.parents,
+                imageVideos: action.imageVideos
             };
         case UPDATE_FOLDERS:
             return { ...state, loading: true };
@@ -104,7 +110,12 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loadingFavoritos: true };
 
         case ADD_FAVORITOS_SUCCES:
-            return { ...state, loadingFavoritos: false,favoritos: action.favoritos };
+            return { ...state,
+                 loadingFavoritos: false,
+                 favoritos: action.favoritos,
+                 parentsFavoritos: action.parentsFavoritos,
+                 imageVideosFavoritos: action.imageVideosFavoritos
+                 };
         // get Contratos
         case ADD_FAVORITOS_FAILURE:
             return {

@@ -305,7 +305,48 @@ export const getFavoritos = () => (dispatch) => {
         .then((response) => {
             console.log('response getFavoritos', response);
              cargarMenuFavoritos(response.data.favorites);
-            dispatch({ type: ADD_FAVORITOS_SUCCES, favoritos: response.data.favorites});
+             var arrImageVideo = [];
+             var cont = 0;
+             var collapseRows = 0;
+             if(response.data.favorites){
+                 for(var i=0;i<response.data.favorites.length;i++){
+                     if(response.data.favorites[i].type !== 'folder'){
+                         console.log('response.data.favorites[i]',response.data.favorites[i]);
+                         
+                         if(cont === 4){
+                             cont = 0;
+                             collapseRows ++;
+                         }
+ 
+ 
+                         if(cont === 0){
+                             response.data.favorites[i].marginLeft = '0%';
+                             response.data.favorites[i].paddingLeft = '10%';
+                             response.data.favorites[i].createRowCollapse = true;
+                             
+                         }
+                         if(cont === 1){
+                             response.data.favorites[i].marginLeft = '-110%';
+                             response.data.favorites[i].paddingLeft = '36%';
+                         }
+                         if(cont === 2){
+                             response.data.favorites[i].marginLeft = '-220%';
+                             response.data.favorites[i].paddingLeft = '62%';
+                         }
+                         if(cont === 3){
+                             response.data.favorites[i].marginLeft = '-330%';
+                             response.data.favorites[i].paddingLeft = '87%';
+                         }
+                         response.data.favorites[i].rowCollapse = 'collapse' + collapseRows;
+ 
+                         arrImageVideo.push(response.data.favorites[i]);
+                         cont++;
+                     }
+                 }
+                 
+             }
+             dispatch({ type: ADD_FAVORITOS_SUCCES, favoritos: response.data.favorites, parentsFavoritos: response.data.parents, imageVideosFavoritos: arrImageVideo  });
+             
         })
         .catch(error => {
             dispatch({ type: ADD_FAVORITOS_FAILURE });
@@ -338,7 +379,48 @@ export const getFolders = () => (dispatch) => {
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES', response);
             cargarMenu(response.data.children);
-            dispatch({ type: GET_FOLDERS_SUCCES, payload: response.data.children });
+            var arrImageVideo = [];
+            var cont = 0;
+            var collapseRows = 0;
+            if(response.data.children){
+                for(var i=0;i<response.data.children.length;i++){
+                    if(response.data.children[i].type !== 'folder'){
+                        console.log('response.data.children[i]',response.data.children[i]);
+                        
+                        if(cont === 4){
+                            cont = 0;
+                            collapseRows ++;
+                        }
+
+
+                        if(cont === 0){
+                            response.data.children[i].marginLeft = '0%';
+                            response.data.children[i].paddingLeft = '10%';
+                            response.data.children[i].createRowCollapse = true;
+                            
+                        }
+                        if(cont === 1){
+                            response.data.children[i].marginLeft = '-110%';
+                            response.data.children[i].paddingLeft = '36%';
+                        }
+                        if(cont === 2){
+                            response.data.children[i].marginLeft = '-220%';
+                            response.data.children[i].paddingLeft = '62%';
+                        }
+                        if(cont === 3){
+                            response.data.children[i].marginLeft = '-330%';
+                            response.data.children[i].paddingLeft = '87%';
+                        }
+                        response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+
+                        arrImageVideo.push(response.data.children[i]);
+                        cont++;
+                    }
+                }
+                
+            }
+            dispatch({ type: GET_FOLDERS_SUCCES, payload: response.data.children, parents: response.data.parents, imageVideos: arrImageVideo  });
+            
         })
         .catch(error => {
             dispatch({ type: GET_FOLDERS_FAILURE });
