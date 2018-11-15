@@ -342,7 +342,15 @@ class Explorar extends Component {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     if (folderSelectJson && clienteSelectJson) {
-      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name });
+      console.log('folderSelectJson.name',folderSelectJson.name);
+      if(folderSelectJson.name === 'home'){
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder:  clienteSelectJson.name });
+
+      }else{
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name });
+
+      }
+
 
     }
 
