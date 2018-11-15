@@ -132,10 +132,10 @@ class Explorar extends Component {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    if(qs.name){
+    if (qs.name) {
       this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name });
 
-    }else if (clienteSelectJson) {
+    } else if (clienteSelectJson) {
       this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
     } else {
@@ -167,17 +167,17 @@ class Explorar extends Component {
 
       const clienteSelect = localStorage.getItem('clienteSelect');
       const clienteSelectJson = JSON.parse(clienteSelect);
-      if(qs.name){
+      if (qs.name) {
         this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name });
 
-      }else if (clienteSelectJson) {
+      } else if (clienteSelectJson) {
         this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
       } else {
         this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
 
       }
-      
+
     }
   }
   onAddCarpeta() {
@@ -342,11 +342,11 @@ class Explorar extends Component {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     if (folderSelectJson && clienteSelectJson) {
-      console.log('folderSelectJson.name',folderSelectJson.name);
-      if(folderSelectJson.name === 'home'){
-        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder:  clienteSelectJson.name });
+      console.log('folderSelectJson.name', folderSelectJson.name);
+      if (folderSelectJson.name === 'home') {
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
 
-      }else{
+      } else {
         this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name });
 
       }
@@ -392,7 +392,7 @@ class Explorar extends Component {
   handleClickFavoritos(folder) {
     console.log('handleClickFavoritos', folder);
     this.props.agregarFavoritos(folder);
-    
+
 
   }
 
@@ -407,18 +407,18 @@ class Explorar extends Component {
     } else {
 
 
-      if(objecto.type === 'video'){
-         
+      if (objecto.type === 'video') {
+
         this.setState({ tipoObject: 'image' });
-       
-       
+
+
         setTimeout(() => {
-         
+
           this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
 
 
         }, 100);
-      }else{
+      } else {
         this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
 
       }
@@ -464,18 +464,18 @@ class Explorar extends Component {
       console.log('entra', imageVideos[index].name);
 
 
-      if(imageVideos[index].type === 'video'){
-         
+      if (imageVideos[index].type === 'video') {
+
         this.setState({ tipoObject: 'image' });
-       
-       
+
+
         setTimeout(() => {
-         
+
           this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
 
 
         }, 100);
-      }else{
+      } else {
         this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
 
       }
@@ -496,37 +496,37 @@ class Explorar extends Component {
     if (imageVideos.length - 1 > this.state.posicion) {
 
 
-     
-        var index = this.state.posicion + 1;
 
-        console.log('entra', imageVideos[index].name);
+      var index = this.state.posicion + 1;
 
-        if(imageVideos[index].type === 'video'){
-         
-          this.setState({ tipoObject: 'image' });
-         
-         
-          setTimeout(() => {
-           
-            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+      console.log('entra', imageVideos[index].name);
+
+      if (imageVideos[index].type === 'video') {
+
+        this.setState({ tipoObject: 'image' });
 
 
-          }, 100);
-        }else{
+        setTimeout(() => {
+
           this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
 
-        }
+
+        }, 100);
+      } else {
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+
+      }
 
 
-  
-        setTimeout(() => {
-          this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
-  
-  
+
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+
 
       }, 500);
 
-      
+
     }
 
   }
@@ -605,12 +605,12 @@ class Explorar extends Component {
 
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                  <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+                  <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
                     <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
 
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
-                  <ContextMenu id={index + ''} className="click-derecho-bunkey">
+                  <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
                     <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
                       <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Descargar </span>
@@ -669,7 +669,7 @@ class Explorar extends Component {
                           <div onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
                             <Player ref={'player' + index} fluid={false} width={'100%'} height={184} muted="true">
                               <BigPlayButton position="center" />
-                              <ControlBar  disableDefaultControls={true}/>
+                              <ControlBar disableDefaultControls={true} />
                               <source src={n.originalURL} />
                             </Player>
 
@@ -680,16 +680,47 @@ class Explorar extends Component {
                       }
                       <p className="color-texto-carpetas-explorar">{n.name}</p>
 
-                      {(posicion === index && !n.createRowCollapse) &&
-                        <div className={"paddin-center-trinagulo-rows"}>
-                          <div className="triangulo-equilatero-bottom"></div>
-                        </div>
-                      }
+
                     </ContextMenuTrigger>
 
+                    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+                        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Descargar </span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Compartir</span>
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                      </MenuItem>
 
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Mover</span>
+                      </MenuItem>
 
+                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Agregar a favoritos</span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <div className="line-click-derecho  padding-top-click-derecho"></div>
 
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                        <span className="padding-click-derecho">Eliminar</span>
+                      </MenuItem>
+                    </ContextMenu>
+
+                    {(posicion === index && !n.createRowCollapse) &&
+                      <div className={"paddin-center-trinagulo-rows"}>
+                        <div className="triangulo-equilatero-bottom"></div>
+                      </div>
+                    }
                     {n.createRowCollapse &&
 
                       <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
@@ -779,38 +810,7 @@ class Explorar extends Component {
 
 
 
-                    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
-                        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Descargar </span>
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Compartir</span>
-                      </MenuItem>
-                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Cambiar Nombre</span>
-                      </MenuItem>
 
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Mover</span>
-                      </MenuItem>
-
-                      <MenuItem  onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Agregar a favoritos</span>
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                        <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                      </MenuItem>
-                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
-                    </ContextMenu>
                   </div>
 
                   : ''
@@ -819,38 +819,6 @@ class Explorar extends Component {
             </div>
           </div>
 
-          <ContextMenu id="SIMPLE" className="click-derecho-bunkey">
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 1' }}>
-              <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Descargar</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Compartir</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Cambiar Nombre</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Mover</span>
-            </MenuItem>
-
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-              <span className="padding-click-derecho">Agregar a favoritos</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-              <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-              <span className="padding-click-derecho">Eliminar</span>
-            </MenuItem>
-          </ContextMenu>
         </RctCollapsibleCard>
 
 
