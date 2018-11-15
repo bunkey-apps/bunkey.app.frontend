@@ -408,38 +408,6 @@ function cargarMenuFavoritosExplorar(carpetas) {
 
 
 
-    var compartidos = {
-        "menu_title": "Compartidos contigo",
-        "menu_icon": "ti-share-alt",
-        "open": false,
-        "child_routes": [
-            {
-                "path": "/app/dashboard",
-                "menu_title": "Toliv"
-            }
-        ]
-    };
-
-    var recientes = {
-        "menu_title": "Recientes",
-        "menu_icon": "ti-timer",
-        "open": false,
-        "child_routes": [
-
-            {
-                "path": "/app/dashboard",
-                "menu_title": "Toliv"
-            }
-        ]
-    };
-
-    var usuarios = {
-        "menu_title": "Usuarios",
-        "menu_icon": "ti-user",
-        "path": "/app/usuarios",
-        "child_routes": null
-    };
-
     var configuracion = {
         "menu_title": "Configuracion",
         "menu_icon": "ti-settings",
@@ -466,9 +434,7 @@ function cargarMenuFavoritosExplorar(carpetas) {
     }
 
    
-    menu.category1.push(compartidos);
-    menu.category1.push(recientes);
-    menu.category1.push(usuarios);
+    
     menu.category1.push(configuracion);
 
     localStorage.setItem("menuLoad", JSON.stringify(menu));

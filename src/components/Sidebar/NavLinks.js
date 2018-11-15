@@ -4,9 +4,9 @@ export default {
             
            
             {
-                  "menu_title": "Usuarios",
+                  "menu_title": "Clientes",
                   "menu_icon": "ti-user",
-                  "path": "/app/usuarios",
+                  "path": "/app/clientes",
                   "child_routes": null
             }
             
