@@ -461,10 +461,10 @@ export const obtenerFavoritos = () => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/workspaces')
+    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites')
         .then((response) => {
             console.log('response getFavoritos', response);
-            cargarMenuFavoritosExplorar(response.data.favorites);
+            cargarMenuFavoritosExplorar(response.data.children);
             dispatch({ type: AGREGAR_FAVORITOS_SUCCES});
         })
         .catch(error => {
@@ -480,7 +480,8 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     var clienteSelectJson = JSON.parse(clienteSelect);
-    
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
     console.log('clienteSelectJson._id', clienteSelectJson._id);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
@@ -488,8 +489,8 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.put('/v1/users/me/clients/' + clienteSelectJson._id + '/workspaces/objects', {
-        'target': 'favorites',
+    instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        'name': caperta.name,
         'object': caperta._id
     })
         .then((response) => {

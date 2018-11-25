@@ -311,6 +311,7 @@ this.setState({ alertDialog: false });
 
     mouseOver(id) {
       console.log("Mouse over!!!", id);
+      
       this.refs['player' + id].play();
     }
     mouseOut(id) {
@@ -583,7 +584,7 @@ this.setState({ alertDialog: false });
                       {n.type === 'video' &&
                         <GridListTile key={index}>
                           <div onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                            <Player ref={'player' + index} fluid={false} width={'100%'} height={184} muted="true">
+                            <Player ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                               <BigPlayButton position="center" />
                               <ControlBar disableDefaultControls={true} />
                               <source src={n.originalURL} />
@@ -594,7 +595,13 @@ this.setState({ alertDialog: false });
                         </GridListTile>
 
                       }
-                      <p className="color-texto-carpetas-explorar">{n.name}</p>
+                    
+         
+                         <p className="color-texto-carpetas-explorar">{n.name}</p>
+                       
+
+
+                    
 
 
                     </ContextMenuTrigger>

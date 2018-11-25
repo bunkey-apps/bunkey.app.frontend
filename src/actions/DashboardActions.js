@@ -231,6 +231,9 @@ export const addFavoritos = (caperta) => (dispatch) => {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     var clienteSelectJson = JSON.parse(clienteSelect);
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
+
     
     console.log('clienteSelectJson._id', clienteSelectJson._id);
     var instance2 = axios.create({
@@ -239,8 +242,8 @@ export const addFavoritos = (caperta) => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.put('/v1/users/me/clients/' + clienteSelectJson._id + '/workspaces/objects', {
-        'target': 'favorites',
+    instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        'name': caperta.name,
         'object': caperta._id
     })
         .then((response) => {
@@ -259,6 +262,8 @@ export const daleteFavoritos = (caperta) => (dispatch) => {
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
@@ -268,9 +273,8 @@ export const daleteFavoritos = (caperta) => (dispatch) => {
 
     console.log('daleteFavoritos',caperta);
 
-    instance2.delete('/v1/users/me/clients/' + clienteSelectJson._id + '/workspaces/objects', {
-        data: {'target': 'favorites',
-        'object': caperta._id}
+    instance2.delete('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        data: {'target': caperta._id}
     })
         .then((response) => {
             console.log('response daleteFavoritos', response);
@@ -301,17 +305,17 @@ export const getFavoritos = () => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/workspaces')
+    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites')
         .then((response) => {
             console.log('response getFavoritos', response);
-             cargarMenuFavoritos(response.data.favorites);
+             cargarMenuFavoritos(response.data.children);
              var arrImageVideo = [];
              var cont = 0;
              var collapseRows = 0;
-             if(response.data.favorites){
-                 for(var i=0;i<response.data.favorites.length;i++){
-                     if(response.data.favorites[i].type !== 'folder'){
-                         console.log('response.data.favorites[i]',response.data.favorites[i]);
+             if(response.data.children){
+                 for(var i=0;i<response.data.children.length;i++){
+                     if(response.data.children[i].type !== 'folder'){
+                         console.log('response.data.children[i]',response.data.children[i]);
                          
                          if(cont === 4){
                              cont = 0;
@@ -320,32 +324,33 @@ export const getFavoritos = () => (dispatch) => {
  
  
                          if(cont === 0){
-                             response.data.favorites[i].marginLeft = '0%';
-                             response.data.favorites[i].paddingLeft = '10%';
-                             response.data.favorites[i].createRowCollapse = true;
+                             response.data.children[i].marginLeft = '0%';
+                             response.data.children[i].paddingLeft = '10%';
+                             response.data.children[i].createRowCollapse = true;
                              
                          }
                          if(cont === 1){
-                             response.data.favorites[i].marginLeft = '-110%';
-                             response.data.favorites[i].paddingLeft = '36%';
+                             response.data.children[i].marginLeft = '-110%';
+                             response.data.children[i].paddingLeft = '36%';
                          }
                          if(cont === 2){
-                             response.data.favorites[i].marginLeft = '-220%';
-                             response.data.favorites[i].paddingLeft = '62%';
+                             response.data.children[i].marginLeft = '-220%';
+                             response.data.children[i].paddingLeft = '62%';
                          }
                          if(cont === 3){
-                             response.data.favorites[i].marginLeft = '-330%';
-                             response.data.favorites[i].paddingLeft = '87%';
+                             response.data.children[i].marginLeft = '-330%';
+                             response.data.children[i].paddingLeft = '87%';
                          }
-                         response.data.favorites[i].rowCollapse = 'collapse' + collapseRows;
+                         response.data.children[i].rowCollapse = 'collapse' + collapseRows;
  
-                         arrImageVideo.push(response.data.favorites[i]);
+                         arrImageVideo.push(response.data.children[i]);
                          cont++;
                      }
                  }
                  
              }
-             dispatch({ type: ADD_FAVORITOS_SUCCES, favoritos: response.data.favorites, parentsFavoritos: response.data.parents, imageVideosFavoritos: arrImageVideo  });
+             localStorage.setItem("objectFavorites", JSON.stringify(response.data));
+             dispatch({ type: ADD_FAVORITOS_SUCCES, favoritos: response.data.children, parentsFavoritos: response.data.parents, imageVideosFavoritos: arrImageVideo  });
              
         })
         .catch(error => {
