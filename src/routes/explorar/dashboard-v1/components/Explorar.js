@@ -611,10 +611,7 @@ class Explorar extends Component {
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                    <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
-                      <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Descargar </span>
-                    </MenuItem>
+                    
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
@@ -684,7 +681,7 @@ class Explorar extends Component {
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>

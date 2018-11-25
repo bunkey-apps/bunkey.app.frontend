@@ -530,10 +530,7 @@ this.setState({ alertDialog: false });
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder-home'} className="click-derecho-bunkey">
-                    <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
-                      <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Descargar </span>
-                    </MenuItem>
+                    
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
@@ -603,7 +600,7 @@ this.setState({ alertDialog: false });
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={this.handleClick} data={{ item: { index } }}>
+                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank','download=true')}} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>
