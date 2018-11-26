@@ -58,6 +58,8 @@ class Busqueda extends Component {
   constructor() {
     super()
     this.state = {
+      busqueda: '',
+      background: '',
       addNewCustomerForm: false,
       editCustomerModal: false,
       archivoModal: false,
@@ -112,33 +114,37 @@ class Busqueda extends Component {
     return query_string;
   }
   componentWillMount() {
-    console.log('get folders');
-    console.log('get folders2');
-    var query = window.location.href;
-    console.log('query', query);
-    var qs = this.parseUrlstring(query);
-    console.log('qs.id', qs.id);
-    console.log('qs.name', qs.name);
-   
-    
-      this.props.getSearch();
-   
-      
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if (clienteSelectJson) {
+      console.log('header', clienteSelectJson.acountSetting.background);
+      this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '' });
+    } else {
+      this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '' });
+    }
+
+    this.props.getSearch();
+
+
 
   }
 
+  goToBusqueda(){
+    localStorage.setItem('textoBusqeuda', this.state.busqueda);
+    this.props.getSearch();
+  }
 
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.location !== this.props.location) {
-      console.log('nueva urll!!!!');
-      console.log('get folders');
-      console.log('get folders2');
-      var query = window.location.href;
-      console.log('query', query);
-      var qs = this.parseUrlstring(query);
-      console.log('qs.id', qs.id);
-      console.log('qs.name', qs.name);
+      const clienteSelect = localStorage.getItem('clienteSelect');
+      const clienteSelectJson = JSON.parse(clienteSelect);
+      if (clienteSelectJson) {
+        console.log('header', clienteSelectJson.acountSetting.background);
+        this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '' });
+      } else {
+        this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '' });
+      }
       this.props.getSearch();
 
     }
@@ -296,11 +302,11 @@ class Busqueda extends Component {
 
   goToImagenes = (n) => {
 
-    
-    console.log('objecto',n);
-   // localStorage.setItem("folderSelect", JSON.stringify(n));
+
+    console.log('objecto', n);
+    // localStorage.setItem("folderSelect", JSON.stringify(n));
     const { match, history } = this.props;
-  history.push('/app/exlporar?id=' + n._id + '?name=' + n.name);
+    history.push('/app/exlporar?id=' + n._id + '?name=' + n.name);
 
   }
 
@@ -477,6 +483,8 @@ class Busqueda extends Component {
     const { urlVideo } = this.state;
     const { posicion } = this.state;
     const { author } = this.state;
+    const { background } = this.state;
+    const { busqueda } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -484,12 +492,62 @@ class Busqueda extends Component {
 
 
       <div>
-        
 
+
+
+ <div className="fondo-busqueda text-white"
+                  style={{ backgroundImage: `url(${background})` }}
+
+
+                >
+        <div>
+          <div className="margen-busqueda text-white padding-top-busqueda">
+            <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+            <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+          </div>
+
+
+          <div>
+
+
+            <div className="row">
+              <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+
+                <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+                </input>
+
+              </div>
+              <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+                <div className="div-separador-search-form"></div>
+              </div>
+              <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+                <Input type="select"
+                  name="tipoArchivo"
+                  id="tipoArchivo"
+                  className="select-resultados altura-select-search"
+                >
+                  <option value="tipoArchivo">Tipo de Archivo</option>
+                  <option value="Imagen">imágen</option>
+                  <option value="vector">vector</option>
+                  <option value="clip">clip</option>
+                </Input>
+                <i class="fa fa-chevron-down flecha-select-test"></i>
+              </div>
+              <div className="input-group col-md-2 padding-bottom-busqueda">
+                <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+                  <i className="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+ </div>
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
 
-            
+
           </div>
 
 
@@ -516,7 +574,7 @@ class Busqueda extends Component {
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                    
+
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
@@ -586,7 +644,7 @@ class Busqueda extends Component {
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
+                      <MenuItem onClick={() => { window.open(n.originalURL, '_blank') }} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>

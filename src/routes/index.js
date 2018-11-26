@@ -61,7 +61,7 @@ class MainApp extends Component {
 
     const { match, history } = this.props;
     console.log('texto', this.state.busqueda)
-    localStorage.setItem('textoBusqeuda',this.state.busqueda);
+    localStorage.setItem('textoBusqeuda', this.state.busqueda);
 
     history.push('/app/busqueda');
 
@@ -69,27 +69,27 @@ class MainApp extends Component {
 
   componentWillMount() {
     const clienteSelect = localStorage.getItem('clienteSelect');
-		const clienteSelectJson = JSON.parse(clienteSelect);
-		if(clienteSelectJson){
-			console.log('header',clienteSelectJson.acountSetting.background);
-			this.setState({background : clienteSelectJson.acountSetting.background, busqueda: ''});
-		}else{
-      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: ''});
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if (clienteSelectJson) {
+      console.log('header', clienteSelectJson.acountSetting.background);
+      this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '' });
+    } else {
+      this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '' });
     }
-	}
+  }
 
 
   componentWillReceiveProps(nextProps) {
-		const clienteSelect = localStorage.getItem('clienteSelect');
-		const clienteSelectJson = JSON.parse(clienteSelect);
-		if(clienteSelectJson){
-			console.log('header',clienteSelectJson.acountSetting.background);
-			this.setState({background : clienteSelectJson.acountSetting.background, busqueda: ''});
-		}else{
-      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: ''});
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    if (clienteSelectJson) {
+      console.log('header', clienteSelectJson.acountSetting.background);
+      this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '' });
+    } else {
+      this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '' });
     }
-	
-	}
+
+  }
 
   render() {
     const { navCollapsed } = this.props.settings;
@@ -102,56 +102,65 @@ class MainApp extends Component {
             <div className="rct-app-content">
               <Header />
               <div className="rct-page">
-              <div className="fondo-busqueda text-white"
-              style={{ backgroundImage: `url(${background})` }}
-
-              
-              >
+                <div className="fondo-busqueda text-white"
+                  style={{ backgroundImage: `url(${background})` }}
 
 
-<div className="margen-busqueda text-white padding-top-busqueda">
-  <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
-  <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
-</div>
-<div>
-
-
-  <div className="row">
-    <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
-
-      <input value={busqueda}  onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
-      </input>
-
-    </div>
-    <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
-      <div className="div-separador-search-form"></div>
-    </div>
-    <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
-      <Input type="select"
-        name="tipoArchivo"
-        id="tipoArchivo"
-        className="select-resultados altura-select-search"
-      >
-        <option value="tipoArchivo">Tipo de Archivo</option>
-        <option value="Imagen">imágen</option>
-        <option value="vector">vector</option>
-        <option value="clip">clip</option>
-      </Input>
-      <i class="fa fa-chevron-down flecha-select-test"></i>
-    </div>
-    <div className="input-group col-md-2 padding-bottom-busqueda">
-      <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
-        <i className="fa fa-search"></i>
-      </button>
-    </div>
-  </div>
-</div>
+                >
 
 
 
+                  {this.props.location.pathname !== '/app/busqueda' &&
+                    <div>
+                      <div className="margen-busqueda text-white padding-top-busqueda">
+                        <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                        <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+                      </div>
 
 
-</div>
+                      <div>
+
+
+                        <div className="row">
+                          <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+
+                            <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+                            </input>
+
+                          </div>
+                          <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+                            <div className="div-separador-search-form"></div>
+                          </div>
+                          <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+                            <Input type="select"
+                              name="tipoArchivo"
+                              id="tipoArchivo"
+                              className="select-resultados altura-select-search"
+                            >
+                              <option value="tipoArchivo">Tipo de Archivo</option>
+                              <option value="Imagen">imágen</option>
+                              <option value="vector">vector</option>
+                              <option value="clip">clip</option>
+                            </Input>
+                            <i class="fa fa-chevron-down flecha-select-test"></i>
+                          </div>
+                          <div className="input-group col-md-2 padding-bottom-busqueda">
+                            <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+                              <i className="fa fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  }
+
+
+
+
+
+
+                </div>
                 <div className="rct-page-content">
                   <Route path={`${this.props.match.url}/dashboard`} component={AsyncDashboardComponent} />
                   <Route path={`${this.props.match.url}/tags`} component={AsyncTagsComponent} />
@@ -190,7 +199,7 @@ class MainApp extends Component {
         </div>
         <SearchForm />
         <Tour />
-      
+
       </div>
     );
   }
