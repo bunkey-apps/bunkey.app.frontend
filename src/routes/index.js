@@ -46,7 +46,8 @@ import {
   AsyncPagosComponent,
   AsyncImagenesComponent,
   AsyncConfiguracionComponent,
-  AsyncExplorarComponent
+  AsyncExplorarComponent,
+  AsyncBusquedaComponent
 } from '../components/AsyncComponent/AsyncComponent';
 
 class MainApp extends Component {
@@ -59,7 +60,7 @@ class MainApp extends Component {
   goToBusqueda = () => {
 
     const { match, history } = this.props;
-    history.push('/app/resultados');
+    history.push('/app/busqueda');
 
   }
 
@@ -156,6 +157,7 @@ class MainApp extends Component {
                   <Route path={`${this.props.match.url}/resultados`} component={AsyncResultadosComponent} />
                   <Route path={`${this.props.match.url}/imagenes`} component={AsyncImagenesComponent} />
                   <Route path={`${this.props.match.url}/exlporar`} component={AsyncExplorarComponent} />
+                  <Route path={`${this.props.match.url}/busqueda`} component={AsyncBusquedaComponent} />
 
                   <Route path={`${this.props.match.url}/clientes`} component={AsyncClientesComponent} />
                   <Route path={`${this.props.match.url}/contratos`} component={AsyncContratosComponent} />

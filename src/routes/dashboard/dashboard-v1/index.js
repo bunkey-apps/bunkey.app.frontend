@@ -89,7 +89,7 @@ export default class DashboardOne extends Component {
   goToBusqueda = () => {
 
     const { match, history } = this.props;
-    history.push('/app/resultados');
+    history.push('/app/busqueda');
 
   }
 

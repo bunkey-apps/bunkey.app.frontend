@@ -287,12 +287,71 @@ export default class Resultados extends Component {
                     <img className="imagenes-tam-grid" src={tileData[0].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[0], 0)} />
 
                   </GridListTile>
+                
+
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[1].img}>
                     <img className="imagenes-tam-grid" src={tileData[1].img} alt={tileData[0].title} onClick={() => this.onCollapse(tileData[1], 1)} />
 
                   </GridListTile>
+                  <Collapse isOpen={collapse}>
+
+
+<div className="row text-white">
+  <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+    <div className="padding-solpa-video">
+       <div className="triangulo-equilatero-bottom"></div>
+    </div>
+  </div>
+  
+  
+
+</div>
+
+
+<div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
+
+  <div className="col-sm-2 col-md-1 col-lg-2">
+    <div className="volver-collap-video-image-left">
+      <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+
+    </div>
+
+  </div>
+  <div className="col-sm-6 col-md-5 col-lg-6">
+    <div className="embed-responsive embed-responsive-16by9">
+      <img className="embed-responsive-item" src={urlVideo} ></img>
+
+
+    </div>
+  </div>
+  <div className="col-sm-4 col-md-3 col-lg-4">
+    <div className="fondo-videos-padding-top-desc">
+      <h3 className="text-white">{author}</h3>
+
+    </div>
+    <div>
+      <b className="text-white">{title}</b>
+      <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+      <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
+      <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+    </div>
+
+
+
+    <div className=" ">
+      <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+
+      <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+    </div>
+
+  </div>
+
+</div>
+
+</Collapse>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                   <GridListTile key={tileData[2].img}>
@@ -312,77 +371,7 @@ export default class Resultados extends Component {
 
 
 
-            <Collapse isOpen={collapse}>
-
-
-              <div className="row text-white">
-                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                  <div className="padding-solpa-video">
-                    {index === 0 ? <div className="triangulo-equilatero-bottom"></div> : ''}
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                  <div className="padding-solpa-video">
-                    {index === 1 ? <div className="triangulo-equilatero-bottom"></div> : ''}
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                  <div className="padding-solpa-video">
-                    {index === 2 ? <div className="triangulo-equilatero-bottom"></div> : ''}
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                  <div className="padding-solpa-video">
-                    {index === 3 ? <div className="triangulo-equilatero-bottom"></div> : ''}
-                  </div>
-                </div>
-
-              </div>
-
-
-              <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
-
-                <div className="col-sm-2 col-md-1 col-lg-2">
-                  <div className="volver-collap-video-image-left">
-                    <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
-
-                  </div>
-
-                </div>
-                <div className="col-sm-6 col-md-5 col-lg-6">
-                  <div className="embed-responsive embed-responsive-16by9">
-                    <img className="embed-responsive-item" src={urlVideo} ></img>
-
-
-                  </div>
-                </div>
-                <div className="col-sm-4 col-md-3 col-lg-4">
-                  <div className="fondo-videos-padding-top-desc">
-                    <h3 className="text-white">{author}</h3>
-
-                  </div>
-                  <div>
-                    <b className="text-white">{title}</b>
-                    <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-                    <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                    <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
-                  </div>
-
-
-
-                  <div className=" ">
-                    <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
-
-                    <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </Collapse>
-
+           
 
             <div className="gallery-wrapper">
               <div className="row text-white">

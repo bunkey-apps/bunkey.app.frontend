@@ -490,7 +490,7 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
     });
 
     instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
-        'name': caperta.name,
+        
         'object': caperta._id
     })
         .then((response) => {

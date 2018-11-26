@@ -16,6 +16,7 @@ import tagsReducer from './TagsReducer';
 import dashboardReducer from './DashboardReducer';
 import configuracionReducer from './ConfiguracionReducer';
 import explorarReducer from './ExplorarReducer';
+import busquedaReducer from './BusquedaReducer';
 
 
 const reducers = combineReducers({
@@ -32,7 +33,8 @@ const reducers = combineReducers({
   tags: tagsReducer,
   dashboard: dashboardReducer,
   configuracion: configuracionReducer,
-  explorar: explorarReducer
+  explorar: explorarReducer,
+  busqueda: busquedaReducer
 });
 
 export default reducers;

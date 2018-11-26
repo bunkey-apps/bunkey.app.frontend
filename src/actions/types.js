@@ -72,6 +72,9 @@ export const CHANGE_AVATAR_FAILURE = 'CHANGE_AVATAR_FAILURE';
 export const GET_USER_ME = 'GET_USER_ME';
 export const GET_USER_ME_SUCCES = 'GET_USER_ME_SUCCES';
 
+export const GET_SEARCH = 'GET_SEARCH';
+export const GET_SEARCH_FAILURE = 'GET_SEARCH_FAILURE';
+export const GET_SEARCH_SUCCES = 'GET_SEARCH_SUCCES';
 
 
 //Contratos configuracion

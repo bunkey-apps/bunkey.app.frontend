@@ -14,3 +14,5 @@ export * from './TagsActions';
 export * from './DashboardActions';
 export * from './ConfiguracionActions';
 export * from './ExplorarActions';
+export * from './BusquedaActions';
+
