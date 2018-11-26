@@ -60,6 +60,9 @@ class MainApp extends Component {
   goToBusqueda = () => {
 
     const { match, history } = this.props;
+    console.log('texto', this.state.busqueda)
+    localStorage.setItem('textoBusqeuda',this.state.busqueda);
+
     history.push('/app/busqueda');
 
   }
@@ -69,9 +72,9 @@ class MainApp extends Component {
 		const clienteSelectJson = JSON.parse(clienteSelect);
 		if(clienteSelectJson){
 			console.log('header',clienteSelectJson.acountSetting.background);
-			this.setState({background : clienteSelectJson.acountSetting.background});
+			this.setState({background : clienteSelectJson.acountSetting.background, busqueda: ''});
 		}else{
-      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg'});
+      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: ''});
     }
 	}
 
@@ -81,16 +84,16 @@ class MainApp extends Component {
 		const clienteSelectJson = JSON.parse(clienteSelect);
 		if(clienteSelectJson){
 			console.log('header',clienteSelectJson.acountSetting.background);
-			this.setState({background : clienteSelectJson.acountSetting.background});
+			this.setState({background : clienteSelectJson.acountSetting.background, busqueda: ''});
 		}else{
-      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg'});
+      this.setState({background : 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: ''});
     }
 	
 	}
 
   render() {
     const { navCollapsed } = this.props.settings;
-    const { background } = this.state;
+    const { background, busqueda } = this.state;
     return (
       <div className={classnames('app', { 'collapsed-sidebar': navCollapsed })}>
         <div className="app-container">
@@ -116,7 +119,7 @@ class MainApp extends Component {
   <div className="row">
     <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
 
-      <input className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+      <input value={busqueda}  onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
       </input>
 
     </div>

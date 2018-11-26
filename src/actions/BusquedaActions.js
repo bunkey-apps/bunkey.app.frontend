@@ -30,6 +30,10 @@ export const getSearch = () => (dispatch) => {
 
     console.log('folderSelectJson',folderSelectJson);
 
+    const textoBusqeuda = localStorage.getItem('textoBusqeuda');
+    
+    console.log('textoBusqeuda',textoBusqeuda);
+
     if(!clienteSelectJson){
         clienteSelectJson = {
             _id : '1'
@@ -41,7 +45,7 @@ export const getSearch = () => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=ciudad')
+      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda)
       .then((response) => {
             console.log('response search',response);
             var arrImageVideo = [];
