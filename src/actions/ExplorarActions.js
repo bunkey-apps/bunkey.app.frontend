@@ -415,6 +415,13 @@ function cargarMenuFavoritosExplorar(carpetas) {
         "child_routes": null
     };
 
+    var invite = {
+        "menu_title": "Invite",
+        "menu_icon": "ti-plus",
+        "path": "/app/invite",
+        "child_routes": null
+    };
+
     var seccion;
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
@@ -436,6 +443,7 @@ function cargarMenuFavoritosExplorar(carpetas) {
    
     
     menu.category1.push(configuracion);
+    menu.category1.push(invite);
 
     localStorage.setItem("menuLoad", JSON.stringify(menu));
 }

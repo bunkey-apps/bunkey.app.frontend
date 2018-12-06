@@ -121,7 +121,12 @@ function cargarMenu(carpetas) {
         "path": "/app/configuracion",
         "child_routes": null
     };
-
+    var invite = {
+        "menu_title": "Invite",
+        "menu_icon": "ti-plus",
+        "path": "/app/invite",
+        "child_routes": null
+    };
     var seccion;
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
@@ -151,7 +156,7 @@ function cargarMenu(carpetas) {
    
    
     menu.category1.push(configuracion);
-
+    menu.category1.push(invite);
     localStorage.setItem("menuLoad", JSON.stringify(menu));
 }
 
@@ -192,6 +197,13 @@ function cargarMenuFavoritos(carpetas) {
         "child_routes": null
     };
 
+    var invite = {
+        "menu_title": "Invite",
+        "menu_icon": "ti-plus",
+        "path": "/app/invite",
+        "child_routes": null
+    };
+
     var seccion;
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
@@ -219,6 +231,7 @@ function cargarMenuFavoritos(carpetas) {
    
     
     menu.category1.push(configuracion);
+    menu.category1.push(invite);
 
     localStorage.setItem("menuLoad", JSON.stringify(menu));
 }
