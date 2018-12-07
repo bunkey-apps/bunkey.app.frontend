@@ -509,3 +509,137 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
             dispatch({ type: AGREGAR_FAVORITOS_FAILURE});
         })
 }
+
+
+
+
+export const uploadExplorarMultipleFile = (files,position) => (dispatch) => {
+    console.log('uploadMultipleFile');
+    dispatch({ type: GET_OBJECT });
+    if(!position){
+        position = 0;
+        console.log('no existe');
+    }
+
+    console.log('position',position);
+    console.log('files',files);
+    if(position < files.length){
+        dispatch(uploadExplorarFile(files[position],position, files))
+    }else{
+        dispatch(getObjects());
+    }
+   
+
+
+
+}
+export const uploadExplorarFile = (file, position, files) => (dispatch) => {
+    console.log('uploadFile');
+   
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
+    });
+
+
+    console.log('file.type', file.type);
+    var tipoArr = file.type.split('/');
+
+    instance2.post('/v1/url-signature', {
+        clientId: clienteSelectJson._id,
+        extention: tipoArr[1],
+        mimeType: file.type
+    })
+        .then((response) => {
+            console.log('response user', response);
+            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files))
+            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
+
+        })
+        .catch(error => {
+            // error handling
+            dispatch(uploadExplorarMultipleFile(files,position+1))
+            var tipoArrName = file.name.split('.');
+            NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArrName[0] + ' ocurrio un error al subirlo');
+           
+
+        })
+}
+export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files) => (dispatch) => {
+    console.log('addFile FORM', file);
+
+    // dispatch({ type: PUT_IMAGE });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('urlImage', urlImage);
+    var instance2 = axios.create({
+        baseURL: urlImage,
+        timeout: 3000,
+        body: file
+    });
+
+
+    var instance = axios.create();
+
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+        .then(function (result) {
+            console.log(result);
+            dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files))
+            //dispatch({ type: PUT_IMAGE_SUCCES});
+        })
+        .catch(function (err) {
+            dispatch(uploadExplorarMultipleFile(files,position+1))
+            var tipoArr = file.name.split('.');
+            NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' ocurrio un error al subirlo');
+           
+
+        });
+}
+
+
+export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, files) => (dispatch) => {
+    dispatch({ type: GET_OBJECT });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+
+    var tipoArr = file.name.split('.');
+
+
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+    const folderSelect = localStorage.getItem('folderSelect');
+    var   folderSelectJson = JSON.parse(folderSelect);
+    instance2.post('/v1/clients/' + clienteSelectJson._id + '/objects/' + folderSelectJson._id, {
+        'name': tipoArr[0],
+        "type": tipo,
+        "originalURL": futureFileURL,
+        "guid": guid
+    })
+        .then((response) => {
+            console.log('response updateFile', response);
+            console.log('position', position);
+            dispatch(uploadExplorarMultipleFile(files,position+1))
+            NotificationManager.success(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' Subido correctamente');
+        })
+        .catch(error => {
+            dispatch(uploadExplorarMultipleFile(files,position+1))
+
+            NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' ocurrio un error al subirlo');
+           
+        })
+}

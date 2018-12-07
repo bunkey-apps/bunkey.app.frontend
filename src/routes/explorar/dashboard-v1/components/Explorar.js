@@ -29,6 +29,8 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { Collapse } from 'reactstrap';
+import Dropzone from 'react-dropzone';
+
 // redux action
 import {
   getObjects,
@@ -37,7 +39,8 @@ import {
   removeObject,
   uploadArchivo,
   getObjectsByID,
-  agregarFavoritos
+  agregarFavoritos,
+  uploadExplorarMultipleFile
 } from '../../../../actions';
 
 
@@ -54,6 +57,15 @@ const data = [
   createData(3, '1111-03', 'Atrasado', '$ 600.000', 'Si')
 ];
 
+const styleDragFile = {
+  'position': 'relative',
+  'width': '100%',
+  'height': '200px',
+  'border-width': '2px',
+  'border-color': 'rgb(102, 102, 102)',
+  'border-style': 'dashed',
+  'border-radius': '5px'
+}
 
 
 class Explorar extends Component {
@@ -61,6 +73,7 @@ class Explorar extends Component {
   constructor() {
     super()
     this.state = {
+      files: [],
       addNewCustomerForm: false,
       editCustomerModal: false,
       archivoModal: false,
@@ -286,12 +299,16 @@ class Explorar extends Component {
   }
   onSubmitAddArchiveForm() {
     const { addNewCustomerDetails } = this.state;
-    if (addNewCustomerDetails.name !== '') {
-      this.setState({ archivoModal: false });
-      console.log('onSubmitAddArchiveForm', addNewCustomerDetails);
-      this.props.uploadArchivo(addNewCustomerDetails, this.state.file);
+    
+    
 
-    }
+    console.log('this.state.files',this.state.files);
+
+      if(this.state.files.length > 0){
+        this.setState({ archivoModal: false });
+        this.props.uploadExplorarMultipleFile(this.state.files);
+        this.state.files = [];
+      }
 
   }
 
@@ -529,6 +546,18 @@ class Explorar extends Component {
 
     }
 
+  }
+
+  onDrop(files) {
+    this.setState({
+      files
+    });
+  }
+
+  onCancel() {
+    this.setState({
+      files: []
+    })
   }
   render() {
     const { items, loading, userById, parents, imageVideos } = this.props;
@@ -908,23 +937,25 @@ class Explorar extends Component {
         </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-                <FormGroup>
-                  <Label for="name">Nombre</Label>
-                  <Input
-                    required="true"
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={addNewCustomerDetails.name}
-                    onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="avatar">Archivo</Label>
-                  <Input required="true" name="avatar" className="fileInput"
-                    type="file"
-                    onChange={(e) => this.handleImageChange(e)} />
-                </FormGroup>
+              <section>
+        <div className="dropzone">
+          <Dropzone
+          style={styleDragFile}
+            onDrop={this.onDrop.bind(this)}
+            onFileDialogCancel={this.onCancel.bind(this)}
+          >
+            <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
+          </Dropzone>
+        </div>
+        <aside>
+          <h2>Archivos seleccionados</h2>
+          <ul className="padding-10-px">
+            {
+              this.state.files.map(f => <li key={f.name}>{f.name}</li>)
+            }
+          </ul>
+        </aside>
+      </section>
               </Form>
 
             </ModalBody>
@@ -957,5 +988,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile
 })(Explorar));
