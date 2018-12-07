@@ -468,28 +468,7 @@ this.setState({ alertDialog: false });
 
             <h4 className="titulo-vistas-nombre-cliente"><b>Favoritos</b></h4>
             <div className="contextual-link">
-              <UncontrolledDropdown className="list-inline-item rct-dropdown">
-                <DropdownToggle caret nav className="dropdown-group-link">
-                  <a href="javascript:void(0)">Nuevo</a>
-
-                </DropdownToggle>
-                <DropdownMenu className="mt-15" right>
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <a href="javascript:void(0)" onClick={() => this.onAddCarpeta()}>
-                        <i className="ti-folder"></i>
-                        <IntlMessages id="Crear Carpeta" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)" onClick={() => this.cambiarAvatar()}>
-                        <i className="ti-archive"></i>
-                        <IntlMessages id="Subir Archivo" />
-                      </a>
-                    </li>
-                  </ul>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              
 
             </div>
           </div>
