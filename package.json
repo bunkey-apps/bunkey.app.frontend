@@ -76,6 +76,7 @@
     "react-dnd-html5-backend": "^2.6.0",
     "react-draft-wysiwyg": "^1.12.11",
     "react-dragula": "^1.1.17",
+    "react-dropzone": "^7.0.1",
     "react-epic-spinners": "^0.2.1",
     "react-intl": "^2.4.0",
     "react-joyride": "^1.11.4",
