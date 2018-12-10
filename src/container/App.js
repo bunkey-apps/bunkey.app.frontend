@@ -17,6 +17,7 @@ import MainApp from '../routes';
 // app signin
 import AppSignIn from './SigninFirebase';
 import AppSignUp from './SignupFirebase';
+import AppRegistro from '../routes/registro/components/Registro';
 
 // App locale
 import AppLocale from '../lang';
@@ -33,7 +34,8 @@ import {
   AsyncSessionForgotPasswordComponent,
   AsyncSessionPage404Component,
   AsyncSessionPage500Component,
-  AsyncTermsConditionComponent
+  AsyncTermsConditionComponent,
+  AsyncRegistroComponent
 } from '../components/AsyncComponent/AsyncComponent';
 
 /**
@@ -107,6 +109,7 @@ class App extends Component {
             <Route path="/session/404" component={AsyncSessionPage404Component} />
             <Route path="/session/500" component={AsyncSessionPage500Component} />
             <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
+            <Route path="/usuario-invitado" component={AppRegistro} />
           </React.Fragment>
         </IntlProvider>
       </MuiThemeProvider>

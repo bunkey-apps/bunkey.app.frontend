@@ -16,5 +16,8 @@ export * from './ConfiguracionActions';
 export * from './ExplorarActions';
 export * from './BusquedaActions';
 export * from './InviteActions';
+export * from './RegistroActions';
+
+
 
 

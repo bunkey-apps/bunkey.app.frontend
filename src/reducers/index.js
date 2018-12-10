@@ -17,6 +17,9 @@ import dashboardReducer from './DashboardReducer';
 import configuracionReducer from './ConfiguracionReducer';
 import explorarReducer from './ExplorarReducer';
 import busquedaReducer from './BusquedaReducer';
+import registroReducer from './RegistroReducer';
+
+
 
 
 const reducers = combineReducers({
@@ -34,7 +37,8 @@ const reducers = combineReducers({
   dashboard: dashboardReducer,
   configuracion: configuracionReducer,
   explorar: explorarReducer,
-  busqueda: busquedaReducer
+  busqueda: busquedaReducer,
+  registro: registroReducer
 });
 
 export default reducers;

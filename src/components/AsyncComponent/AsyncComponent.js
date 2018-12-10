@@ -338,6 +338,12 @@ const AsyncTermsConditionComponent = Loadable({
     loading: () => <RctPageLoader />,
 });
 
+const AsyncRegistroComponent = Loadable({
+    loader: () => import("../../routes/registro/index.js"),
+    loading: () => <RctPageLoader />,
+});
+
+
 /*---------------- Editor -------------------*/
 
 // editor quill
@@ -581,6 +587,7 @@ export {
     AsyncSessionPage404Component,
     AsyncSessionPage500Component,
     AsyncTermsConditionComponent,
+    AsyncRegistroComponent,
     AsyncQuillEditorComponent,
     AsyncWysiwygEditorComponent,
     AsyncFormElementsComponent,
