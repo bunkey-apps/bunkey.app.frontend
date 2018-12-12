@@ -14,7 +14,8 @@ import {
     UPDATE_CLIENTES_SUCCES,
     DELETE_CLIENTES,
     DELETE_CLIENTES_FAILURE,
-    DELETE_CLIENTES_SUCCES
+    DELETE_CLIENTES_SUCCES,
+    GET_CLIENTES_BY_ID_SUCCES
 } from './types';
 
 // app config
@@ -52,6 +53,69 @@ export const getClientes = () => (dispatch) => {
         })
 }
 
+
+export const getClientesById = (workClients,position,arrayClientes,history) => (dispatch) => {
+    console.log('getClientesById');
+    dispatch({ type: GET_CLIENTES });
+    if(!position){
+        position = 0;
+        console.log('no existe');
+    }
+
+    console.log('position',position);
+    console.log('workClients',workClients);
+    
+    
+    if(position < workClients.length){
+        dispatch(getClienteById(workClients[position],position, workClients,arrayClientes,history))
+    }else{
+        console.log('arrayClientes',arrayClientes);
+
+        if(arrayClientes.length > 1){
+            dispatch({ type: GET_CLIENTES_SUCCES, payload: arrayClientes });
+        }else{
+            localStorage.setItem("clienteSelect", JSON.stringify(arrayClientes[0]));
+            dispatch({ type: GET_CLIENTES_SUCCES, payload: [] });
+
+            history.push('/app/dashboard');
+        }
+
+        
+        
+    }
+   
+
+
+
+}
+
+export const getClienteById = (workClient,position,workClients, arrayClientes,history) => (dispatch) => {
+   
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.get('v1/clients/' + workClient)
+        .then((response) => {
+            console.log('response clients2',response);
+            arrayClientes.push(response.data);
+            dispatch(getClientesById(workClients,position+1,arrayClientes,history))
+            
+        })
+        .catch(error => {
+            // error handling
+            dispatch(getClientesById(workClients,position+1))
+           
+
+        })
+}
 
 
 /**

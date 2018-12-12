@@ -5,6 +5,7 @@
 import firebase from 'firebase';
 import { NotificationManager } from 'react-notifications';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import {
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
@@ -157,7 +158,7 @@ export const signinUserWithTwitter = (history) => (dispatch) => {
  * Redux Action To Signin User in signinUserWithBunkey
  */
 export const signinUserWithBunkey = (user, history) => (dispatch) => {
-    console.log('signinUserWithBunkey2',user);
+    console.log('signinUserWithBunkey24',user);
     dispatch({ type: LOGIN_USER });
     instance.post('v1/auth/sign-in',{
         email: user.email,
@@ -165,6 +166,17 @@ export const signinUserWithBunkey = (user, history) => (dispatch) => {
     .then((user) => {
         console.log('usuario es3',user);
         localStorage.setItem("user_id", JSON.stringify(user.data));
+        
+        var decode = jwtDecode(user.data.accessToken);
+        var rol;
+        if(decode.user.role === 'admin' || decode.user.role === 'editor'){
+            rol = 'admin';
+        }else{
+            rol = decode.user.role;
+        }
+        console.log('rollll',rol);
+        localStorage.setItem("tipoUsuario",rol);
+        localStorage.setItem("user_me", JSON.stringify(decode.user));
         dispatch({ type: LOGIN_USER_SUCCESS, payload: user.data });
         history.push('/');
         NotificationManager.success('Ingreso correcto');

@@ -153,10 +153,12 @@ function cargarMenu(carpetas) {
 
     }
 
-   
-   
-    menu.category1.push(configuracion);
-    menu.category1.push(invite);
+    var tipoUsuario = localStorage.getItem('tipoUsuario');
+    if(tipoUsuario === 'admin'){
+        menu.category1.push(configuracion);
+        menu.category1.push(invite);
+    }
+    
     localStorage.setItem("menuLoad", JSON.stringify(menu));
 }
 
@@ -229,9 +231,12 @@ function cargarMenuFavoritos(carpetas) {
     }
 
    
+    var tipoUsuario = localStorage.getItem('tipoUsuario');
+    if(tipoUsuario === 'admin'){
+        menu.category1.push(configuracion);
+        menu.category1.push(invite);
+    }
     
-    menu.category1.push(configuracion);
-    menu.category1.push(invite);
 
     localStorage.setItem("menuLoad", JSON.stringify(menu));
 }

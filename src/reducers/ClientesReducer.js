@@ -17,7 +17,8 @@ import {
     UPDATE_CLIENTES_SUCCES,
     DELETE_CLIENTES,
     DELETE_CLIENTES_FAILURE,
-    DELETE_CLIENTES_SUCCES
+    DELETE_CLIENTES_SUCCES,
+    GET_CLIENTES_BY_ID_SUCCES
 } from '../actions/types';
 
 /**
@@ -43,7 +44,12 @@ export default (state = INIT_STATE, action) => {
                 items: action.payload,
                 loading: false
             };
-
+            case GET_CLIENTES_BY_ID_SUCCES:
+            return {
+                ...state,
+                items: action.payload,
+                loading: false
+            };
         case ADD_CLIENTES:
             return { ...state, loading: false };
          case GET_CLIENTES_FAILURE:

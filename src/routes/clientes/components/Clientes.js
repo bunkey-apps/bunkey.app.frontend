@@ -30,7 +30,8 @@ import AppConfig from '../../../constants/AppConfig';
     getClientes,
     addClientes,
     updateClientes,
-    daleteClientes
+    daleteClientes,
+    getClientesById
   } from '../../../actions';
    
 
@@ -93,7 +94,24 @@ class Clientes extends Component {
       }
 
       componentWillMount() {
-        this.props.getClientes();
+        var tipoUsuario = localStorage.getItem('tipoUsuario');
+        if(tipoUsuario === 'admin'){
+            this.props.getClientes();
+           
+            
+        }else{
+            const { match, history } = this.props;
+            var userMe = localStorage.getItem('user_me');
+            var userMeJson = JSON.parse(userMe);
+            
+            console.log('userMeJson',userMeJson);
+            console.log('userMeJson',userMeJson.workClients);
+            if(userMeJson.workClients && userMeJson.workClients.length > 0){
+                this.props.getClientesById(userMeJson.workClients,0,[],history);
+            }
+        }
+        
+        
       }
      
       onAddClient() {
@@ -215,9 +233,8 @@ toggleEditCustomerModal = () => {
             <RctCollapsibleCard>
                 <div className={'rct-block-title'}>
                     <h4><b>Lista Clientes</b></h4>
-                    <div className="contextual-link">
-                        <a href="javascript:void(0)" onClick={() => this.onAddClient()}><i className="ti-plus"></i></a>
-                    </div>
+                    
+                    
                 </div>
             {loading &&
                 <div className="d-flex justify-content-center loader-overlay">
@@ -428,5 +445,5 @@ const mapStateToProps = ({ clientes }) => {
   }
   
   export default withRouter(connect(mapStateToProps, {
-    getClientes,addClientes,updateClientes,daleteClientes
+    getClientes,addClientes,updateClientes,daleteClientes, getClientesById
   })(Clientes));
