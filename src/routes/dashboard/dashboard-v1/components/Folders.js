@@ -598,18 +598,20 @@ this.setState({ alertDialog: false });
 
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + 'imagevideo-home'} holdToDisplay={1000}>
-
+                   
                       {n.type === 'image' &&
+                      
                         <GridListTile key={index}>
+                         <div className="heigth-div-objetos">
                           <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-
+                          </div>
                         </GridListTile>
 
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
-                          <div onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                            <Player ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
+                          <div className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                            <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                               <BigPlayButton position="center" />
                               <ControlBar disableDefaultControls={true} />
                               <source src={n.originalURL} />
@@ -621,7 +623,7 @@ this.setState({ alertDialog: false });
 
                       }
                     
-         
+                    
                          <p className="color-texto-carpetas-explorar">{n.name}</p>
                        
 

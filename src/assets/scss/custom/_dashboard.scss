@@ -203,10 +203,24 @@ select {
 }
 .imagenes-tam-grid{
   width: 100% !important;
-  height: 184px !important;
+  height: 184px;
   padding: 2px !important;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
 }
 
+.border-object-div{
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+}
+
+
+.heigth-div-objetos{
+  height: 184px !important;
+}
 .input-search-form-new{
     border-radius: 0rem !important;
     height: 37px!important;
