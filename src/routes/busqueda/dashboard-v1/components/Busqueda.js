@@ -58,6 +58,7 @@ class Busqueda extends Component {
   constructor() {
     super()
     this.state = {
+      isAdmin: false,
       busqueda: '',
       background: '',
       addNewCustomerForm: false,
@@ -116,11 +117,16 @@ class Busqueda extends Component {
   componentWillMount() {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
+    var tipoUsuario = localStorage.getItem('tipoUsuario');
+    var isAdmin = false;
+    if(tipoUsuario === 'admin'){
+      isAdmin = true;
+    }
     if (clienteSelectJson) {
       console.log('header', clienteSelectJson.acountSetting.background);
-      this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '' });
+      this.setState({ background: clienteSelectJson.acountSetting.background, busqueda: '', isAdmin: isAdmin });
     } else {
-      this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '' });
+      this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '', isAdmin: isAdmin });
     }
 
     this.props.getSearch();
@@ -483,6 +489,7 @@ class Busqueda extends Component {
     const { urlVideo } = this.state;
     const { posicion } = this.state;
     const { author } = this.state;
+    const { isAdmin } = this.state;
     const { background } = this.state;
     const { busqueda } = this.state;
     const { tipoObject } = this.state;
@@ -597,10 +604,12 @@ class Busqueda extends Component {
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
+                    {isAdmin && 
                     <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                       <span className="padding-click-derecho">Eliminar</span>
                     </MenuItem>
+                    }
                   </ContextMenu>
                 </div>
 
@@ -671,10 +680,12 @@ class Busqueda extends Component {
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                       </MenuItem>
+                      {isAdmin && 
                       <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                         <span className="padding-click-derecho">Eliminar</span>
                       </MenuItem>
+                      }
                     </ContextMenu>
 
                     {(posicion === index && !n.createRowCollapse) &&

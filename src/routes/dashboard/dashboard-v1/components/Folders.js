@@ -74,6 +74,7 @@ class Folders extends Component {
   constructor() {
     super()
     this.state = {
+      isAdmin: false,
       files: [],
       addNewCustomerForm: false,
       editCustomerModal: false,
@@ -116,11 +117,16 @@ class Folders extends Component {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
+    var tipoUsuario = localStorage.getItem('tipoUsuario');
+    var isAdmin = false;
+    if(tipoUsuario === 'admin'){
+      isAdmin = true;
+    }
     if(clienteSelectJson){
-      this.setState({nombreCliente : clienteSelectJson.name});
+      this.setState({nombreCliente : clienteSelectJson.name, isAdmin: isAdmin});
 
     }else{
-      this.setState({nombreCliente : 'Bunkey'});
+      this.setState({nombreCliente : 'Bunkey', isAdmin: isAdmin});
 
     }
       /*  setTimeout(() => {
@@ -492,6 +498,7 @@ this.setState({ alertDialog: false });
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
+    const { isAdmin } = this.state;
     const { author } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
@@ -579,10 +586,14 @@ this.setState({ alertDialog: false });
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
+                    {isAdmin && 
+                    
                     <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                       <span className="padding-click-derecho">Eliminar</span>
                     </MenuItem>
+                    }
+                    
                   </ContextMenu>
                 </div>
 
@@ -660,10 +671,12 @@ this.setState({ alertDialog: false });
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                       </MenuItem>
+                      {isAdmin && 
                       <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                         <span className="padding-click-derecho">Eliminar</span>
                       </MenuItem>
+                      }
                     </ContextMenu>
 
                     {(posicion === index && !n.createRowCollapse) &&

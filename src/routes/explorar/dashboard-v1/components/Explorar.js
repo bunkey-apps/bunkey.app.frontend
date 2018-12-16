@@ -73,6 +73,7 @@ class Explorar extends Component {
   constructor() {
     super()
     this.state = {
+      isAdmin: false,
       files: [],
       addNewCustomerForm: false,
       editCustomerModal: false,
@@ -142,14 +143,18 @@ class Explorar extends Component {
       this.props.getObjects();
     }
 
-
+    var tipoUsuario = localStorage.getItem('tipoUsuario');
+    var isAdmin = false;
+    if(tipoUsuario === 'admin'){
+      isAdmin = true;
+    }
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     if (qs.name) {
-      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name });
+      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name , isAdmin: isAdmin});
 
     } else if (clienteSelectJson) {
-      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name });
+      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name , isAdmin: isAdmin});
 
     } else {
       this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
@@ -565,6 +570,7 @@ class Explorar extends Component {
     const { urlVideo } = this.state;
     const { posicion } = this.state;
     const { author } = this.state;
+    const { isAdmin } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -663,10 +669,12 @@ class Explorar extends Component {
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
+                    {isAdmin && 
                     <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                       <span className="padding-click-derecho">Eliminar</span>
                     </MenuItem>
+                    }
                   </ContextMenu>
                 </div>
 
@@ -737,10 +745,12 @@ class Explorar extends Component {
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                       </MenuItem>
+                      {isAdmin && 
                       <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
                         <span className="padding-click-derecho">Eliminar</span>
                       </MenuItem>
+                      }
                     </ContextMenu>
 
                     {(posicion === index && !n.createRowCollapse) &&
