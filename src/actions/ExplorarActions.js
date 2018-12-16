@@ -24,6 +24,45 @@ import {
 import AppConfig from '../constants/AppConfig';
 
 
+export const getObjectsByHideID = (idUrl) => (dispatch) => {
+    
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+
+    const folderSelect = localStorage.getItem('folderSelect');
+    var   folderSelectJson = JSON.parse(folderSelect);
+
+    console.log('folderSelectJson',folderSelectJson);
+
+    if(!clienteSelectJson){
+        clienteSelectJson = {
+            _id : '1'
+        }
+    }
+
+   
+
+
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+   
+    instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects/' +  idUrl)
+        .then((response) => {
+            
+
+          console.log('getObjectsByHideID succes',response);
+            
+        })
+        .catch(error => {
+           
+        })
+}
 
 
 export const getObjectsByID = (idUrl) => (dispatch) => {

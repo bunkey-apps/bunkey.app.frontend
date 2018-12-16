@@ -40,7 +40,8 @@ import {
   uploadArchivo,
   getObjectsByID,
   agregarFavoritos,
-  uploadExplorarMultipleFile
+  uploadExplorarMultipleFile,
+  getObjectsByHideID
 } from '../../../../actions';
 
 
@@ -73,6 +74,7 @@ class Explorar extends Component {
   constructor() {
     super()
     this.state = {
+      selectObject: [],
       isAdmin: false,
       files: [],
       addNewCustomerForm: false,
@@ -427,7 +429,7 @@ class Explorar extends Component {
       }
       this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
     } else {
-
+      this.props.getObjectsByHideID(objecto._id);
 
       if (objecto.type === 'video') {
 
@@ -484,21 +486,21 @@ class Explorar extends Component {
     if (this.state.posicion > 0) {
       var index = this.state.posicion - 1;
       console.log('entra', imageVideos[index].name);
-
+      this.props.getObjectsByHideID(imageVideos[index]._id);
 
       if (imageVideos[index].type === 'video') {
 
         this.setState({ tipoObject: 'image' });
 
-
+       
         setTimeout(() => {
 
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type , selectObject: imageVideos[index] });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type , selectObject: imageVideos[index] });
 
       }
 
@@ -522,7 +524,7 @@ class Explorar extends Component {
       var index = this.state.posicion + 1;
 
       console.log('entra', imageVideos[index].name);
-
+      this.props.getObjectsByHideID(imageVideos[index]._id);
       if (imageVideos[index].type === 'video') {
 
         this.setState({ tipoObject: 'image' });
@@ -530,12 +532,12 @@ class Explorar extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]   });
 
       }
 
@@ -999,5 +1001,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID
 })(Explorar));

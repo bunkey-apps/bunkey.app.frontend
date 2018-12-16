@@ -41,7 +41,8 @@ import {
   subirArchivo,
   addFavoritos,
   getFavoritos,
-  daleteFavoritos
+  daleteFavoritos,
+  getObjectsByHideID
 } from '../../../../actions';
 
 
@@ -65,6 +66,7 @@ class Favoritos extends Component {
   constructor() {
     super()
     this.state = {
+      selectObject: [],
       addNewCustomerForm: false,
       editCustomerModal: false,
       archivoModal: false,
@@ -323,7 +325,7 @@ this.setState({ alertDialog: false });
         }
         this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
       } else {
-  
+        this.props.getObjectsByHideID(objecto._id);
   
         if (objecto.type === 'video') {
   
@@ -380,7 +382,7 @@ this.setState({ alertDialog: false });
       if (this.state.posicion > 0) {
         var index = this.state.posicion - 1;
         console.log('entra', imageVideosFavoritos[index].name);
-  
+        this.props.getObjectsByHideID(imageVideosFavoritos[index]._id);
   
         if (imageVideosFavoritos[index].type === 'video') {
   
@@ -389,12 +391,12 @@ this.setState({ alertDialog: false });
   
           setTimeout(() => {
   
-            this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type });
+            this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type, selectObject: imageVideosFavoritos[index] });
   
   
           }, 100);
         } else {
-          this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type });
+          this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type, selectObject: imageVideosFavoritos[index] });
   
         }
   
@@ -416,7 +418,7 @@ this.setState({ alertDialog: false });
   
   
         var index = this.state.posicion + 1;
-  
+        this.props.getObjectsByHideID(imageVideosFavoritos[index]._id);
         console.log('entra', imageVideosFavoritos[index].name);
   
         if (imageVideosFavoritos[index].type === 'video') {
@@ -426,12 +428,12 @@ this.setState({ alertDialog: false });
   
           setTimeout(() => {
   
-            this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type });
+            this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type, selectObject: imageVideosFavoritos[index]  });
   
   
           }, 100);
         } else {
-          this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type });
+          this.setState({ collapse: imageVideosFavoritos[index].rowCollapse, urlVideo: imageVideosFavoritos[index].originalURL, author: imageVideosFavoritos[index].name, marginLeftCollap: imageVideosFavoritos[index].marginLeft, posicion: index, tipoObject: imageVideosFavoritos[index].type, selectObject: imageVideosFavoritos[index]  });
   
         }
   
@@ -820,5 +822,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, daleteFavoritos
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, daleteFavoritos, getObjectsByHideID
 })(Favoritos));

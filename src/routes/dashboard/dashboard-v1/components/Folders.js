@@ -41,7 +41,8 @@ import {
   subirArchivo,
   addFavoritos,
   getFavoritos,
-  uploadMultipleFile
+  uploadMultipleFile,
+  getObjectsByHideID
 } from '../../../../actions';
 
 
@@ -74,6 +75,7 @@ class Folders extends Component {
   constructor() {
     super()
     this.state = {
+      selectObject: [],
       isAdmin: false,
       files: [],
       addNewCustomerForm: false,
@@ -357,7 +359,7 @@ this.setState({ alertDialog: false });
         this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
       } else {
   
-  
+        this.props.getObjectsByHideID(objecto._id);
         if (objecto.type === 'video') {
   
           this.setState({ tipoObject: 'image' });
@@ -413,7 +415,7 @@ this.setState({ alertDialog: false });
       if (this.state.posicion > 0) {
         var index = this.state.posicion - 1;
         console.log('entra', imageVideos[index].name);
-  
+        this.props.getObjectsByHideID(imageVideos[index]._id);
   
         if (imageVideos[index].type === 'video') {
   
@@ -422,12 +424,12 @@ this.setState({ alertDialog: false });
   
           setTimeout(() => {
   
-            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
   
   
           }, 100);
         } else {
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
   
         }
   
@@ -451,7 +453,7 @@ this.setState({ alertDialog: false });
         var index = this.state.posicion + 1;
   
         console.log('entra', imageVideos[index].name);
-  
+        this.props.getObjectsByHideID(imageVideos[index]._id);
         if (imageVideos[index].type === 'video') {
   
           this.setState({ tipoObject: 'image' });
@@ -459,12 +461,12 @@ this.setState({ alertDialog: false });
   
           setTimeout(() => {
   
-            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
   
   
           }, 100);
         } else {
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
   
         }
   
@@ -927,5 +929,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID
 })(Folders));
