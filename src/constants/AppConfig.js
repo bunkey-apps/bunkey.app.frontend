@@ -5,7 +5,7 @@ const AppConfig = {
     appLogo: require('../assets/img/logo_bunkey-w.svg'),          // App Logo
     appUrl: 'http://reactify.theironnetwork.org',             // App Url
     brandName: 'Reactify',                                    // Brand Name
-    navCollapsed: false,                                      // Sidebar collapse
+    navCollapsed: true,                                      // Sidebar collapse
     darkMode: false,                                          // Dark Mode
     boxLayout: false,                                         // Box Layout
     rtlLayout: false,                                         // RTL Layout

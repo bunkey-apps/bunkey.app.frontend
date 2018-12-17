@@ -244,7 +244,7 @@ class Recientes extends Component {
                                 return (n.type === 'image' || n.type === 'video') ?
 
                                     <GridListTile key={index}>
-                                            {index}
+                                          
                                             {n.type === 'image' &&
                                                 <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                                             }
