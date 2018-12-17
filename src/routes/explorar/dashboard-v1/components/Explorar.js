@@ -156,7 +156,16 @@ class Explorar extends Component {
       this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: qs.name , isAdmin: isAdmin});
 
     } else if (clienteSelectJson) {
-      this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name , isAdmin: isAdmin});
+      const folderSelect = localStorage.getItem('folderSelect');
+      var folderSelectJson = JSON.parse(folderSelect);
+      if (folderSelectJson.name === 'home') {
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name , isAdmin: isAdmin});
+
+      } else {
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name , isAdmin: isAdmin});
+
+      }
+      
 
     } else {
       this.setState({ nombreCliente: 'Bunkey', nombreFolder: 'Bunkey' });
