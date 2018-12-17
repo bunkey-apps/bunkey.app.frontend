@@ -23,7 +23,10 @@ import {
     DELETE_FOLDERS_SUCCES,
     ADD_FAVORITOS,
     ADD_FAVORITOS_SUCCES,
-    ADD_FAVORITOS_FAILURE
+    ADD_FAVORITOS_FAILURE,
+    GET_RECIENTES,
+    GET_RECIENTES_FAILURE,
+    GET_RECIENTES_SUCCES
 } from '../actions/types';
 
 /**
@@ -32,13 +35,15 @@ import {
 const INIT_STATE = {
     loading: false,
     loadingFavoritos: false,
+    loadingRecientes: false,
     items: [],
     userById: [],
     favoritos: [],
     parents: [],
     imageVideos: [],
     parentsFavoritos: [],
-    imageVideosFavoritos: []
+    imageVideosFavoritos: [],
+    recientes: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -121,6 +126,22 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 loadingFavoritos: false
+                
+            };
+
+            case GET_RECIENTES:
+            return { ...state, loadingRecientes: true };
+
+        case GET_RECIENTES_SUCCES:
+            return { ...state,
+                loadingRecientes: false,
+                recientes: action.recientes
+                 };
+        // get Contratos
+        case GET_RECIENTES_FAILURE:
+            return {
+                ...state,
+                loadingRecientes: false
                 
             };
         default: return { ...state };

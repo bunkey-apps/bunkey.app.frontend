@@ -46,6 +46,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Inp
 
 import Folders from './components/Folders';
 import Favoritos from './components/Favoritos';
+import Recientes from './components/Recientes';
 
 
 
@@ -124,88 +125,8 @@ export default class DashboardOne extends Component {
     return (
       <div className="dashboard-v1">
         
+<Recientes />
 
-        <RctCollapsibleCard>
-          <div className={'rct-block-title'}>
-            <h4 className="titulo-vistas-recientemente"><b>Vistos Recientemente</b></h4>
-
-          </div>
-
-
-
-        
-
-
-{false &&
-  <div>
-  <GridList className="grid-list-videos" cols={4.5}>
-    {tileData.map((tile, index) => (
-      <GridListTile key={tile.img}>
-        <img src={tile.img} alt={tile.title} onClick={() => this.onCollapse(tile)} />
-
-        <GridListTileBar
-          title={tile.title}
-
-          actionIcon={
-            <div>
-              <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-              <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-              <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
-
-            </div>
-
-          }
-        />
-      </GridListTile>
-    ))}
-  </GridList>
-
-  <br></br>
-  <br></br>
-
-
-  <Collapse isOpen={collapse}>
-    <div className="row row-eq-height text-center fondo-videos-seleccionado collapse" id="collapseExample">
-      <div className="col-sm-2 col-md-1 col-lg-2">
-
-      </div>
-      <div className="col-sm-6 col-md-5 col-lg-6">
-        <div className="embed-responsive embed-responsive-16by9">
-          <iframe className="embed-responsive-item" src={urlVideo} ></iframe>
-
-
-        </div>
-      </div>
-      <div className="col-sm-4 col-md-3 col-lg-4">
-        <div className="fondo-videos-padding-top-desc">
-          <h3 className="text-white">{author}</h3>
-
-        </div>
-        <div>
-          <b className="text-white">{title}</b>
-          <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-          <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-          <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
-        </div>
-
-      </div>
-
-    </div>
-
-  </Collapse>
-
-
-</div>
-
-}
-         
-
-             
-
-
-
-
-        </RctCollapsibleCard>
 
 
        <Folders/>

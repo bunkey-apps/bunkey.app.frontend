@@ -22,7 +22,10 @@ import {
     DELETE_FOLDERS_SUCCES,
     ADD_FAVORITOS,
     ADD_FAVORITOS_SUCCES,
-    ADD_FAVORITOS_FAILURE
+    ADD_FAVORITOS_FAILURE,
+    GET_RECIENTES,
+    GET_RECIENTES_FAILURE,
+    GET_RECIENTES_SUCCES
 
 } from './types';
 
@@ -756,5 +759,57 @@ export const updateObjeto = (futureFileURL, detalle, tipo, guid) => (dispatch) =
         .catch(error => {
             dispatch({ type: GET_FOLDERS_FAILURE })
             NotificationManager.error('A ocurrido un error, intente mas tarde.');
+        })
+}
+
+
+/**
+ * Redux Action To Get Contratos
+ */
+export const getRecientes = () => (dispatch) => {
+    dispatch({ type: GET_RECIENTES });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.get('/v1/users/me/clients/' + clienteSelectJson._id + '/recent')
+        .then((response) => {
+            console.log('response getRecientes', response);
+            var arrImageVideo = [];
+            var cont = 0;
+            var collapseRows = 0;
+            if(response.data){
+                for(var i=0;i<response.data.length;i++){
+                    if(response.data[i].type === 'video' || response.data[i].type === 'image'){
+                        console.log('response.data[i]',response.data[i]);
+                        
+                        
+                           
+                     
+
+
+                        
+                        response.data[i].rowCollapse = 'collapse' + collapseRows;
+
+                        arrImageVideo.push(response.data[i]);
+                        collapseRows ++;
+                    }
+                }
+                
+            }
+            dispatch({ type: GET_RECIENTES_SUCCES, recientes: arrImageVideo  });
+
+        })
+        .catch(error => {
+            // error handling
+            dispatch({ type: GET_RECIENTES_FAILURE });
         })
 }
