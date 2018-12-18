@@ -42,7 +42,8 @@ import {
   addFavoritos,
   getFavoritos,
   uploadMultipleFile,
-  getObjectsByHideID
+  getObjectsByHideID,
+  uploadMultipleFileDescription
 } from '../../../../actions';
 
 
@@ -75,6 +76,8 @@ class Folders extends Component {
   constructor() {
     super()
     this.state = {
+      copyRight: 'free',
+      filePDF: [],
       selectObject: [],
       isAdmin: false,
       files: [],
@@ -86,6 +89,7 @@ class Folders extends Component {
       alertDialog: false,
       file: '',
       imagePreviewUrl: '',
+      pdfPreviewUrl: '',
       nombreCliente: '',
       nombreFolder: '',
       collapse: '-1',
@@ -108,10 +112,10 @@ class Folders extends Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
-    
+
   }
 
-  
+
   componentWillMount() {
     //this.props.getFavoritos();
     this.props.getFolders();
@@ -121,24 +125,24 @@ class Folders extends Component {
     const clienteSelectJson = JSON.parse(clienteSelect);
     var tipoUsuario = localStorage.getItem('tipoUsuario');
     var isAdmin = false;
-    if(tipoUsuario === 'admin'){
+    if (tipoUsuario === 'admin') {
       isAdmin = true;
     }
-    if(clienteSelectJson){
-      this.setState({nombreCliente : clienteSelectJson.name, isAdmin: isAdmin});
+    if (clienteSelectJson) {
+      this.setState({ nombreCliente: clienteSelectJson.name, isAdmin: isAdmin });
 
-    }else{
-      this.setState({nombreCliente : 'Bunkey', isAdmin: isAdmin});
+    } else {
+      this.setState({ nombreCliente: 'Bunkey', isAdmin: isAdmin });
 
     }
-      /*  setTimeout(() => {
-         const { items} = this.props;
-         console.log('items',items);
-         this.props.getUserById(items._id);
-     }, 1000);*/
+    /*  setTimeout(() => {
+       const { items} = this.props;
+       console.log('items',items);
+       this.props.getUserById(items._id);
+   }, 1000);*/
   }
 
-  
+
 
   onAddCarpeta() {
     this.setState({
@@ -157,7 +161,7 @@ class Folders extends Component {
       }
 
     });
-   
+
 
   }
 
@@ -191,7 +195,7 @@ class Folders extends Component {
     this.onSubmitAddNewCustomerForm();
   }
 
-  
+
   handleSubmitSubir(event) {
     event.preventDefault();
     this.onSubmitAddArchiveForm();
@@ -208,18 +212,18 @@ class Folders extends Component {
 
   }
 
-  
+
 
   handleClickFavoritos(folder) {
     console.log('handleClickFavoritos', folder);
     this.props.addFavoritos(folder);
-    
+
 
   }
   deleteCustomer() {
-    this.setState({ alertDialog: false});
- 
-    console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
+    this.setState({ alertDialog: false });
+
+    console.log('this.state.selectedDeletedCustomer', this.state.selectedDeletedCustomer);
     this.props.daleteObject(this.state.selectedDeletedCustomer);
 
 
@@ -228,10 +232,10 @@ class Folders extends Component {
   }
 
   // close alert
-handleClose = () => {
-  console.log('handleClose');
-this.setState({ alertDialog: false });
-}
+  handleClose = () => {
+    console.log('handleClose');
+    this.setState({ alertDialog: false });
+  }
 
   onSubmitCustomerEditDetailForm() {
     const { editCustomer } = this.state;
@@ -240,7 +244,7 @@ this.setState({ alertDialog: false });
       this.setState({ editCustomerModal: false });
       console.log('editCustomer', editCustomer);
       this.props.cambiarNombreObject(editCustomer);
-     
+
 
     }
   }
@@ -250,25 +254,25 @@ this.setState({ alertDialog: false });
       this.setState({ editCustomerModal: false });
       console.log('addNewCustomerDetails', addNewCustomerDetails);
       this.props.createFolder(addNewCustomerDetails);
-  
+
     }
   }
   onSubmitAddArchiveForm() {
     const { addNewCustomerDetails } = this.state;
-    console.log('this.state.files',this.state.files);
+    console.log('this.state.files', this.state.files);
+    console.log('copyRight', this.state.copyRight);
+    if (this.state.files.length > 0) {
+      this.setState({ archivoModal: false });
+      this.props.uploadMultipleFileDescription( this.state);
+      //this.state.files = [];
+    }
 
-      if(this.state.files.length > 0){
-        this.setState({ archivoModal: false });
-        this.props.uploadMultipleFile(this.state.files);
-        this.state.files = [];
-      }
-     
-  
-    
-  
+
+
+
   }
 
-  
+
   onChangeCustomerAddNewForm(key, value) {
     this.setState({
       addNewCustomerDetails: {
@@ -301,200 +305,215 @@ this.setState({ alertDialog: false });
 
   handleClickDelete(customer) {
     this.setState({ alertDialog: true, selectedDeletedCustomer: customer });
-    }
+  }
 
 
-    goToImagenes= (n) => {
-      console.log('objecto',n);
-      localStorage.setItem("folderSelect", JSON.stringify(n));
-      const { match, history } = this.props;
+  goToImagenes = (n) => {
+    console.log('objecto', n);
+    localStorage.setItem("folderSelect", JSON.stringify(n));
+    const { match, history } = this.props;
     history.push('/app/exlporar');
-  
-    }
 
-    handleImageChange(e) {
-      e.preventDefault();
-  
-      let reader = new FileReader();
-      let file = e.target.files[0];
-  
-      reader.onloadend = () => {
-        this.setState({
-          file: file,
-          imagePreviewUrl: reader.result
-        });
-        console.log(this.state);
-      }
-      reader.readAsDataURL(file)
-  
+  }
+
+  handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+      console.log(this.state);
     }
+    reader.readAsDataURL(file)
+
+  }
+
+  handlePDFChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let filePDF = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        filePDF: filePDF,
+        pdfPreviewUrl: reader.result
+      });
+      console.log(this.state);
+    }
+    reader.readAsDataURL(filePDF)
+
+  }
 
 
+  mouseOver(id) {
+    console.log("Mouse over!!!", id);
+
+    this.refs['player' + id].play();
+  }
+  mouseOut(id) {
+    console.log("Mouse out!!!", this.refs['player' + id]);
+    this.refs['player' + id].pause();
+  }
+
+  handleClickFavoritos(folder) {
+    console.log('handleClickFavoritos', folder);
+    this.props.addFavoritos(folder);
 
 
-    mouseOver(id) {
-      console.log("Mouse over!!!", id);
-      
-      this.refs['player' + id].play();
-    }
-    mouseOut(id) {
-      console.log("Mouse out!!!", this.refs['player' + id]);
-      this.refs['player' + id].pause();
-    }
-  
-    handleClickFavoritos(folder) {
-      console.log('handleClickFavoritos', folder);
-      this.props.addFavoritos(folder);
-  
-  
-    }
-  
-    onCollapse(objecto, index) {
-      console.log('objecto', objecto);
-  
-      if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
-        if (this.state.tipoObject === 'video') {
-          this.refs.playerCollapse.pause();
-        }
-        this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
-      } else {
-  
-        this.props.getObjectsByHideID(objecto._id);
-        if (objecto.type === 'video') {
-  
-          this.setState({ tipoObject: 'image' });
-  
-  
-          setTimeout(() => {
-  
-            this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
-  
-  
-          }, 100);
-        } else {
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
-  
-        }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-        setTimeout(() => {
-          console.log('objecto[index].rowCollapse', objecto.rowCollapse);
-          this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
-  
-        }, 500);
-  
-  
-      }
-  
-    }
-  
-    closeCollapse() {
-  
+  }
+
+  onCollapse(objecto, index) {
+    console.log('objecto', objecto);
+
+    if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
         this.refs.playerCollapse.pause();
       }
-  
-  
       this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
-  
-    }
-  
-    onBack() {
-      const { imageVideos } = this.props;
-  
-      console.log('bkacj imageVideos', imageVideos);
-  
-      if (this.state.posicion > 0) {
-        var index = this.state.posicion - 1;
-        console.log('entra', imageVideos[index].name);
-        this.props.getObjectsByHideID(imageVideos[index]._id);
-  
-        if (imageVideos[index].type === 'video') {
-  
-          this.setState({ tipoObject: 'image' });
-  
-  
-          setTimeout(() => {
-  
-            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
-  
-  
-          }, 100);
-        } else {
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
-  
-        }
-  
-  
+    } else {
+
+      this.props.getObjectsByHideID(objecto._id);
+      if (objecto.type === 'video') {
+
+        this.setState({ tipoObject: 'image' });
+
+
         setTimeout(() => {
-          this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
-  
-        }, 500);
-  
+
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+
+
+        }, 100);
+      } else {
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+
       }
-  
-    }
-    onNext() {
-      const { imageVideos } = this.props;
-      console.log('next imageVideos', imageVideos);
-  
-      if (imageVideos.length - 1 > this.state.posicion) {
-  
-  
-  
-        var index = this.state.posicion + 1;
-  
-        console.log('entra', imageVideos[index].name);
-        this.props.getObjectsByHideID(imageVideos[index]._id);
-        if (imageVideos[index].type === 'video') {
-  
-          this.setState({ tipoObject: 'image' });
-  
-  
-          setTimeout(() => {
-  
-            this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
-  
-  
-          }, 100);
-        } else {
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
-  
-        }
-  
-  
-  
-        setTimeout(() => {
-          this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
-  
-  
-  
-        }, 500);
-  
-  
-      }
-  
+
+
+
+
+
+
+
+
+
+
+      setTimeout(() => {
+        console.log('objecto[index].rowCollapse', objecto.rowCollapse);
+        this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+      }, 500);
+
+
     }
 
-    onDrop(files) {
-      this.setState({
-        files
-      });
+  }
+
+  closeCollapse() {
+
+    if (this.state.tipoObject === 'video') {
+      this.refs.playerCollapse.pause();
     }
-  
-    onCancel() {
-      this.setState({
-        files: []
-      })
+
+
+    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+
+  }
+
+  onBack() {
+    const { imageVideos } = this.props;
+
+    console.log('bkacj imageVideos', imageVideos);
+
+    if (this.state.posicion > 0) {
+      var index = this.state.posicion - 1;
+      console.log('entra', imageVideos[index].name);
+      this.props.getObjectsByHideID(imageVideos[index]._id);
+
+      if (imageVideos[index].type === 'video') {
+
+        this.setState({ tipoObject: 'image' });
+
+
+        setTimeout(() => {
+
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
+
+
+        }, 100);
+      } else {
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
+
+      }
+
+
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+      }, 500);
+
     }
+
+  }
+  onNext() {
+    const { imageVideos } = this.props;
+    console.log('next imageVideos', imageVideos);
+
+    if (imageVideos.length - 1 > this.state.posicion) {
+
+
+
+      var index = this.state.posicion + 1;
+
+      console.log('entra', imageVideos[index].name);
+      this.props.getObjectsByHideID(imageVideos[index]._id);
+      if (imageVideos[index].type === 'video') {
+
+        this.setState({ tipoObject: 'image' });
+
+
+        setTimeout(() => {
+
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
+
+
+        }, 100);
+      } else {
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
+
+      }
+
+
+
+      setTimeout(() => {
+        this.refs[imageVideos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+
+
+      }, 500);
+
+
+    }
+
+  }
+
+  onDrop(files) {
+    this.setState({
+      files
+    });
+  }
+
+  onCancel() {
+    this.setState({
+      files: []
+    })
+  }
   render() {
     const { items, loading, userById, parents, imageVideos } = this.props;
     const { collapse } = this.state;
@@ -502,6 +521,9 @@ this.setState({ alertDialog: false });
     const { posicion } = this.state;
     const { isAdmin } = this.state;
     const { author } = this.state;
+    const { copyRight } = this.state;
+
+
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -565,7 +587,7 @@ this.setState({ alertDialog: false });
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder-home'} className="click-derecho-bunkey">
-                    
+
                     <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
@@ -588,14 +610,14 @@ this.setState({ alertDialog: false });
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
-                    {isAdmin && 
-                    
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
-                    </MenuItem>
+                    {isAdmin &&
+
+                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                        <span className="padding-click-derecho">Eliminar</span>
+                      </MenuItem>
                     }
-                    
+
                   </ContextMenu>
                 </div>
 
@@ -611,12 +633,12 @@ this.setState({ alertDialog: false });
 
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + 'imagevideo-home'} holdToDisplay={1000}>
-                   
+
                       {n.type === 'image' &&
-                      
+
                         <GridListTile key={index}>
-                         <div className="heigth-div-objetos">
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                          <div className="heigth-div-objetos">
+                            <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
 
@@ -635,19 +657,19 @@ this.setState({ alertDialog: false });
                         </GridListTile>
 
                       }
-                    
-                    
-                         <p className="color-texto-carpetas-explorar">{n.name}</p>
-                       
 
 
-                    
+                      <p className="color-texto-carpetas-explorar">{n.name}</p>
+
+
+
+
 
 
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank','download=true')}} data={{ item: { index } }}>
+                      <MenuItem onClick={() => { window.open(n.originalURL, '_blank', 'download=true') }} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>
@@ -673,11 +695,11 @@ this.setState({ alertDialog: false });
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                       </MenuItem>
-                      {isAdmin && 
-                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
+                      {isAdmin &&
+                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                          <span className="padding-click-derecho">Eliminar</span>
+                        </MenuItem>
                       }
                     </ContextMenu>
 
@@ -790,25 +812,25 @@ this.setState({ alertDialog: false });
 
 
 
-<Dialog
-                    open={alertDialog}
-                    onClose={this.handleClose}
-                >
-                    <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                           Estas seguro de eliminarlo de forma permanente.
+        <Dialog
+          open={alertDialog}
+          onClose={this.handleClose}
+        >
+          <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Estas seguro de eliminarlo de forma permanente.
                         </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="raised"  onClick={this.handleClose} className="btn-danger text-white">
-                            <IntlMessages id="button.cancel" />
-                        </Button>
-                        <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
-                            <IntlMessages id="button.yes" />
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="raised" onClick={this.handleClose} className="btn-danger text-white">
+              <IntlMessages id="button.cancel" />
+            </Button>
+            <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
+              <IntlMessages id="button.yes" />
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {editCustomerModal &&
           <Modal
@@ -847,7 +869,7 @@ this.setState({ alertDialog: false });
                       onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
                     />
                   </FormGroup>
-                  
+
                 </Form>
               }
             </ModalBody>
@@ -867,51 +889,77 @@ this.setState({ alertDialog: false });
         }
 
         {archivoModal &&
-        <Modal
-        isOpen={archivoModal}
-        toggle={this.toggleArchivoModal}
-      >
-        <ModalHeader toggle={this.toggleArchivoModal}>
-            Subir Archivo
-        </ModalHeader>
-        <ModalBody>
-          <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-              
-                  <section>
-        <div className="dropzone">
-          <Dropzone
-          style={styleDragFile}
-            onDrop={this.onDrop.bind(this)}
-            onFileDialogCancel={this.onCancel.bind(this)}
+          <Modal
+            isOpen={archivoModal}
+            toggle={this.toggleArchivoModal}
           >
-            <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
-          </Dropzone>
-        </div>
-        <aside>
-          <h2>Archivos seleccionados</h2>
-          <ul className="padding-10-px">
-            {
-              this.state.files.map(f => <li key={f.name}>{f.name}</li>)
-            }
-          </ul>
-        </aside>
-      </section>
-            </Form>
-         
-          
-        </ModalBody>
-        <ModalFooter>
-         
-             <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
-              <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
-          
+            <ModalHeader toggle={this.toggleArchivoModal}>
+              Subir Archivo
+        </ModalHeader>
+            <ModalBody>
+              <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+                <FormGroup>
+                  <Label for="copyRight:">Copy Right:</Label>
+                  <Input type="select"
+                    name="copyRight"
+                    id="copyRight"
+                    required="true"
+                    value={copyRight}
+                    onChange={(event) => this.setState({ copyRight: event.target.value })}
+                  >
+                    <option value="free">Libre</option>
+                    <option value="limited">Limitado</option>
+                    <option value="own">Propio</option>
+                  </Input>
+                </FormGroup>
+
+                
+                  {(copyRight === 'limited' || copyRight === 'own') && 
+                  <FormGroup>
+                <Label for="pdfCopy">PDF Copy Right:</Label>
+                <Input required="true" name="pdfCopy" className="fileInput"
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => this.handlePDFChange(e)} />
+              </FormGroup>
+                
+                }
+                  
+                <section>
+                  <div className="dropzone">
+                    <Dropzone
+                      style={styleDragFile}
+                      onDrop={this.onDrop.bind(this)}
+                      onFileDialogCancel={this.onCancel.bind(this)}
+                    >
+                      <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
+                    </Dropzone>
+                  </div>
+                  <aside>
+                    <h2>Archivos seleccionados</h2>
+                    <ul className="padding-10-px">
+                      {
+                        this.state.files.map(f => <li key={f.name}>{f.name}</li>)
+                      }
+                    </ul>
+                  </aside>
+                </section>
+              </Form>
 
 
-        </ModalFooter>
-      </Modal>
-      
-      
-      }
+            </ModalBody>
+            <ModalFooter>
+
+              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
+                <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
+
+
+
+            </ModalFooter>
+          </Modal>
+
+
+        }
 
 
 
@@ -929,5 +977,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription
 })(Folders));
