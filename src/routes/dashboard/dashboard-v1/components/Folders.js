@@ -30,6 +30,8 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
+import { WithContext as ReactTags } from 'react-tag-input';
+
 // redux action
 import {
   getUserDetails,
@@ -70,7 +72,13 @@ const styleDragFile = {
   'border-radius': '5px'
 }
 
-
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+ 
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
+ 
 class Folders extends Component {
 
   constructor() {
@@ -107,14 +115,62 @@ class Folders extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [
+        { id: "Thailand", text: "Thailand" },
+        { id: "India", text: "India" }
+     ],
+    suggestions: [
+        { id: 'USA', text: 'USA' },
+        { id: 'Germany', text: 'Germany' },
+        { id: 'Austria', text: 'Austria' },
+        { id: 'Costa Rica', text: 'Costa Rica' },
+        { id: 'Sri Lanka', text: 'Sri Lanka' },
+        { id: 'Thailand', text: 'Thailand' }
+     ]
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
 
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleTagClick = this.handleTagClick.bind(this);
+
+    
   }
 
+
+  handleTagClick(index) {
+
+    console.log('The tag at index ' + index + ' was clicked');
+  }
+  handleDelete(i) {
+    console.log('handleDelete');
+    const { tags } = this.state;
+    this.setState({
+     tags: tags.filter((tag, index) => index !== i),
+    });
+}
+
+handleAddition(tag) {
+  console.log('handleAddition');
+
+    this.setState(state => ({ tags: [...state.tags, tag] }));
+}
+
+handleDrag(tag, currPos, newPos) {
+  console.log('handleDrag');
+
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
+}
 
   componentWillMount() {
     //this.props.getFavoritos();
@@ -504,12 +560,15 @@ class Folders extends Component {
   }
 
   onDrop(files) {
+    console.log('onDrop');
     this.setState({
       files
     });
   }
 
   onCancel() {
+    console.log('onCancel');
+
     this.setState({
       files: []
     })
@@ -522,7 +581,7 @@ class Folders extends Component {
     const { isAdmin } = this.state;
     const { author } = this.state;
     const { copyRight } = this.state;
-
+    const { tags, suggestions } = this.state;
 
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
@@ -898,6 +957,24 @@ class Folders extends Component {
         </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+              
+              <FormGroup>
+                <div>
+
+               
+                <ReactTags tags={tags}
+                allowDragDrop={false}
+                    suggestions={suggestions}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                    handleTagClick={this.handleTagClick}
+                    delimiters={delimiters} >
+
+                    </ReactTags>
+                     </div>
+           </FormGroup>
+          
+          
                 <FormGroup>
                   <Label for="copyRight:">Copy Right:</Label>
                   <Input type="select"
