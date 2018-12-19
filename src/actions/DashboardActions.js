@@ -751,6 +751,7 @@ export const updateFile = (futureFileURL, tipo, guid, file, position, files, obj
         'metadata':{
             'copyRight': objetoDesc.copyRight,
             'licenseFile': objetoDesc.pdfUrlFileDone
+            ,'descriptiveTags' :objetoDesc.descriptiveTags
         }
     })
         .then((response) => {

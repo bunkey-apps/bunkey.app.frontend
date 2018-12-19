@@ -116,18 +116,8 @@ class Folders extends Component {
         passwordRepeat: '',
         passInvalid: false
       },
-      tags: [
-        { id: "Thailand", text: "Thailand" },
-        { id: "India", text: "India" }
-     ],
-    suggestions: [
-        { id: 'USA', text: 'USA' },
-        { id: 'Germany', text: 'Germany' },
-        { id: 'Austria', text: 'Austria' },
-        { id: 'Costa Rica', text: 'Costa Rica' },
-        { id: 'Sri Lanka', text: 'Sri Lanka' },
-        { id: 'Thailand', text: 'Thailand' }
-     ]
+      tags: [],
+    suggestions: []
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -317,10 +307,28 @@ handleDrag(tag, currPos, newPos) {
     const { addNewCustomerDetails } = this.state;
     console.log('this.state.files', this.state.files);
     console.log('copyRight', this.state.copyRight);
+    console.log('tags', this.state.tags);
+
+
+    var arrTags = [];
+    for(var i=0;i<this.state.tags.length;i++){
+
+      arrTags.push(this.state.tags[i].text);
+    }
+
+    console.log('arrTags',arrTags);
+
     if (this.state.files.length > 0) {
       this.setState({ archivoModal: false });
-      this.props.uploadMultipleFileDescription( this.state);
-      //this.state.files = [];
+
+      var objectDec =  this.state;
+
+      objectDec.descriptiveTags = arrTags;
+
+
+      //descriptiveTags
+      this.props.uploadMultipleFileDescription(objectDec);
+     // this.state.files = [];
     }
 
 
@@ -968,8 +976,10 @@ handleDrag(tag, currPos, newPos) {
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
                     handleTagClick={this.handleTagClick}
-                    delimiters={delimiters} >
-
+                    delimiters={delimiters}
+                    placeholder={'Tags de la colección'}
+                    >
+                    
                     </ReactTags>
                      </div>
            </FormGroup>
