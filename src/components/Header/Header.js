@@ -242,9 +242,11 @@ class Header extends Component {
             
 
             <li className="list-inline-item margen-li-bunkey">
-              <a href="javascript:void(0)">
-                <i className="zmdi ti-folder color-header-bunkey"></i>
+            <Link to="/app/confirmar">
+              <a href="javascript:void(0)" className="header-icon text-secondary border-secondary">
+                <i className="zmdi ti-info color-header-bunkey"></i>
               </a>
+              </Link>
             </li>
 
             <li className="list-inline-item margen-li-bunkey">

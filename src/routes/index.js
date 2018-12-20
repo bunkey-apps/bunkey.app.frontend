@@ -48,7 +48,8 @@ import {
   AsyncConfiguracionComponent,
   AsyncExplorarComponent,
   AsyncBusquedaComponent,
-  AsyncInviteComponent
+  AsyncInviteComponent,
+  AsyncConfirmarComponent
 } from '../components/AsyncComponent/AsyncComponent';
 
 class MainApp extends Component {
@@ -168,6 +169,9 @@ class MainApp extends Component {
                   <Route path={`${this.props.match.url}/usuarios`} component={AsyncUsuariosComponent} />
                   <Route path={`${this.props.match.url}/configuracion`} component={AsyncConfiguracionComponent} />
                   <Route path={`${this.props.match.url}/invite`} component={AsyncInviteComponent} />
+                  <Route path={`${this.props.match.url}/confirmar`} component={AsyncConfirmarComponent} />
+
+                  
                   <Route path={`${this.props.match.url}/resultados`} component={AsyncResultadosComponent} />
                   <Route path={`${this.props.match.url}/imagenes`} component={AsyncImagenesComponent} />
                   <Route path={`${this.props.match.url}/exlporar`} component={AsyncExplorarComponent} />

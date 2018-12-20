@@ -214,6 +214,16 @@ select {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
 }
 
+.imagenes-tam-confirm{
+  width: 254px !important;
+  height: 184px;
+  padding: 2px !important;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+}
+
 .border-object-div{
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;

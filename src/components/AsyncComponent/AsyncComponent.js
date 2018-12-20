@@ -33,7 +33,10 @@ const AsyncInviteComponent = Loadable({
     loading: () =>   <RctPageLoader />,
 });
 
-
+const AsyncConfirmarComponent = Loadable({
+    loader: () => import("../../routes/confirmar/index.js"),
+    loading: () =>   <RctPageLoader />,
+});
 
 const AsyncResultadosComponent = Loadable({
     loader: () => import("../../routes/resultados/dashboard-v1"),
@@ -629,6 +632,7 @@ export {
     AsyncConfiguracionComponent,
     AsyncExplorarComponent,
     AsyncBusquedaComponent,
-    AsyncInviteComponent
+    AsyncInviteComponent,
+    AsyncConfirmarComponent
 
 };
