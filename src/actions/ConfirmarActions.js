@@ -109,7 +109,8 @@ export const updatePendingObject = (objeto) => (dispatch) => {
         'metadata':{
             'copyRight': objeto.metadata.copyRight,
             'licenseFile': objeto.metadata.licenseFile,
-            'descriptiveTags' : objeto.metadata.descriptiveTags
+            'descriptiveTags' : objeto.metadata.descriptiveTags,
+            'createdDate': objeto.metadata.createdDate
         }
     })
         .then((response) => {

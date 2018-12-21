@@ -76,15 +76,16 @@ const KeyCodes = {
   comma: 188,
   enter: 13,
 };
- 
+
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
- 
+
 class Folders extends Component {
 
   constructor() {
     super()
     this.state = {
       copyRight: 'free',
+      startDate: '',
       filePDF: [],
       selectObject: [],
       isAdmin: false,
@@ -117,7 +118,7 @@ class Folders extends Component {
         passInvalid: false
       },
       tags: [],
-    suggestions: []
+      suggestions: []
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -127,7 +128,7 @@ class Folders extends Component {
     this.handleAddition = this.handleAddition.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
 
-    
+
   }
 
 
@@ -139,18 +140,18 @@ class Folders extends Component {
     console.log('handleDelete');
     const { tags } = this.state;
     this.setState({
-     tags: tags.filter((tag, index) => index !== i),
+      tags: tags.filter((tag, index) => index !== i),
     });
-}
+  }
 
-handleAddition(tag) {
-  console.log('handleAddition');
+  handleAddition(tag) {
+    console.log('handleAddition');
 
     this.setState(state => ({ tags: [...state.tags, tag] }));
-}
+  }
 
-handleDrag(tag, currPos, newPos) {
-  console.log('handleDrag');
+  handleDrag(tag, currPos, newPos) {
+    console.log('handleDrag');
 
     const tags = [...this.state.tags];
     const newTags = tags.slice();
@@ -160,7 +161,7 @@ handleDrag(tag, currPos, newPos) {
 
     // re-render
     this.setState({ tags: newTags });
-}
+  }
 
   componentWillMount() {
     //this.props.getFavoritos();
@@ -311,24 +312,25 @@ handleDrag(tag, currPos, newPos) {
 
 
     var arrTags = [];
-    for(var i=0;i<this.state.tags.length;i++){
+    for (var i = 0; i < this.state.tags.length; i++) {
 
       arrTags.push(this.state.tags[i].text);
     }
 
-    console.log('arrTags',arrTags);
+    console.log('arrTags', arrTags);
 
     if (this.state.files.length > 0) {
       this.setState({ archivoModal: false });
 
-      var objectDec =  this.state;
+      var objectDec = this.state;
 
       objectDec.descriptiveTags = arrTags;
 
 
+      console.log('startDate',this.state.startDate);
       //descriptiveTags
       this.props.uploadMultipleFileDescription(objectDec);
-     // this.state.files = [];
+      // this.state.files = [];
     }
 
 
@@ -590,7 +592,9 @@ handleDrag(tag, currPos, newPos) {
     const { author } = this.state;
     const { copyRight } = this.state;
     const { tags, suggestions } = this.state;
+    const { startDate } = this.state;
 
+    
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -965,26 +969,26 @@ handleDrag(tag, currPos, newPos) {
         </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-              
-              <FormGroup>
-                <div>
 
-               
-                <ReactTags tags={tags}
-                allowDragDrop={false}
-                    suggestions={suggestions}
-                    handleDelete={this.handleDelete}
-                    handleAddition={this.handleAddition}
-                    handleTagClick={this.handleTagClick}
-                    delimiters={delimiters}
-                    placeholder={'Tags de la colección'}
+                <FormGroup>
+                  <div>
+
+
+                    <ReactTags tags={tags}
+                      allowDragDrop={false}
+                      suggestions={suggestions}
+                      handleDelete={this.handleDelete}
+                      handleAddition={this.handleAddition}
+                      handleTagClick={this.handleTagClick}
+                      delimiters={delimiters}
+                      placeholder={'Tags de la colección'}
                     >
-                    
+
                     </ReactTags>
-                     </div>
-           </FormGroup>
-          
-          
+                  </div>
+                </FormGroup>
+
+
                 <FormGroup>
                   <Label for="copyRight:">Copy Right:</Label>
                   <Input type="select"
@@ -1000,18 +1004,30 @@ handleDrag(tag, currPos, newPos) {
                   </Input>
                 </FormGroup>
 
-                
-                  {(copyRight === 'limited' || copyRight === 'own') && 
+
+                {(copyRight === 'limited' || copyRight === 'own') &&
                   <FormGroup>
-                <Label for="pdfCopy">PDF Copy Right:</Label>
-                <Input required="true" name="pdfCopy" className="fileInput"
-                  type="file"
-                  accept=".pdf"
-                  onChange={(e) => this.handlePDFChange(e)} />
-              </FormGroup>
-                
+                    <Label for="pdfCopy">PDF Copy Right:</Label>
+                    <Input required="true" name="pdfCopy" className="fileInput"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => this.handlePDFChange(e)} />
+                  </FormGroup>
+
                 }
-                  
+
+                <FormGroup>
+                  <Label for="startDate">Fecha de creación</Label>
+                  <Input
+                    required="true"
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(event) => this.setState({ startDate: event.target.value })}
+                  />
+                </FormGroup>
+
                 <section>
                   <div className="dropzone">
                     <Dropzone

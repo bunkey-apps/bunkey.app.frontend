@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import moment from 'moment';
+
 import { NotificationManager } from 'react-notifications';
 
 import {
@@ -751,7 +753,8 @@ export const updateFile = (futureFileURL, tipo, guid, file, position, files, obj
         'metadata':{
             'copyRight': objetoDesc.copyRight,
             'licenseFile': objetoDesc.pdfUrlFileDone
-            ,'descriptiveTags' :objetoDesc.descriptiveTags
+            ,'descriptiveTags' :objetoDesc.descriptiveTags,
+            'createdDate': moment(objetoDesc.startDate).utc().format(),
         }
     })
         .then((response) => {

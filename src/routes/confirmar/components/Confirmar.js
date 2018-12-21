@@ -75,7 +75,8 @@ class Confirmar extends Component {
       filePDF: [],
       pdfPreviewUrl: '',
       id: props.objectoPending._id,
-      name:  props.objectoPending.name
+      name: props.objectoPending.name,
+      startDate: props.objectoPending.metadata.createdDate
 
     }
 
@@ -93,64 +94,65 @@ class Confirmar extends Component {
 
     var isUpdate = false;
 
-    if(this.state.objeto.name !== this.state.name){
+    if (this.state.objeto.name !== this.state.name) {
       console.log('distintos name');
       isUpdate = true;
-    }else{
+    } else {
       console.log('iguales name ');
     }
-    if(this.state.objeto.metadata.copyRight !== this.state.copyRight){
+    if (this.state.objeto.metadata.copyRight !== this.state.copyRight) {
       console.log('distintos copyRight');
       isUpdate = true;
-    }else{
+    } else {
       console.log('iguales copyRight');
     }
-    
+
     var isChangePDF = false;
-    if(this.state.pdfPreviewUrl !== '' && this.state.copyRight !== 'free'){
+    if (this.state.pdfPreviewUrl !== '' && this.state.copyRight !== 'free') {
       console.log('existe pdf');
       isUpdate = true;
       isChangePDF = true;
-    }else{
+    } else {
       console.log('no existe pdf');
-      
+
     }
 
     var licenseFile = this.state.objeto.metadata.licenseFile;
 
-    if(this.state.copyRight === 'free'){
+    if (this.state.copyRight === 'free') {
       licenseFile = '';
     }
 
 
     var arrTags = [];
-    for(var i=0;i<this.state.tags.length;i++){
+    for (var i = 0; i < this.state.tags.length; i++) {
 
       arrTags.push(this.state.tags[i].text);
     }
 
-    console.log('arrTags',arrTags);
-    console.log('descriptiveTags',this.state.objeto.metadata.descriptiveTags);
+    console.log('arrTags', arrTags);
+    console.log('descriptiveTags', this.state.objeto.metadata.descriptiveTags);
 
-    if(arrTags.toString() !== this.state.objeto.metadata.descriptiveTags.toString() ){
+    if (arrTags.toString() !== this.state.objeto.metadata.descriptiveTags.toString()) {
       console.log('distintos descriptiveTags');
       isUpdate = true;
-    }else{
+    } else {
       console.log('igaules descriptiveTags');
     }
 
-   
-   
-    console.log('isUpdate?;',isUpdate);
 
 
-    if(isUpdate){
+    console.log('isUpdate?;', isUpdate);
+
+
+    if (isUpdate) {
       var objectChange = {
         'name': this.state.name,
-        'metadata':{
-            'copyRight': this.state.copyRight,
-            'licenseFile': licenseFile,
-            'descriptiveTags' : arrTags
+        'metadata': {
+          'copyRight': this.state.copyRight,
+          'licenseFile': licenseFile,
+          'descriptiveTags': arrTags,
+          'createdDate': moment(this.state.startDate).utc().format()
         },
         'isChangePDF': isChangePDF,
         'id': this.state.id,
@@ -160,19 +162,19 @@ class Confirmar extends Component {
       this.props.updatePendingRouting(objectChange);
 
 
-    }else{
+    } else {
       var objectChange = {
-        
+
         'id': this.state.id
 
       }
       this.props.confirmPending(objectChange);
     }
 
-    
-    
 
-  
+
+
+
 
   }
   handleTagClick(index) {
@@ -215,6 +217,7 @@ class Confirmar extends Component {
     const { loading } = this.props;
     const { tags, suggestions } = this.state;
     const { copyRight, name } = this.state;
+    const { startDate } = this.state;
 
     return (
 
@@ -243,16 +246,16 @@ class Confirmar extends Component {
           <Form >
 
             <FormGroup>
-                    <Label for="name">Nombre</Label>
-                    <Input
-                      required="true"
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={name}
-                      onChange={(event) => this.setState({ name: event.target.value })}
-                    />
-                  </FormGroup>
+              <Label for="name">Nombre</Label>
+              <Input
+                required="true"
+                type="text"
+                name="name"
+                id="name"
+                value={name}
+                onChange={(event) => this.setState({ name: event.target.value })}
+              />
+            </FormGroup>
             <FormGroup>
               <div>
                 <ReactTags tags={tags}
@@ -267,6 +270,18 @@ class Confirmar extends Component {
 
                 </ReactTags>
               </div>
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="startDate">FFecha de creación</Label>
+              <Input
+                required="true"
+                type="date"
+                name="startDate"
+                id="startDate"
+                value={moment(new Date(startDate)).format('YYYY-MM-DD')}
+                onChange={(event) => this.setState({ startDate: event.target.value })}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="copyRight:">Copy Right:</Label>
