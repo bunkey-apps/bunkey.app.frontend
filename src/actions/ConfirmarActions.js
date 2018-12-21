@@ -79,7 +79,7 @@ export const confirmPending = (objeto) => (dispatch) => {
     })
         .then((response) => {
             console.log('response confirmPending', response.data);
-          
+            dispatch(getPendingObject());
            
         })
         .catch(error => {
@@ -228,6 +228,8 @@ export const updatePendingRouting = (objectChange) => (dispatch) => {
 export const confirmAllPending = (objeto) => (dispatch) => {
     console.log('confirmPending FORM',objeto);
     
+    dispatch({ type: GET_PENDING_OBJECT })
+
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -247,12 +249,12 @@ export const confirmAllPending = (objeto) => (dispatch) => {
     })
         .then((response) => {
             console.log('response confirmPending', response.data);
-          
+          dispatch(getPendingObject());
            
         })
         .catch(error => {
            
-       
+            dispatch(getPendingObject());
             
         })
 }

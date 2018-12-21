@@ -76,7 +76,8 @@ class Confirmar extends Component {
       pdfPreviewUrl: '',
       id: props.objectoPending._id,
       name: props.objectoPending.name,
-      startDate: props.objectoPending.metadata.createdDate
+      startDate: props.objectoPending.metadata.createdDate,
+      loading: false
 
     }
 
@@ -172,8 +173,7 @@ class Confirmar extends Component {
     }
 
 
-
-
+    this.setState({ loading: true })
 
 
   }
@@ -214,7 +214,7 @@ class Confirmar extends Component {
 
   render() {
 
-    const { loading } = this.props;
+    const { loading } = this.state;
     const { tags, suggestions } = this.state;
     const { copyRight, name } = this.state;
     const { startDate } = this.state;

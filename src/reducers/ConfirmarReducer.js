@@ -23,7 +23,7 @@ export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
         case GET_PENDING_OBJECT:
-            return { ...state, loading: true };
+            return { ...state, loading: true, items: [] };
 
         case GET_PENDING_OBJECT_FAILURE:
             return { ...state, loading: false };
