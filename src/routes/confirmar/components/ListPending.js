@@ -27,7 +27,7 @@ import Confirmar from './Confirmar';
 
 // redux action
 import {
-    getPendingObject
+    getPendingObject, confirmAllPending
 } from '../../../actions';
 
 
@@ -68,7 +68,21 @@ class ListPending extends Component {
     
     
   }
+  sendAllPending() {
+    const { items } = this.props;
 
+    console.log('sendAllPending',items);
+    
+  var arrPending = [];
+    for(var i=0;i<items.length;i++){
+
+      arrPending.push(items[i]._id);
+    }
+    console.log('arrPending',arrPending);
+    this.props.confirmAllPending(arrPending);
+
+    
+  }
   render() {
 
     const { loading,items } = this.props;
@@ -81,6 +95,7 @@ class ListPending extends Component {
               <CircularProgress />
             </div>
           }
+            <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar todos" /></Button>{' '}
 
         <RctCollapsibleCard>
         {items.map((objectoPending, i) => (
@@ -103,5 +118,5 @@ const mapStateToProps = ({ confirmar }) => {
 }
 
 export default connect(mapStateToProps, {
-    getPendingObject
+    getPendingObject, confirmAllPending
 })(ListPending);

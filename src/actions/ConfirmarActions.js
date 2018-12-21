@@ -205,16 +205,6 @@ export const addPendingPDF = (urlImage, file, futureFileURL,objetoDesc) => (disp
 
 
 
-
-
-
-
-
-
-
-
-
-
 export const updatePendingRouting = (objectChange) => (dispatch) => {
     console.log('updatePendingRouting');
    
@@ -230,4 +220,38 @@ export const updatePendingRouting = (objectChange) => (dispatch) => {
 
 
 
+}
+
+
+
+export const confirmAllPending = (objeto) => (dispatch) => {
+    console.log('confirmPending FORM',objeto);
+    
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+
+   
+    instance2.put('/v1/clients/' + clienteSelectJson._id + '/objects' ,{
+        'action': 'setReadyStatus',
+        'objects': objeto
+    })
+        .then((response) => {
+            console.log('response confirmPending', response.data);
+          
+           
+        })
+        .catch(error => {
+           
+       
+            
+        })
 }
