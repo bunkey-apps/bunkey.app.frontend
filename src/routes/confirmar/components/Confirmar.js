@@ -12,6 +12,8 @@ import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle, }
 import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
+import { Player, BigPlayButton, ControlBar } from 'video-react';
+
 // page title bar
 import PageTitleBar from '../../../components/PageTitleBar/PageTitleBar';
 
@@ -212,6 +214,17 @@ class Confirmar extends Component {
 
   }
 
+
+  mouseOver() {
+    console.log("Mouse over!!!");
+
+    this.refs.player.play();
+  }
+  mouseOut(id) {
+    console.log("Mouse out!!!", this.refs.player);
+    this.refs.player.pause();
+  }
+
   render() {
 
     const { loading } = this.state;
@@ -239,7 +252,20 @@ class Confirmar extends Component {
 
           }
 
+          {this.state.objeto.type === 'video' &&
+        
+            <div className="heigth-div-objetos" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
+              <Player className="border-object-div" ref={'player'} fluid={false} width={254} height={184} muted={true}>
+                <BigPlayButton position="center" />
+                <ControlBar disableDefaultControls={true} />
+                <source src={this.state.objeto.originalURL} />
+              </Player>
 
+            </div>
+
+        
+
+        }
 
 
 
