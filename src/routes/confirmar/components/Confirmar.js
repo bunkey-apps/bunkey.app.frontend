@@ -68,6 +68,9 @@ class Confirmar extends Component {
       aux = {};
     }
 
+    var tipoArr = props.objectoPending.originalURL.split('.');
+    var extens = tipoArr[tipoArr.length -1];
+
 
     this.state = {
       objeto: props.objectoPending,
@@ -79,7 +82,8 @@ class Confirmar extends Component {
       id: props.objectoPending._id,
       name: props.objectoPending.name,
       startDate: props.objectoPending.metadata.createdDate,
-      loading: false
+      loading: false,
+      extension: extens
 
     }
 
@@ -230,7 +234,7 @@ class Confirmar extends Component {
     const { loading } = this.state;
     const { tags, suggestions } = this.state;
     const { copyRight, name } = this.state;
-    const { startDate } = this.state;
+    const { startDate, extension } = this.state;
 
     return (
 
@@ -299,7 +303,7 @@ class Confirmar extends Component {
             </FormGroup>
 
             <FormGroup>
-              <Label for="startDate">FFecha de creación</Label>
+              <Label for="startDate">Fecha de creación</Label>
               <Input
                 required="true"
                 type="date"
@@ -308,6 +312,11 @@ class Confirmar extends Component {
                 value={moment(new Date(startDate)).format('YYYY-MM-DD')}
                 onChange={(event) => this.setState({ startDate: event.target.value })}
               />
+            </FormGroup>
+            <FormGroup>
+              <Label>Extensión: {' ' + extension}</Label>
+              
+              
             </FormGroup>
             <FormGroup>
               <Label for="copyRight:">Copy Right:</Label>
