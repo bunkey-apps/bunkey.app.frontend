@@ -27,7 +27,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 
 // redux action
 import {
-  getPendingObject, confirmPending
+  getPendingObject, confirmPending, updatePendingRouting
 } from '../../../actions';
 
 
@@ -74,7 +74,8 @@ class Confirmar extends Component {
       copyRight: props.objectoPending.metadata.copyRight,
       filePDF: [],
       pdfPreviewUrl: '',
-      id: props.objectoPending._id
+      id: props.objectoPending._id,
+      name:  props.objectoPending.name
 
     }
 
@@ -89,7 +90,89 @@ class Confirmar extends Component {
   onSubmitAddArchiveForm() {
 
     console.log('onSubmitAddArchiveForm id', this.state.id);
-    this.props.confirmPending(this.state.id);
+
+    var isUpdate = false;
+
+    if(this.state.objeto.name !== this.state.name){
+      console.log('distintos name');
+      isUpdate = true;
+    }else{
+      console.log('iguales name ');
+    }
+    if(this.state.objeto.metadata.copyRight !== this.state.copyRight){
+      console.log('distintos copyRight');
+      isUpdate = true;
+    }else{
+      console.log('iguales copyRight');
+    }
+    
+    var isChangePDF = false;
+    if(this.state.pdfPreviewUrl !== '' && this.state.copyRight !== 'free'){
+      console.log('existe pdf');
+      isUpdate = true;
+      isChangePDF = true;
+    }else{
+      console.log('no existe pdf');
+      
+    }
+
+    var licenseFile = this.state.objeto.metadata.licenseFile;
+
+    if(this.state.copyRight === 'free'){
+      licenseFile = '';
+    }
+
+
+    var arrTags = [];
+    for(var i=0;i<this.state.tags.length;i++){
+
+      arrTags.push(this.state.tags[i].text);
+    }
+
+    console.log('arrTags',arrTags);
+    console.log('descriptiveTags',this.state.objeto.metadata.descriptiveTags);
+
+    if(arrTags.toString() !== this.state.objeto.metadata.descriptiveTags.toString() ){
+      console.log('distintos descriptiveTags');
+      isUpdate = true;
+    }else{
+      console.log('igaules descriptiveTags');
+    }
+
+   
+   
+    console.log('isUpdate?;',isUpdate);
+
+
+    if(isUpdate){
+      var objectChange = {
+        'name': this.state.name,
+        'metadata':{
+            'copyRight': this.state.copyRight,
+            'licenseFile': licenseFile,
+            'descriptiveTags' : arrTags
+        },
+        'isChangePDF': isChangePDF,
+        'id': this.state.id,
+        'filePDF': this.state.filePDF
+
+      }
+      this.props.updatePendingRouting(objectChange);
+
+
+    }else{
+      var objectChange = {
+        
+        'id': this.state.id
+
+      }
+      this.props.confirmPending(objectChange);
+    }
+
+    
+    
+
+  
 
   }
   handleTagClick(index) {
@@ -131,7 +214,7 @@ class Confirmar extends Component {
 
     const { loading } = this.props;
     const { tags, suggestions } = this.state;
-    const { copyRight } = this.state;
+    const { copyRight, name } = this.state;
 
     return (
 
@@ -158,6 +241,18 @@ class Confirmar extends Component {
 
 
           <Form >
+
+            <FormGroup>
+                    <Label for="name">Nombre</Label>
+                    <Input
+                      required="true"
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={name}
+                      onChange={(event) => this.setState({ name: event.target.value })}
+                    />
+                  </FormGroup>
             <FormGroup>
               <div>
                 <ReactTags tags={tags}
@@ -227,5 +322,5 @@ const mapStateToProps = ({ confirmar }) => {
 }
 
 export default connect(mapStateToProps, {
-  getPendingObject, confirmPending
+  getPendingObject, confirmPending, updatePendingRouting
 })(Confirmar);
