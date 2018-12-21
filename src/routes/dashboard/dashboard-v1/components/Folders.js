@@ -227,7 +227,16 @@ class Folders extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [],
+      suggestions: [],
+      files: [],
+      copyRight: 'free',
+      startDate: '',
+      filePDF: [],
+      files: [],
+      imagePreviewUrl: '',
+      pdfPreviewUrl: ''
     });
 
     // this.props.changePassword();
