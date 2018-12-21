@@ -29,6 +29,8 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { Collapse } from 'reactstrap';
+import { WithContext as ReactTags } from 'react-tag-input';
+
 import Dropzone from 'react-dropzone';
 
 // redux action
@@ -41,7 +43,8 @@ import {
   getObjectsByID,
   agregarFavoritos,
   uploadExplorarMultipleFile,
-  getObjectsByHideID
+  getObjectsByHideID,
+  uploadExplorarMultipleFileDescription
 } from '../../../../actions';
 
 
@@ -67,6 +70,12 @@ const styleDragFile = {
   'border-style': 'dashed',
   'border-radius': '5px'
 }
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 
 class Explorar extends Component {
@@ -74,6 +83,9 @@ class Explorar extends Component {
   constructor() {
     super()
     this.state = {
+      copyRight: 'free',
+      startDate: '',
+      filePDF: [],
       selectObject: [],
       isAdmin: false,
       files: [],
@@ -85,6 +97,7 @@ class Explorar extends Component {
       alertDialog: false,
       file: '',
       imagePreviewUrl: '',
+      pdfPreviewUrl: '',
       nombreCliente: '',
       nombreFolder: '',
       collapse: '-1',
@@ -102,13 +115,70 @@ class Explorar extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [],
+      suggestions: []
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
 
+
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleTagClick = this.handleTagClick.bind(this);
+
   }
+
+  handlePDFChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let filePDF = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        filePDF: filePDF,
+        pdfPreviewUrl: reader.result
+      });
+      console.log(this.state);
+    }
+    reader.readAsDataURL(filePDF)
+
+  }
+  handleTagClick(index) {
+
+    console.log('The tag at index ' + index + ' was clicked');
+  }
+  handleDelete(i) {
+    console.log('handleDelete');
+    const { tags } = this.state;
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i),
+    });
+  }
+
+  handleAddition(tag) {
+    console.log('handleAddition');
+
+    this.setState(state => ({ tags: [...state.tags, tag] }));
+  }
+
+  handleDrag(tag, currPos, newPos) {
+    console.log('handleDrag');
+
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
+  }
+
+
+
   parseUrlstring(query) {
     var vars = query.split("?");
     var query_string = {};
@@ -245,7 +315,16 @@ class Explorar extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [],
+      suggestions: [],
+      files: [],
+      copyRight: 'free',
+      startDate: '',
+      filePDF: [],
+      files: [],
+      imagePreviewUrl: '',
+      pdfPreviewUrl: ''
     });
 
     // this.props.changePassword();
@@ -315,16 +394,38 @@ class Explorar extends Component {
   }
   onSubmitAddArchiveForm() {
     const { addNewCustomerDetails } = this.state;
-    
-    
+    console.log('this.state.files', this.state.files);
+    console.log('copyRight', this.state.copyRight);
+    console.log('tags', this.state.tags);
 
-    console.log('this.state.files',this.state.files);
 
-      if(this.state.files.length > 0){
-        this.setState({ archivoModal: false });
-        this.props.uploadExplorarMultipleFile(this.state.files);
-        this.state.files = [];
-      }
+    var arrTags = [];
+    for (var i = 0; i < this.state.tags.length; i++) {
+
+      arrTags.push(this.state.tags[i].text);
+    }
+
+    console.log('arrTags', arrTags);
+
+    if (this.state.files.length > 0) {
+      this.setState({ archivoModal: false });
+
+      var objectDec = this.state;
+
+      objectDec.descriptiveTags = arrTags;
+
+
+      console.log('startDate',this.state.startDate);
+      //descriptiveTags
+      this.props.uploadExplorarMultipleFileDescription(objectDec);
+      // this.state.files = [];
+    }
+
+
+
+
+    //  this.props.uploadExplorarMultipleFile(this.state.files);
+
 
   }
 
@@ -584,6 +685,9 @@ class Explorar extends Component {
     const { isAdmin } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
+    const { copyRight } = this.state;
+    const { tags, suggestions } = this.state;
+    const { startDate } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -959,26 +1063,86 @@ class Explorar extends Component {
         </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-              <section>
-        <div className="dropzone">
-          <Dropzone
-          style={styleDragFile}
-            onDrop={this.onDrop.bind(this)}
-            onFileDialogCancel={this.onCancel.bind(this)}
-          >
-            <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
-          </Dropzone>
-        </div>
-        <aside>
-          <h2>Archivos seleccionados</h2>
-          <ul className="padding-10-px">
-            {
-              this.state.files.map(f => <li key={f.name}>{f.name}</li>)
-            }
-          </ul>
-        </aside>
-      </section>
+
+                <FormGroup>
+                  <div>
+
+
+                    <ReactTags tags={tags}
+                      allowDragDrop={false}
+                      suggestions={suggestions}
+                      handleDelete={this.handleDelete}
+                      handleAddition={this.handleAddition}
+                      handleTagClick={this.handleTagClick}
+                      delimiters={delimiters}
+                      placeholder={'Tags de la colección'}
+                    >
+
+                    </ReactTags>
+                  </div>
+                </FormGroup>
+
+
+                <FormGroup>
+                  <Label for="copyRight:">Copy Right:</Label>
+                  <Input type="select"
+                    name="copyRight"
+                    id="copyRight"
+                    required="true"
+                    value={copyRight}
+                    onChange={(event) => this.setState({ copyRight: event.target.value })}
+                  >
+                    <option value="free">Libre</option>
+                    <option value="limited">Limitado</option>
+                    <option value="own">Propio</option>
+                  </Input>
+                </FormGroup>
+
+
+                {(copyRight === 'limited' || copyRight === 'own') &&
+                  <FormGroup>
+                    <Label for="pdfCopy">PDF Copy Right:</Label>
+                    <Input required="true" name="pdfCopy" className="fileInput"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => this.handlePDFChange(e)} />
+                  </FormGroup>
+
+                }
+
+                <FormGroup>
+                  <Label for="startDate">Fecha de creación</Label>
+                  <Input
+                    required="true"
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(event) => this.setState({ startDate: event.target.value })}
+                  />
+                </FormGroup>
+
+                <section>
+                  <div className="dropzone">
+                    <Dropzone
+                      style={styleDragFile}
+                      onDrop={this.onDrop.bind(this)}
+                      onFileDialogCancel={this.onCancel.bind(this)}
+                    >
+                      <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
+                    </Dropzone>
+                  </div>
+                  <aside>
+                    <h2>Archivos seleccionados</h2>
+                    <ul className="padding-10-px">
+                      {
+                        this.state.files.map(f => <li key={f.name}>{f.name}</li>)
+                      }
+                    </ul>
+                  </aside>
+                </section>
               </Form>
+
 
             </ModalBody>
             <ModalFooter>
@@ -1010,5 +1174,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription
 })(Explorar));

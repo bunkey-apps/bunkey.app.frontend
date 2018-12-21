@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import moment from 'moment';
+
 import { NotificationManager } from 'react-notifications';
 
 import {
@@ -555,7 +557,114 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
 
 
 
-export const uploadExplorarMultipleFile = (files,position) => (dispatch) => {
+
+
+
+export const changeExplorarPDF = (file, objetoDesc) => (dispatch) => {
+    console.log('GET_URL FORM');
+    
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    
+    
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
+    });
+
+
+    console.log('file.type', file.type);
+    var tipoArr = file.type.split('/');
+
+    instance2.post('/v1/url-signature', {
+        clientId: clienteSelectJson._id,
+        extention: tipoArr[1],
+        mimeType: file.type
+    })
+        .then((response) => {
+            console.log('response user', response);
+            dispatch(addExplorarPDF(response.data.url, file, response.data.futureFileURL,objetoDesc))
+            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
+
+        })
+        .catch(error => {
+            // error handling
+         //   dispatch({ type: CHANGE_AVATAR_FAILURE });
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+        })
+}
+
+export const addExplorarPDF = (urlImage, file, futureFileURL,objetoDesc) => (dispatch) => {
+    console.log('PDFFF FORM', file);
+
+    // dispatch({ type: PUT_IMAGE });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('urlImage', urlImage);
+    var instance2 = axios.create({
+        baseURL: urlImage,
+        timeout: 3000,
+        body: file
+    });
+
+
+    var instance = axios.create();
+
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+        .then(function (result) {
+            console.log(result);
+            console.log('antes d33  imagenes', objetoDesc);
+
+            objetoDesc.pdfUrlFileDone = futureFileURL;
+            console.log('antes de enviara objetoDesc  imagenes', objetoDesc);
+            dispatch(uploadExplorarMultipleFile(objetoDesc.files,0,objetoDesc))
+            //dispatch({ type: PUT_IMAGE_SUCCES});
+        })
+        .catch(function (err) {
+            console.log(err);
+        //    dispatch({ type: CHANGE_AVATAR_FAILURE })
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+        });
+}
+
+
+
+export const uploadExplorarMultipleFileDescription = (objetoDesc) => (dispatch) => {
+    console.log('uploadMultipleFile');
+    dispatch({ type: GET_OBJECT });
+    console.log('uploadMultipleFile',objetoDesc);
+    
+    
+    
+        if(objetoDesc.copyRight === 'free'){
+            console.log('objetoDesc free',objetoDesc);
+            dispatch(uploadExplorarMultipleFile(objetoDesc.files,0,objetoDesc))
+            
+        }else{
+            console.log('objetoDesc elese',objetoDesc);
+            dispatch(changeExplorarPDF(objetoDesc.filePDF, objetoDesc))
+        }
+    
+    
+
+
+
+}
+
+
+
+
+
+
+export const uploadExplorarMultipleFile = (files,position,objetoDesc) => (dispatch) => {
     console.log('uploadMultipleFile');
     dispatch({ type: GET_OBJECT });
     if(!position){
@@ -566,7 +675,7 @@ export const uploadExplorarMultipleFile = (files,position) => (dispatch) => {
     console.log('position',position);
     console.log('files',files);
     if(position < files.length){
-        dispatch(uploadExplorarFile(files[position],position, files))
+        dispatch(uploadExplorarFile(files[position],position, files,objetoDesc))
     }else{
         dispatch(getObjects());
     }
@@ -575,7 +684,7 @@ export const uploadExplorarMultipleFile = (files,position) => (dispatch) => {
 
 
 }
-export const uploadExplorarFile = (file, position, files) => (dispatch) => {
+export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispatch) => {
     console.log('uploadFile');
    
     const token = localStorage.getItem('user_id');
@@ -600,7 +709,7 @@ export const uploadExplorarFile = (file, position, files) => (dispatch) => {
     })
         .then((response) => {
             console.log('response user', response);
-            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files))
+            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files, objetoDesc))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
         })
@@ -613,7 +722,7 @@ export const uploadExplorarFile = (file, position, files) => (dispatch) => {
 
         })
 }
-export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files) => (dispatch) => {
+export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files, objetoDesc) => (dispatch) => {
     console.log('addFile FORM', file);
 
     // dispatch({ type: PUT_IMAGE });
@@ -634,7 +743,7 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
     instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
         .then(function (result) {
             console.log(result);
-            dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files))
+            dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files, objetoDesc))
             //dispatch({ type: PUT_IMAGE_SUCCES});
         })
         .catch(function (err) {
@@ -647,7 +756,7 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
 }
 
 
-export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, files) => (dispatch) => {
+export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, files, objetoDesc) => (dispatch) => {
     dispatch({ type: GET_OBJECT });
     const token = localStorage.getItem('user_id');
 
@@ -670,12 +779,18 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
         'name': tipoArr[0],
         "type": tipo,
         "originalURL": futureFileURL,
-        "guid": guid
+        "guid": guid,
+        'metadata':{
+            'copyRight': objetoDesc.copyRight,
+            'licenseFile': objetoDesc.pdfUrlFileDone
+            ,'descriptiveTags' :objetoDesc.descriptiveTags,
+            'createdDate': moment(objetoDesc.startDate).utc().format(),
+        }
     })
         .then((response) => {
             console.log('response updateFile', response);
             console.log('position', position);
-            dispatch(uploadExplorarMultipleFile(files,position+1))
+            dispatch(uploadExplorarMultipleFile(files,position+1,objetoDesc))
             NotificationManager.success(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' Subido correctamente');
         })
         .catch(error => {
