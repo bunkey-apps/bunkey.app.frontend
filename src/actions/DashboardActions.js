@@ -922,3 +922,44 @@ export const getRecientes = () => (dispatch) => {
             dispatch({ type: GET_RECIENTES_FAILURE });
         })
 }
+
+
+
+
+
+/**
+ * Redux Action To ADD Invite
+ */
+export const compartirDashboard = (objeto) => (dispatch) => {
+    console.log('compartirDashboard FORM',objeto);
+    
+    NotificationManager.success('Compartiendo...');
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const userMe = localStorage.getItem('user_me');
+    const userMeJson = JSON.parse(userMe);
+    console.log('tokenJson4',tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+
+   
+    instance2.post('v1/shared',{
+        'object': objeto.idObjectCompartir,
+        'email': objeto.correoCompartir,
+        'user': userMeJson._id
+    })
+        .then((response) => {
+           
+            
+            NotificationManager.success('Compartido correctamente');
+        })
+        .catch(error => {
+            
+        NotificationManager.error(error.message);
+        })
+}
+

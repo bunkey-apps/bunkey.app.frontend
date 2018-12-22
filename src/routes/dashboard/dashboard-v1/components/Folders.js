@@ -45,7 +45,8 @@ import {
   getFavoritos,
   uploadMultipleFile,
   getObjectsByHideID,
-  uploadMultipleFileDescription
+  uploadMultipleFileDescription,
+  compartirDashboard
 } from '../../../../actions';
 
 
@@ -118,11 +119,16 @@ class Folders extends Component {
         passInvalid: false
       },
       tags: [],
-      suggestions: []
+      suggestions: [],
+      correoCompartir: '',
+      idObjectCompartir: ''
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
+    this.handleSubmitCompartir = this.handleSubmitCompartir.bind(this);
+
+    
 
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
@@ -212,6 +218,20 @@ class Folders extends Component {
 
   }
 
+
+
+  abrirCompartir(n) {
+    console.log('abrirCompartir',n);
+    this.setState({
+      compartirModal: true,
+      correoCompartir: '',
+      idObjectCompartir: n._id
+    });
+
+   
+  }
+
+
   cambiarAvatar() {
     console.log('ddd');
     this.setState({
@@ -256,6 +276,15 @@ class Folders extends Component {
     event.preventDefault();
     this.onSubmitAddArchiveForm();
   }
+
+
+  handleSubmitCompartir(event) {
+    event.preventDefault();
+    this.onSubmitCompartirForm();
+  }
+
+
+  
   onEditCustomer(customer) {
     this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
   }
@@ -313,6 +342,28 @@ class Folders extends Component {
 
     }
   }
+
+
+  
+
+
+  onSubmitCompartirForm() {
+    
+      console.log('idObjectCompartir',this.state.idObjectCompartir);
+      console.log('correoCompartir',this.state.correoCompartir);
+
+      var objeto = {
+        'idObjectCompartir': this.state.idObjectCompartir,
+        'correoCompartir': this.state.correoCompartir
+      }
+      this.props.compartirDashboard(objeto);
+
+      this.setState({
+        compartirModal: !this.state.compartirModal
+      });
+  }
+
+
   onSubmitAddArchiveForm() {
     const { addNewCustomerDetails } = this.state;
     console.log('this.state.files', this.state.files);
@@ -368,6 +419,13 @@ class Folders extends Component {
     });
   }
 
+  toggleCompartirModal = () => {
+    this.setState({
+      compartirModal: !this.state.compartirModal
+    });
+  }
+
+  
 
   onChangeCustomerDetails(key, value) {
     this.setState({
@@ -602,6 +660,9 @@ class Folders extends Component {
     const { copyRight } = this.state;
     const { tags, suggestions } = this.state;
     const { startDate } = this.state;
+    
+    const { compartirModal } = this.state;
+    const { correoCompartir } = this.state;
 
     
     const { tipoObject } = this.state;
@@ -667,8 +728,8 @@ class Folders extends Component {
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder-home'} className="click-derecho-bunkey">
-
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                  
+                    <MenuItem onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
                     </MenuItem>
@@ -753,7 +814,7 @@ class Folders extends Component {
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.abrirCompartir(n)}>
                         <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Compartir</span>
                       </MenuItem>
@@ -1075,7 +1136,47 @@ class Folders extends Component {
 
 
 
+        {compartirModal &&
+          <Modal
+            isOpen={compartirModal}
+            toggle={this.toggleCompartirModal}
+          >
+            <ModalHeader toggle={this.toggleCompartirModal}>
+              Compartir
+        </ModalHeader>
+            <ModalBody>
+              <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
 
+ <FormGroup>
+                    <Label for="name">Email</Label>
+                    <Input
+                      required="true"
+                      type="email"
+                      name="correoCompartir"
+                      id="correoCompartir"
+                      value={correoCompartir}
+                      onChange={(event) => this.setState({ correoCompartir: event.target.value })} 
+                    />
+                  </FormGroup>
+              
+           
+               
+              </Form>
+
+
+            </ModalBody>
+            <ModalFooter>
+
+              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
+                <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
+
+
+
+            </ModalFooter>
+          </Modal>
+
+
+        }
 
 
       </div>
@@ -1089,5 +1190,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard
 })(Folders));
