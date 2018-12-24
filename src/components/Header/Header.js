@@ -117,7 +117,6 @@ class Header extends Component {
 
     const clienteSelect = localStorage.getItem('clienteSelect');
 		const clienteSelectJson = JSON.parse(clienteSelect);
-    console.log('##########4',clienteSelectJson);
     
     this.setState({logoCliente: clienteSelectJson.acountSetting.logo})
 
