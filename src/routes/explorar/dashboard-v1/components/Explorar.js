@@ -87,7 +87,7 @@ class Explorar extends Component {
       copyRight: 'free',
       startDate: '',
       filePDF: [],
-      selectObject: [],
+      selectObject: '-1',
       isAdmin: false,
       files: [],
       addNewCustomerForm: false,
@@ -588,12 +588,12 @@ class Explorar extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
       }
 
@@ -730,6 +730,8 @@ class Explorar extends Component {
     const { startDate } = this.state;
     const { compartirModal } = this.state;
     const { correoCompartir } = this.state;
+    const { selectObject } = this.state;
+
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -964,23 +966,71 @@ class Explorar extends Component {
                             </div>
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                          <div>
+                          <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                          <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+
+                          </div>
                             <div className="fondo-videos-padding-top-desc">
                               <h3 className="text-white">{author}</h3>
 
                             </div>
                             <div>
                               <b className="text-white"></b>
-                              <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
 
 
 
-                            <div className=" ">
-                              <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                            {selectObject !== '-1' &&
+                              <div>
 
-                              <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+                                <div>
+                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
+                                    <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                  ))}
+                                </div>
+                                <div>
+                                  {selectObject.metadata.copyRight === 'free' &&
+                                    <span className="text-white">Copy Right: Libre</span>
+                                  }
+
+                                  {selectObject.metadata.copyRight === 'limited' &&
+                                    <span className="text-white">Copy Right: Limitado</span>
+                                  }
+                                  {selectObject.metadata.copyRight === 'own' &&
+                                    <span className="text-white">Copy Right: Propio</span>
+                                  }
+
+                                </div>
+                                <div>
+                                  {selectObject.metadata.createdDate &&
+                                    <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                  }
+                                </div>
+
+                                {selectObject.metadata.licenseFile &&
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                    <a href="javascript:void(0)">
+                                      Copy Right: CopyRight.pdf  </a>
+                                  </div>
+                                }
+
+
+                              </div>
+                            }
+
+
+
+
+
+
+
+                            <div className=" ">
+
 
                             </div>
 

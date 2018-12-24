@@ -32,7 +32,7 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
 // redux action
 import {
-    getRecientes
+    getRecientes, addFavoritos, compartirDashboard
 } from '../../../../actions';
 
 
@@ -63,10 +63,14 @@ class Recientes extends Component {
             tipoObject: '',
             urlVideo: '',
             author: '',
-            rowCollapseNum: '-2'
+            rowCollapseNum: '-2',
+            selectObject: '-1',
+            correoCompartir: '',
+      idObjectCompartir: ''
 
         }
 
+        this.handleSubmitCompartir = this.handleSubmitCompartir.bind(this);
 
     }
     componentWillMount() {
@@ -112,13 +116,13 @@ class Recientes extends Component {
     
             setTimeout(() => {
     
-              this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+              this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
     
     
             }, 100);
           } else {
             console.log('entra imagen');
-            this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+            this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
     
           }
     
@@ -214,6 +218,49 @@ class Recientes extends Component {
     
       }
 
+      handleClickFavoritos(folder) {
+        console.log('handleClickFavoritos', folder);
+        this.props.addFavoritos(folder);
+    
+    
+      }
+
+      handleSubmitCompartir(event) {
+        event.preventDefault();
+        this.onSubmitCompartirForm();
+      }
+    
+      toggleCompartirModal = () => {
+        this.setState({
+          compartirModal: !this.state.compartirModal
+        });
+      }
+    
+      abrirCompartir(n) {
+        console.log('abrirCompartir',n);
+        this.setState({
+          compartirModal: true,
+          correoCompartir: '',
+          idObjectCompartir: n._id
+        });
+    
+       
+      }
+      onSubmitCompartirForm() {
+        
+        console.log('idObjectCompartir',this.state.idObjectCompartir);
+        console.log('correoCompartir',this.state.correoCompartir);
+    
+        var objeto = {
+          'idObjectCompartir': this.state.idObjectCompartir,
+          'correoCompartir': this.state.correoCompartir
+        }
+        this.props.compartirDashboard(objeto);
+    
+        this.setState({
+          compartirModal: !this.state.compartirModal
+        });
+    }
     render() {
         const { loadingRecientes, recientes } = this.props;
         const { isAdmin } = this.state;
@@ -223,7 +270,9 @@ class Recientes extends Component {
     const { author } = this.state;
     const { tipoObject } = this.state;
     const { rowCollapseNum } = this.state;
-
+    const { selectObject } = this.state;
+    const { compartirModal } = this.state;
+    const { correoCompartir } = this.state;
     
         return (
             <div>
@@ -366,23 +415,71 @@ return (o.type === 'image' || o.type === 'video') ?
                             </div>
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                          <div>
+                          <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                          <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+
+                          </div>
                             <div className="fondo-videos-padding-top-desc">
                               <h3 className="text-white">{author}</h3>
 
                             </div>
                             <div>
                               <b className="text-white"></b>
-                              <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
 
 
 
-                            <div className=" ">
-                              <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                            {selectObject !== '-1' &&
+                              <div>
 
-                              <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+                                <div>
+                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
+                                    <span key={'tags-recent' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                  ))}
+                                </div>
+                                <div>
+                                  {selectObject.metadata.copyRight === 'free' &&
+                                    <span className="text-white">Copy Right: Libre</span>
+                                  }
+
+                                  {selectObject.metadata.copyRight === 'limited' &&
+                                    <span className="text-white">Copy Right: Limitado</span>
+                                  }
+                                  {selectObject.metadata.copyRight === 'own' &&
+                                    <span className="text-white">Copy Right: Propio</span>
+                                  }
+
+                                </div>
+                                <div>
+                                  {selectObject.metadata.createdDate &&
+                                    <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                  }
+                                </div>
+
+                                {selectObject.metadata.licenseFile &&
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                    <a href="javascript:void(0)">
+                                      Copy Right: CopyRight.pdf  </a>
+                                  </div>
+                                }
+
+
+                              </div>
+                            }
+
+
+
+
+
+
+
+                            <div className=" ">
+
 
                             </div>
 
@@ -393,7 +490,51 @@ return (o.type === 'image' || o.type === 'video') ?
                       </Collapse>
                      
                     </div>
+                    
                 </RctCollapsibleCard>
+
+                  {compartirModal &&
+          <Modal
+            isOpen={compartirModal}
+            toggle={this.toggleCompartirModal}
+          >
+            <ModalHeader toggle={this.toggleCompartirModal}>
+              Compartir
+        </ModalHeader>
+            <ModalBody>
+              <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
+
+                <FormGroup>
+                  <Label for="name">Email</Label>
+                  <Input
+                    required="true"
+                    type="email"
+                    name="correoCompartir"
+                    id="correoCompartir"
+                    value={correoCompartir}
+                    onChange={(event) => this.setState({ correoCompartir: event.target.value })}
+                  />
+                </FormGroup>
+
+
+
+              </Form>
+
+
+            </ModalBody>
+            <ModalFooter>
+
+              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
+                <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
+
+
+
+            </ModalFooter>
+          </Modal>
+
+
+        }
+
             </div>
 
         )
@@ -406,5 +547,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default connect(mapStateToProps, {
-    getRecientes
+    getRecientes, addFavoritos, compartirDashboard
 })(Recientes);
