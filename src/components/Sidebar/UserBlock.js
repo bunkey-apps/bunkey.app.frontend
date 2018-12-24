@@ -30,7 +30,8 @@ class UserBlock extends Component {
             name: props.name,
             imagen: props.imagen,
             nameCliente: props.nameCliente,
-            imagenCliente: props.imagenCliente
+            imagenCliente: props.imagenCliente,
+            showChangeCliente: props.showChangeCliente
         }
 
     }
@@ -101,7 +102,7 @@ class UserBlock extends Component {
             <div className="top-sidebar">
                 <div className="site-logo">
 
-                    <Link to="/" className="logo-normal user-title-menu">
+                    <Link to="/app/dashboard" className="logo-normal user-title-menu">
                         <img src={require('../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
                     </Link>
                 </div>
@@ -111,14 +112,14 @@ class UserBlock extends Component {
                
 
                 <div className="sidebar-user-block media">
-                {this.state.imagenCliente &&
+                {this.state.showChangeCliente && this.state.imagenCliente &&
                         <div className="text-center nombre-cliente-menu">
                                     <Link to="/app/clientes" className="logo-normal user-title-menu">
                                     Cambiar cliente
                                     </Link>
                                 </div>
                 }
-                {!this.state.imagenCliente &&
+                {this.state.showChangeCliente && !this.state.imagenCliente &&
                         <div className="text-center nombre-cliente-menu">
                                     <Link to="/app/clientes" className="logo-normal user-title-menu">
                                     Seleccionar cliente

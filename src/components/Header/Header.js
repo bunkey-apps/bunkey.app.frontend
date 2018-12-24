@@ -216,10 +216,8 @@ class Header extends Component {
               </IconButton>
             </li>
 
-           
-           <li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
-              <div className=" color-header-bunkey"> Bienvenido {userMeName}</div>
-            </li>
+          
+      
 
 
           </ul>
@@ -230,15 +228,15 @@ class Header extends Component {
 
 
 
-
-
-            <li className="list-inline-item margen-li-bunkey">
+  <li className="list-inline-item margen-li-bunkey">
             <Link to="/app/dashboard">
-              <a href="javascript:void(0)">
+              <a href="javascript:void(0)"  className="header-icon text-secondary border-secondary border-none-home-heder">
                 <i className="zmdi ti-home color-header-bunkey"></i>
               </a>
               </Link>
             </li>
+
+           
             
 
             <li className="list-inline-item margen-li-bunkey">
@@ -249,12 +247,7 @@ class Header extends Component {
               </Link>
             </li>
 
-            <li className="list-inline-item margen-li-bunkey">
-              <a href="javascript:void(0)" >
-                <i className="zmdi ti-comment-alt color-header-bunkey"></i>
-              </a>
-            </li>
-
+      
             <li className="list-inline-item margen-li-bunkey">
 
 
@@ -268,6 +261,7 @@ class Header extends Component {
                   </a>
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
+                <div className=" color-header-bunkey padding-name-dropdown"> {userMeName}</div>
                   <ul className="list-unstyled mb-0">
                     <li>
                       <a href="javascript:void(0)" onClick={() => this.cambiarClave()}>
