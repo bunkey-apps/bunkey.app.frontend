@@ -251,6 +251,8 @@ function cargarMenuFavoritos(carpetas) {
 
 export const addFavoritos = (caperta) => (dispatch) => {
     dispatch({ type: ADD_FAVORITOS });
+    NotificationManager.success('Guardando en favoritos...');
+
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -274,6 +276,8 @@ export const addFavoritos = (caperta) => (dispatch) => {
         .then((response) => {
             console.log('response ADD_FAVORITOS', response);
             dispatch(getFavoritos());
+            NotificationManager.success('Guardado en favoritos');
+
         })
         .catch(error => {
             dispatch({ type: ADD_FAVORITOS_FAILURE});

@@ -526,6 +526,8 @@ export const obtenerFavoritos = () => (dispatch) => {
 
 export const agregarFavoritos = (caperta) => (dispatch) => {
     dispatch({ type: AGREGAR_FAVORITOS });
+    NotificationManager.success('Guardando en favoritos...');
+
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -548,6 +550,7 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
         .then((response) => {
             console.log('response ADD_FAVORITOS', response);
             dispatch(obtenerFavoritos());
+            NotificationManager.success('Guardado en favoritos');
         })
         .catch(error => {
             dispatch({ type: AGREGAR_FAVORITOS_FAILURE});

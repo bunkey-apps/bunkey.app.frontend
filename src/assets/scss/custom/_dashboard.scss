@@ -63,7 +63,7 @@
 }
 
 .fondo-videos-padding-top-desc{
-  padding-top: 30%;
+  padding-top: 64px;
 }
 
 .display-none-explorar{
@@ -77,7 +77,7 @@
 
 
 .zindex-collapse-next-close{
-  z-index: 9999999999999;
+  z-index: 999;
 }
 
 .padding-top-triangulo-collapse{
@@ -198,6 +198,19 @@ select {
   float: right;
   margin-top: -170px !important;
   margin-right: 10px;
+}
+
+.volver-collap-video-image-right-close-aux{
+  font-size: 17px !important;
+  float: right;
+  margin-top: 10px;
+}
+
+.volver-collap-video-image-right-aux{
+  font-size: 37px !important;
+  float: right;
+  margin-top: 141px;
+
 }
 .volver-collap-video-image-right{
   font-size: 37px !important;
