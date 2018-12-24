@@ -248,113 +248,127 @@ class Confirmar extends Component {
 
         <RctCollapsibleCard>
 
-          {this.state.objeto.type === 'image' &&
+          <div className="row">
 
-            <div className="heigth-div-objetos">
-              <img className="imagenes-tam-confirm" src={this.state.objeto.originalURL} alt={this.state.objeto.name} />
-            </div>
+ <div className="col-sm-5 col-md-5 col-lg-5">
 
-          }
+ {this.state.objeto.type === 'image' &&
 
-          {this.state.objeto.type === 'video' &&
-        
-            <div className="heigth-div-objetos" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
-              <Player className="border-object-div" ref={'player'} fluid={false} width={254} height={184} muted={true}>
-                <BigPlayButton position="center" />
-                <ControlBar disableDefaultControls={true} />
-                <source src={this.state.objeto.originalURL} />
-              </Player>
+<div className="heigth-div-objetos">
+  <img className="imagenes-tam-confirm" src={this.state.objeto.originalURL} alt={this.state.objeto.name} />
+</div>
 
-            </div>
+}
 
-        
+{this.state.objeto.type === 'video' &&
 
-        }
+<div className="heigth-div-objetos" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
+  <Player className="border-object-div" ref={'player'} fluid={false} width={254} height={184} muted={true}>
+    <BigPlayButton position="center" />
+    <ControlBar disableDefaultControls={true} />
+    <source src={this.state.objeto.originalURL} />
+  </Player>
 
-
-
-          <Form >
-
-            <FormGroup>
-              <Label for="name">Nombre</Label>
-              <Input
-                required="true"
-                type="text"
-                name="name"
-                id="name"
-                value={name}
-                onChange={(event) => this.setState({ name: event.target.value })}
-              />
-            </FormGroup>
-            <FormGroup>
-              <div>
-                <ReactTags tags={tags}
-                  allowDragDrop={false}
-                  suggestions={suggestions}
-                  handleDelete={this.handleDelete}
-                  handleAddition={this.handleAddition}
-                  handleTagClick={this.handleTagClick}
-                  delimiters={delimiters}
-                  placeholder={'Tags de la colección'}
-                >
-
-                </ReactTags>
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="startDate">Fecha de creación</Label>
-              <Input
-                required="true"
-                type="date"
-                name="startDate"
-                id="startDate"
-                value={moment(new Date(startDate)).format('YYYY-MM-DD')}
-                onChange={(event) => this.setState({ startDate: event.target.value })}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>Extensión: {' ' + extension}</Label>
-              
-              
-            </FormGroup>
-            <FormGroup>
-              <Label for="copyRight:">Copy Right:</Label>
-              <Input type="select"
-                name="copyRight"
-                id="copyRight"
-                required="true"
-                value={copyRight}
-                onChange={(event) => this.setState({ copyRight: event.target.value })}
-              >
-                <option value="free">Libre</option>
-                <option value="limited">Limitado</option>
-                <option value="own">Propio</option>
-              </Input>
-            </FormGroup>
+</div>
 
 
 
-            <div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank', 'download=true') }}>
-              <a href="javascript:void(0)">
-                {this.state.objeto.metadata.licenseFile}</a>
-            </div>
+}
+ </div>
 
-            {(copyRight === 'limited' || copyRight === 'own') &&
-              <FormGroup>
-                <Label for="pdfCopy">PDF Copy Right:</Label>
-                <Input name="pdfCopy" className="fileInput"
-                  type="file"
-                  accept=".pdf"
-                  onChange={(e) => this.handlePDFChange(e)} />
-              </FormGroup>
+<div className="col-sm-6 col-md-6 col-lg-6">
+<Form >
 
-            }
+<FormGroup>
+  <Label for="name">Nombre</Label>
+  <Input
+    required="true"
+    type="text"
+    name="name"
+    id="name"
+    value={name}
+    onChange={(event) => this.setState({ name: event.target.value })}
+  />
+</FormGroup>
+<FormGroup>
+  <div>
+    <ReactTags tags={tags}
+      allowDragDrop={false}
+      suggestions={suggestions}
+      handleDelete={this.handleDelete}
+      handleAddition={this.handleAddition}
+      handleTagClick={this.handleTagClick}
+      delimiters={delimiters}
+      placeholder={'Tags de la colección'}
+    >
 
-            <Button onClick={() => this.onSubmitAddArchiveForm()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar" /></Button>{' '}
+    </ReactTags>
+  </div>
+</FormGroup>
 
-          </Form>
+<FormGroup>
+  <Label for="startDate">Fecha de creación</Label>
+  <Input
+    required="true"
+    type="date"
+    name="startDate"
+    id="startDate"
+    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
+    onChange={(event) => this.setState({ startDate: event.target.value })}
+  />
+</FormGroup>
+<FormGroup>
+  <Label>Extensión: {' ' + extension}</Label>
+  
+  
+</FormGroup>
+<FormGroup>
+  <Label for="copyRight:">Copy Right:</Label>
+  <Input type="select"
+    name="copyRight"
+    id="copyRight"
+    required="true"
+    value={copyRight}
+    onChange={(event) => this.setState({ copyRight: event.target.value })}
+  >
+    <option value="free">Libre</option>
+    <option value="limited">Limitado</option>
+    <option value="own">Propio</option>
+  </Input>
+</FormGroup>
 
+
+
+<div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank', 'download=true') }}>
+  <a href="javascript:void(0)">
+    {this.state.objeto.metadata.licenseFile}</a>
+</div>
+
+{(copyRight === 'limited' || copyRight === 'own') &&
+  <FormGroup>
+    <Label for="pdfCopy">PDF Copy Right:</Label>
+    <Input name="pdfCopy" className="fileInput"
+      type="file"
+      accept=".pdf"
+      onChange={(e) => this.handlePDFChange(e)} />
+  </FormGroup>
+
+}
+
+<Button onClick={() => this.onSubmitAddArchiveForm()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar" /></Button>{' '}
+
+</Form>
+
+
+</div>
+
+          </div>
+
+         
+
+
+
+       
 
         </RctCollapsibleCard>
 

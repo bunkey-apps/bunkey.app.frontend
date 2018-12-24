@@ -95,8 +95,12 @@ class ListPending extends Component {
               <CircularProgress />
             </div>
           }
-            <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar todos" /></Button>{' '}
+           <RctCollapsibleCard>
+          <div className="">
+          <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button>{' '}
 
+          </div>
+          </RctCollapsibleCard>
         <RctCollapsibleCard>
         {items.map((objectoPending, i) => (
                         <Confirmar key={i} objectoPending={objectoPending} />
