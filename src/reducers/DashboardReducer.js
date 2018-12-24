@@ -26,7 +26,10 @@ import {
     ADD_FAVORITOS_FAILURE,
     GET_RECIENTES,
     GET_RECIENTES_FAILURE,
-    GET_RECIENTES_SUCCES
+    GET_RECIENTES_SUCCES,
+    GET_COMPARTIDOS,
+    GET_COMPARTIDOS_FAILURE,
+    GET_COMPARTIDOS_SUCCES
 } from '../actions/types';
 
 /**
@@ -43,7 +46,11 @@ const INIT_STATE = {
     imageVideos: [],
     parentsFavoritos: [],
     imageVideosFavoritos: [],
-    recientes: []
+    recientes: [],
+    loadingCompartidos: false,
+    compartidos: [],
+    parentsCompartidos: [],
+    imageVideosCompartidos: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -144,6 +151,29 @@ export default (state = INIT_STATE, action) => {
                 loadingRecientes: false
                 
             };
+
+
+            case GET_COMPARTIDOS:
+            return { ...state, loadingCompartidos: true };
+
+        case GET_COMPARTIDOS_SUCCES:
+            return { ...state,
+                 loadingCompartidos: false,
+                 compartidos: action.compartidos,
+                 parentsCompartidos: action.parentsCompartidos,
+                 imageVideosCompartidos: action.imageVideosCompartidos
+                 };
+        // get Contratos
+        case GET_COMPARTIDOS_FAILURE:
+            return {
+                ...state,
+                loadingCompartidos: false
+                
+            };
+
+
+
+
         default: return { ...state };
     }
 }

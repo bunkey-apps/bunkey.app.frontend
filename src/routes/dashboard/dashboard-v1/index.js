@@ -47,7 +47,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Inp
 import Folders from './components/Folders';
 import Favoritos from './components/Favoritos';
 import Recientes from './components/Recientes';
-
+import Compartidos from './components/Compartidos';
 
 
 // dashboard data
@@ -132,13 +132,8 @@ export default class DashboardOne extends Component {
        <Folders/>
        <Favoritos/>
 
-       <RctCollapsibleCard>
-          <div className={'rct-block-title'}>
-            <h4 className="titulo-contenidos-compartidos"><b>Contenidos Compartidos</b></h4>
-           
-          </div>
-
- </RctCollapsibleCard>
+     <Compartidos />>
+     
 
       </div>
     );
