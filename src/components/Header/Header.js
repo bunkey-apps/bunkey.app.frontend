@@ -107,9 +107,12 @@ class Header extends Component {
     this.props.getUserMe();
 		const clienteSelect = localStorage.getItem('clienteSelect');
 		const clienteSelectJson = JSON.parse(clienteSelect);
+    var logo = '';
+    if(clienteSelectJson && clienteSelectJson.acountSetting){
+      logo =  clienteSelectJson.acountSetting.logo;
+    }
 
-    
-    this.setState({logoCliente: clienteSelectJson.acountSetting.logo})
+    this.setState({logoCliente: logo})
 	}
 
   componentWillReceiveProps(nextProps) {
@@ -118,8 +121,14 @@ class Header extends Component {
     const clienteSelect = localStorage.getItem('clienteSelect');
 		const clienteSelectJson = JSON.parse(clienteSelect);
     
-    this.setState({logoCliente: clienteSelectJson.acountSetting.logo})
+    var logo = '';
+    if(clienteSelectJson && clienteSelectJson.acountSetting){
+      logo =  clienteSelectJson.acountSetting.logo;
+    }
 
+    this.setState({logoCliente: logo})
+
+    
   }
 
   toggleEditCustomerModal = () => {
