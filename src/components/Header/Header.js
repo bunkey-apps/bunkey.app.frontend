@@ -58,7 +58,8 @@ class Header extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      logoCliente: ''
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -104,12 +105,23 @@ class Header extends Component {
     console.log('entrrr4');
 
     this.props.getUserMe();
-		
+		const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
 
-		
+    
+    this.setState({logoCliente: clienteSelectJson.acountSetting.logo})
 	}
 
+  componentWillReceiveProps(nextProps) {
 
+
+    const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('##########4',clienteSelectJson);
+    
+    this.setState({logoCliente: clienteSelectJson.acountSetting.logo})
+
+  }
 
   toggleEditCustomerModal = () => {
     this.setState({
@@ -132,6 +144,7 @@ class Header extends Component {
   onToggleNavCollapsed = (event) => {
     const val = !this.props.collapsedSidebar;
     this.props.collapsedSidebarAction(val);
+    
   }
 
   // open dashboard overlay
@@ -202,7 +215,7 @@ class Header extends Component {
       $('.dashboard-overlay').addClass('d-none');
       $('body').css('overflow', '');
     });
-    const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
+    const { logoCliente, newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
     const { loading, userMeName, userMeImagen } = this.props;
     return (
 
@@ -253,8 +266,9 @@ class Header extends Component {
 
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav >
+
                   <a href="javascript:void(0)">
-                    
+                  <img src={logoCliente} className="logo-menu-rect fondo-logo-cliente-header" />
                   <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
 
                     
