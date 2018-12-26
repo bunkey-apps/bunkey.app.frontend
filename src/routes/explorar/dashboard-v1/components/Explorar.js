@@ -45,7 +45,8 @@ import {
   uploadExplorarMultipleFile,
   getObjectsByHideID,
   uploadExplorarMultipleFileDescription,
-  compartirExplorar
+  compartirExplorar,
+  moveExplorar
 } from '../../../../actions';
 
 
@@ -120,7 +121,8 @@ class Explorar extends Component {
       tags: [],
       suggestions: [],
       correoCompartir: '',
-      idObjectCompartir: ''
+      idObjectCompartir: '',
+      isMoveObject: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -133,7 +135,15 @@ class Explorar extends Component {
     this.handleTagClick = this.handleTagClick.bind(this);
 
   }
+  moverObject(){
+    console.log('moverObject');
 
+    this.props.moveExplorar();
+
+
+    this.setState({ isMoveObject: false });
+    
+  }
   handleSubmitCompartir(event) {
     event.preventDefault();
     this.onSubmitCompartirForm();
@@ -255,6 +265,13 @@ class Explorar extends Component {
       this.props.getObjects();
     }
 
+    const moveObject = localStorage.getItem('moveObject');
+    const moveObjectJson = JSON.parse(moveObject);
+    var isMoveObject = false;
+    if(moveObjectJson){
+      isMoveObject = true;
+    }
+
     var tipoUsuario = localStorage.getItem('tipoUsuario');
     var isAdmin = false;
     if(tipoUsuario === 'admin'){
@@ -269,10 +286,10 @@ class Explorar extends Component {
       const folderSelect = localStorage.getItem('folderSelect');
       var folderSelectJson = JSON.parse(folderSelect);
       if (folderSelectJson.name === 'home') {
-        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name , isAdmin: isAdmin});
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: clienteSelectJson.name , isAdmin: isAdmin, isMoveObject: isMoveObject});
 
       } else {
-        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name , isAdmin: isAdmin});
+        this.setState({ nombreCliente: clienteSelectJson.name, nombreFolder: folderSelectJson.name , isAdmin: isAdmin, isMoveObject: isMoveObject});
 
       }
       
@@ -394,7 +411,11 @@ class Explorar extends Component {
     this.onEditCustomer(folder);
 
   }
-
+  handleClickMove(folder) {
+   
+    localStorage.setItem("moveObject", JSON.stringify(folder));
+    this.setState({ isMoveObject: true });
+  }
   deleteCustomer() {
     this.setState({ alertDialog: false });
 
@@ -731,6 +752,7 @@ class Explorar extends Component {
     const { compartirModal } = this.state;
     const { correoCompartir } = this.state;
     const { selectObject } = this.state;
+    const { isMoveObject } = this.state;
 
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
@@ -774,6 +796,14 @@ class Explorar extends Component {
                         <IntlMessages id="Subir Archivo" />
                       </a>
                     </li>
+                    {isMoveObject && 
+                    <li>
+                    <a href="javascript:void(0)" onClick={() => this.moverObject()}>
+                      <i className="ti-arrow-right"></i>
+                      <IntlMessages id="Mover aquí" />
+                    </a>
+                  </li>
+                    }
                   </ul>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -815,7 +845,7 @@ class Explorar extends Component {
                       <span className="padding-click-derecho">Cambiar Nombre</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
@@ -891,7 +921,7 @@ class Explorar extends Component {
                         <span className="padding-click-derecho">Cambiar Nombre</span>
                       </MenuItem>
 
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Mover</span>
                       </MenuItem>
@@ -1307,5 +1337,5 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar
 })(Explorar));

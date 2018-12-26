@@ -1046,3 +1046,48 @@ export const getCompartidos = () => (dispatch) => {
             dispatch({ type: GET_COMPARTIDOS_FAILURE });
         })
 }
+
+
+
+
+
+export const moveDashboard = () => (dispatch) => {
+    console.log('moveDashboard FORM');
+    dispatch({ type: GET_FOLDERS });
+    NotificationManager.success('Moviendo...');
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const userMe = localStorage.getItem('user_me');
+    const userMeJson = JSON.parse(userMe);
+    console.log('tokenJson4',tokenJson.accessToken);
+
+
+    const moveObject = localStorage.getItem('moveObject');
+    const moveObjectJson = JSON.parse(moveObject);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+      });
+
+   
+      instance2.put('/v1/clients/' + clienteSelectJson._id + '/objects/' + moveObjectJson._id, {
+        'action': 'move',
+        'folder': clienteSelectJson.root
+       
+    })
+        .then((response) => {
+            dispatch(getFolders());
+            localStorage.removeItem('moveObject');
+            NotificationManager.success('Movido correctamente');
+        })
+        .catch(error => {
+            dispatch({ type: GET_FOLDERS_FAILURE });
+        NotificationManager.error(error.message);
+        })
+}
+

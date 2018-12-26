@@ -46,7 +46,8 @@ import {
   uploadMultipleFile,
   getObjectsByHideID,
   uploadMultipleFileDescription,
-  compartirDashboard
+  compartirDashboard,
+  moveDashboard
 } from '../../../../actions';
 
 
@@ -121,7 +122,8 @@ class Folders extends Component {
       tags: [],
       suggestions: [],
       correoCompartir: '',
-      idObjectCompartir: ''
+      idObjectCompartir: '',
+      isMoveObject: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -174,6 +176,14 @@ class Folders extends Component {
     this.props.getFolders();
     //this.props.getUserDetails();
 
+    const moveObject = localStorage.getItem('moveObject');
+    const moveObjectJson = JSON.parse(moveObject);
+    var isMoveObject = false;
+    if(moveObjectJson){
+      isMoveObject = true;
+    }
+
+
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var tipoUsuario = localStorage.getItem('tipoUsuario');
@@ -182,12 +192,14 @@ class Folders extends Component {
       isAdmin = true;
     }
     if (clienteSelectJson) {
-      this.setState({ nombreCliente: clienteSelectJson.name, isAdmin: isAdmin });
+      this.setState({ nombreCliente: clienteSelectJson.name, isAdmin: isAdmin,isMoveObject : isMoveObject });
 
     } else {
-      this.setState({ nombreCliente: 'Bunkey', isAdmin: isAdmin });
+      this.setState({ nombreCliente: 'Bunkey', isAdmin: isAdmin, isMoveObject: isMoveObject });
 
     }
+
+
     /*  setTimeout(() => {
        const { items} = this.props;
        console.log('items',items);
@@ -262,6 +274,16 @@ class Folders extends Component {
     // this.props.changePassword();
   }
 
+  moverObject(){
+    console.log('moverObject');
+
+    this.props.moveDashboard();
+
+
+    this.setState({ isMoveObject: false });
+    
+  }
+
   handleSubmitEdit(event) {
     event.preventDefault();
     this.onSubmitCustomerEditDetailForm();
@@ -297,6 +319,12 @@ class Folders extends Component {
 
   }
 
+  handleClickMove(folder) {
+   
+    localStorage.setItem("moveObject", JSON.stringify(folder));
+    this.setState({ isMoveObject: true });
+
+  }
 
 
   handleClickFavoritos(folder) {
@@ -664,6 +692,7 @@ class Folders extends Component {
     const { compartirModal } = this.state;
     const { correoCompartir } = this.state;
 
+    const { isMoveObject } = this.state;
 
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
@@ -697,6 +726,15 @@ class Folders extends Component {
                         <IntlMessages id="Subir Archivo" />
                       </a>
                     </li>
+                    {isMoveObject && 
+                    <li>
+                    <a href="javascript:void(0)" onClick={() => this.moverObject()}>
+                      <i className="ti-arrow-right"></i>
+                      <IntlMessages id="Mover aquí" />
+                    </a>
+                  </li>
+                    }
+                    
                   </ul>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -738,7 +776,7 @@ class Folders extends Component {
                       <span className="padding-click-derecho">Cambiar Nombre</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem  onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
@@ -823,7 +861,7 @@ class Folders extends Component {
                         <span className="padding-click-derecho">Cambiar Nombre</span>
                       </MenuItem>
 
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Mover</span>
                       </MenuItem>
@@ -1238,5 +1276,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard, moveDashboard
 })(Folders));
