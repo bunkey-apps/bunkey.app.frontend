@@ -709,7 +709,7 @@ class Folders extends Component {
             <div className="contextual-link">
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav className="dropdown-group-link">
-                  <a href="javascript:void(0)">Nuevo</a>
+                  <a href="javascript:void(0)">acción</a>
 
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
