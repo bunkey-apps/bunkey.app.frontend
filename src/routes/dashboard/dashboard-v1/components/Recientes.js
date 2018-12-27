@@ -392,11 +392,11 @@ return (o.type === 'image' || o.type === 'video') ?
                             </div>
 
                           </div>
-                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close" >
-                            <div>
+                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
+                            
                               {tipoObject === 'image' &&
 
-                                <img className="collapse-image-width-center " src={urlVideo}></img>
+                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
 
                               }
 
@@ -412,7 +412,7 @@ return (o.type === 'image' || o.type === 'video') ?
 
 
                               }
-                            </div>
+                           
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
                           <div>

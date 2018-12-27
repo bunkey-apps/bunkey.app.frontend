@@ -132,7 +132,7 @@ export default class DashboardOne extends Component {
        <Folders/>
        <Favoritos/>
 
-     <Compartidos />>
+     <Compartidos />
      
 
       </div>
