@@ -883,7 +883,7 @@ class Explorar extends Component {
                       {n.type === 'image' &&
                         <GridListTile key={index}>
                          <div className="heigth-div-objetos">
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                          <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
 

@@ -295,12 +295,14 @@ class Recientes extends Component {
                                     <GridListTile key={index}>
                                           
                                             {n.type === 'image' &&
-                                                <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                            <div className="heigth-div-objetos-recientes">
+                                                <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                                </div>
                                             }
                                             {n.type === 'video' &&
-                                                <div className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                                                <div className="eigth-div-objetos-recientes" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
 
-                                                    <Player ref={'playerRecientes' + index} fluid={false} width={'100%'} height={184} muted={true}>
+                                                    <Player ref={'playerRecientes' + index} fluid={false} width={'100%'} height={180} muted={true}>
                                                         <BigPlayButton position="center" />
                                                         <ControlBar disableDefaultControls={true} />
                                                         <source src={n.originalURL} />

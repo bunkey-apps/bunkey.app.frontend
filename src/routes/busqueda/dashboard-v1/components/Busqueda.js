@@ -631,7 +631,7 @@ class Busqueda extends Component {
                       {n.type === 'image' &&
                         <GridListTile key={index}>
                         <div className="heigth-div-objetos">
-                          <img className="imagenes-tam-grid" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                          <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
 
@@ -721,11 +721,11 @@ class Busqueda extends Component {
                             </div>
 
                           </div>
-                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close" >
-                            <div>
+                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
+                           
                               {tipoObject === 'image' &&
 
-                                <img className="collapse-image-width-center " src={urlVideo}></img>
+                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
 
                               }
 
@@ -741,7 +741,7 @@ class Busqueda extends Component {
 
 
                               }
-                            </div>
+                           
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
                             <div className="fondo-videos-padding-top-desc">
