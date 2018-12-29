@@ -756,7 +756,7 @@ export const updateFile = (futureFileURL, tipo, guid, file, position, files, obj
         'name': tipoArr[0],
         "type": tipo,
         "originalURL": futureFileURL,
-        "guid": guid,
+        "uuid": guid,
         'metadata':{
             'copyRight': objetoDesc.copyRight,
             'licenseFile': objetoDesc.pdfUrlFileDone
@@ -866,7 +866,7 @@ export const updateObjeto = (futureFileURL, detalle, tipo, guid) => (dispatch) =
         'name': detalle.name,
         "type": tipo,
         "originalURL": futureFileURL,
-        "guid": guid
+        "uuid": guid
     })
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES', response);

@@ -406,7 +406,7 @@ export const updateObject = (futureFileURL, detalle, tipo, guid) => (dispatch) =
         'name': detalle.name,
         "type": tipo,
         "originalURL": futureFileURL,
-        "guid": guid
+        "uuid": guid
     })
         .then((response) => {
             console.log('response GET_OBJECT_SUCCES',response);
@@ -782,7 +782,7 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
         'name': tipoArr[0],
         "type": tipo,
         "originalURL": futureFileURL,
-        "guid": guid,
+        "uuid": guid,
         'metadata':{
             'copyRight': objetoDesc.copyRight,
             'licenseFile': objetoDesc.pdfUrlFileDone
