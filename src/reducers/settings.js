@@ -20,7 +20,8 @@ import {
     CHANGE_AVATAR_SUCCES,
     CHANGE_AVATAR_FAILURE,
     GET_USER_ME,
-    GET_USER_ME_SUCCES
+    GET_USER_ME_SUCCES,
+    GET_CLIENTE_SELECT_HEADER
 } from '../actions/types';
 
 // app config
@@ -33,6 +34,7 @@ const INIT_STATE = {
   loading: false,
   userMeName: '',
   userMeImagen: '',
+  clienteSelectAvatar: '',
   navCollapsed: AppConfig.navCollapsed,
   darkMode: AppConfig.darkMode,
   boxLayout: AppConfig.boxLayout,
@@ -245,6 +247,9 @@ export default (state = INIT_STATE, action) => {
     userMeName: action.payload.name,
     userMeImagen: action.payload.avatar
 };
+
+case GET_CLIENTE_SELECT_HEADER:
+      return { ...state, clienteSelectAvatar: action.clienteSelectAvatar };
 
 
 

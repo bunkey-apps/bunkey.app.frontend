@@ -26,7 +26,8 @@ import {
     CHANGE_AVATAR_SUCCES,
     CHANGE_AVATAR_FAILURE,
     GET_USER_ME,
-    GET_USER_ME_SUCCES
+    GET_USER_ME_SUCCES,
+    GET_CLIENTE_SELECT_HEADER
 } from './types';
 
 /**
@@ -277,4 +278,22 @@ export const getUserMe = () => (dispatch) => {
         .catch(error => {
             // error handling
         })
+}
+
+export const getClientSelectHeader = () => (dispatch) => {
+
+
+    const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+    
+    var logo = '';
+    if(clienteSelectJson && clienteSelectJson.acountSetting){
+      logo =  clienteSelectJson.acountSetting.logo;
+    }
+
+    console.log('getClientSelectHeader');
+
+    dispatch({ type: GET_CLIENTE_SELECT_HEADER, clienteSelectAvatar: logo });
+   
+    
 }

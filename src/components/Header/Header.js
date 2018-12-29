@@ -3,6 +3,8 @@
  */
 /* eslint-disable */
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
@@ -19,7 +21,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import $ from 'jquery';
 
 // actions
-import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe } from '../../actions';
+import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader } from '../../actions';
 
 // components
 import Notifications from './Notifications';
@@ -58,8 +60,7 @@ class Header extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      },
-      logoCliente: ''
+      }
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -102,34 +103,22 @@ class Header extends Component {
 
 
   componentWillMount() {
-    console.log('entrrr4');
-
+    console.log('getClientSelectHeader 1');
     this.props.getUserMe();
-		const clienteSelect = localStorage.getItem('clienteSelect');
-		const clienteSelectJson = JSON.parse(clienteSelect);
-    var logo = '';
-    if(clienteSelectJson && clienteSelectJson.acountSetting){
-      logo =  clienteSelectJson.acountSetting.logo;
-    }
-
-    this.setState({logoCliente: logo})
+    this.props.getClientSelectHeader();
 	}
 
   componentWillReceiveProps(nextProps) {
-
-
-    const clienteSelect = localStorage.getItem('clienteSelect');
-		const clienteSelectJson = JSON.parse(clienteSelect);
-    
-    var logo = '';
-    if(clienteSelectJson && clienteSelectJson.acountSetting){
-      logo =  clienteSelectJson.acountSetting.logo;
+    console.log('nextProps.location',nextProps.location);
+    console.log('this.props.location',this.props.location);
+    if (nextProps.location.pathname === '/app/dashboard' && this.props.location.pathname === '/app/clientes') {
+    console.log('de cleintes a dash 2');
+    this.props.getClientSelectHeader();
     }
-
-    this.setState({logoCliente: logo})
-
     
   }
+
+  
 
   toggleEditCustomerModal = () => {
     this.setState({
@@ -223,8 +212,8 @@ class Header extends Component {
       $('.dashboard-overlay').addClass('d-none');
       $('body').css('overflow', '');
     });
-    const { logoCliente, newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
-    const { loading, userMeName, userMeImagen } = this.props;
+    const {  newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
+    const { loading, userMeName, userMeImagen, clienteSelectAvatar } = this.props;
     return (
 
       <AppBar position="fixed" className="rct-header">
@@ -276,14 +265,19 @@ class Header extends Component {
                 <DropdownToggle caret nav >
 
                   <a href="javascript:void(0)">
-                  <img src={logoCliente} className="logo-menu-rect fondo-logo-cliente-header" />
-                  <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
+                  <img src={clienteSelectAvatar} className="logo-menu-rect fondo-logo-cliente-header" />
+                  {userMeImagen && 
+                                    <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
 
+                  }
+                  {!userMeImagen && 
+                  <img src={require('../../assets/img/peril-bunkey-generico.png')} className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129"/>
+                  }
                     
                   </a>
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
-                <div className=" color-header-bunkey padding-name-dropdown"> {userMeName}</div>
+                <div className=" color-header-bunkey padding-name-dropdown text-center"> {userMeName}</div>
                   <ul className="list-unstyled mb-0">
                     <li>
                       <a href="javascript:void(0)" onClick={() => this.cambiarClave()}>
@@ -404,9 +398,10 @@ const mapStateToProps = ({ settings }) => ({
   rtlLayout: settings.rtlLayout,
   loading: settings.loading,
   userMeName: settings.userMeName, 
-  userMeImagen : settings.userMeImagen
+  userMeImagen : settings.userMeImagen,
+  clienteSelectAvatar: settings.clienteSelectAvatar
 });
 
-export default connect(mapStateToProps, {
-  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe
-})(Header);
+export default withRouter(connect(mapStateToProps, {
+  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader
+})(Header));
