@@ -109,8 +109,7 @@ class Header extends Component {
 	}
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps.location',nextProps.location);
-    console.log('this.props.location',this.props.location);
+    
     if (nextProps.location.pathname === '/app/dashboard' && this.props.location.pathname === '/app/clientes') {
     console.log('de cleintes a dash 2');
     this.props.getClientSelectHeader();

@@ -997,14 +997,13 @@ export const getCompartidos = () => (dispatch) => {
     instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/shared')
         .then((response) => {
             console.log('response getCompartidos', response);
-             cargarMenuFavoritos(response.data.children);
              var arrImageVideo = [];
              var cont = 0;
              var collapseRows = 0;
-             if(response.data.children){
-                 for(var i=0;i<response.data.children.length;i++){
-                     if(response.data.children[i].type !== 'folder'){
-                         console.log('response.data.children[i]',response.data.children[i]);
+             if(response.data){
+                 for(var i=0;i<response.data.length;i++){
+                     if(response.data[i].object.type !== 'folder'){
+                         console.log('response.data.data[i].object[i]',response.data[i].object);
                          
                          if(cont === 4){
                              cont = 0;
@@ -1013,33 +1012,33 @@ export const getCompartidos = () => (dispatch) => {
  
  
                          if(cont === 0){
-                             response.data.children[i].marginLeft = '0%';
-                             response.data.children[i].paddingLeft = '10%';
-                             response.data.children[i].createRowCollapse = true;
+                             response.data[i].object.marginLeft = '0%';
+                             response.data[i].object.paddingLeft = '10%';
+                             response.data[i].object.createRowCollapse = true;
                              
                          }
                          if(cont === 1){
-                             response.data.children[i].marginLeft = '-110%';
-                             response.data.children[i].paddingLeft = '36%';
+                             response.data[i].object.marginLeft = '-110%';
+                             response.data[i].object.paddingLeft = '36%';
                          }
                          if(cont === 2){
-                             response.data.children[i].marginLeft = '-220%';
-                             response.data.children[i].paddingLeft = '62%';
+                             response.data[i].object.marginLeft = '-220%';
+                             response.data[i].object.paddingLeft = '62%';
                          }
                          if(cont === 3){
-                             response.data.children[i].marginLeft = '-330%';
-                             response.data.children[i].paddingLeft = '87%';
+                             response.ddata[i].object.marginLeft = '-330%';
+                             response.data[i].object.paddingLeft = '87%';
                          }
-                         response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+                         response.data[i].object.rowCollapse = 'collapse' + collapseRows;
  
-                         arrImageVideo.push(response.data.children[i]);
+                         arrImageVideo.push(response.data[i].object);
                          cont++;
                      }
                  }
                  
              }
              localStorage.setItem("objectFavorites", JSON.stringify(response.data));
-             dispatch({ type: GET_COMPARTIDOS_SUCCES, compartidos: response.data.children, parentsCompartidos: response.data.parents, imageVideosCompartidos: arrImageVideo  });
+             dispatch({ type: GET_COMPARTIDOS_SUCCES, compartidos: response.data, parentsCompartidos: [], imageVideosCompartidos: arrImageVideo  });
              
         })
         .catch(error => {
