@@ -528,7 +528,7 @@ this.setState({ alertDialog: false });
           <div className="row row-eq-height text-center">
             {compartidos.map((n, index) => {
 
-              return n.type === 'folder' ?
+              return n.object.type === 'folder' ?
 
 
 
@@ -538,13 +538,13 @@ this.setState({ alertDialog: false });
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
                   <ContextMenuTrigger id={index + 'folder-favoritos'} holdToDisplay={1000}>
-                    <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
+                    <img onClick={() => this.goToImagenes(n.object)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
 
-                    <p>{n.name}</p>
+                    <p>{n.object.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder-favoritos'} className="click-derecho-bunkey">
                     
-                    <MenuItem onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.abrirCompartir(n.object)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
                     </MenuItem>
@@ -556,10 +556,7 @@ this.setState({ alertDialog: false });
                       <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
-                    </MenuItem>
+                    
                   </ContextMenu>
                 </div>
 
@@ -617,10 +614,7 @@ this.setState({ alertDialog: false });
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
                       </MenuItem>
-                      <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
+                    
                     </ContextMenu>
 
                     {(posicion === index && !n.createRowCollapse) &&
