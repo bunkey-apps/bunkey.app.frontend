@@ -262,17 +262,24 @@ class Header extends Component {
 
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav >
-
+                
                   <a href="javascript:void(0)">
-                  <img src={clienteSelectAvatar} className="logo-menu-rect fondo-logo-cliente-header" />
+                  <div className="row div-row-logo-avatar"> 
+                    <div className="div-logo-cliente-header">
+                      <img src={clienteSelectAvatar} className="imge-logo-cliente-header fondo-logo-cliente-header" />
+
+                    </div>
+                    <div className="div-avatar-usuario-header">
                   {userMeImagen && 
-                                    <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129" />
+                                    <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129" />
 
                   }
                   {!userMeImagen && 
-                  <img src={require('../../assets/img/peril-bunkey-generico.png')} className="img-fluid rounded-circle borde-perfil-bunkey avatar-circular-menu-user" width="60" height="129"/>
+                  <img src={require('../../assets/img/peril-bunkey-generico.png')} className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129"/>
                   }
-                    
+                     </div>
+
+                     </div>
                   </a>
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>

@@ -13,6 +13,34 @@
   }
 }
 
+
+.div-logo-cliente-header{
+  height: 68px;
+    width: 140px;
+    text-align: center;
+}
+.div-avatar-usuario-header{
+width: 60px;
+height: 68px;
+}
+.imge-avatar-usuario-header{
+height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+.div-row-logo-avatar{
+  width: 204px;
+  height: 70px;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem
+}
+
+.imge-logo-cliente-header{
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .header-bunkey-nuevo{
   
     color: #3F4E5C !important;
