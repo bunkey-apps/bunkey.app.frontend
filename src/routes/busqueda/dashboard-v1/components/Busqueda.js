@@ -93,7 +93,14 @@ class Busqueda extends Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
+    this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
 
+  }
+
+  handleSubmitSearch(event) {
+    event.preventDefault();
+    this.goToBusqueda();
+    
   }
   parseUrlstring(query) {
     var vars = query.split("?");
@@ -509,6 +516,7 @@ class Busqueda extends Component {
 
 
                 >
+                <Form onSubmit={this.handleSubmitSearch}>
         <div>
           <div className="margen-busqueda text-white padding-top-busqueda">
             <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
@@ -543,7 +551,7 @@ class Busqueda extends Component {
                 <i class="fa fa-chevron-down flecha-select-test"></i>
               </div>
               <div className="input-group col-md-2 padding-bottom-busqueda">
-                <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+                <button type="submit"  className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search">
                   <i className="fa fa-search"></i>
                 </button>
               </div>
@@ -551,7 +559,7 @@ class Busqueda extends Component {
           </div>
 
         </div>
-
+        </Form>
  </div>
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>

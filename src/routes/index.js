@@ -54,6 +54,12 @@ import {
 
 class MainApp extends Component {
 
+  handleSubmitSearch = this.handleSubmitSearch.bind(this);
+  handleSubmitSearch(event) {
+    event.preventDefault();
+    this.goToBusqueda();
+    
+  }
   componentDidUpdate(prevProps) {
     if (this.props.location.pathname !== prevProps.location.pathname) {
       window.scrollTo(0, 0);
@@ -113,6 +119,7 @@ class MainApp extends Component {
 
 
                   {this.props.location.pathname !== '/app/busqueda' &&
+                  <Form onSubmit={this.handleSubmitSearch}>
                     <div>
                       <div className="margen-busqueda text-white padding-top-busqueda">
                         <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
@@ -147,7 +154,7 @@ class MainApp extends Component {
                             <i class="fa fa-chevron-down flecha-select-test"></i>
                           </div>
                           <div className="input-group col-md-2 padding-bottom-busqueda">
-                            <button onClick={() => this.goToBusqueda()} className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" type="button">
+                            <button  type="submit" className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" >
                               <i className="fa fa-search"></i>
                             </button>
                           </div>
@@ -155,6 +162,7 @@ class MainApp extends Component {
                       </div>
 
                     </div>
+                    </Form>
                   }
 
 
