@@ -119,7 +119,12 @@ function cargarMenu(carpetas) {
 
    
 
-
+    var usuarios = {
+        "menu_title": "Usuarios",
+        "menu_icon": "ti-user",
+        "path": "/app/usuarios",
+        "child_routes": null
+    };
 
 
 
@@ -165,6 +170,8 @@ function cargarMenu(carpetas) {
     if(tipoUsuario === 'admin'){
         menu.category1.push(configuracion);
         menu.category1.push(invite);
+        menu.category1.push(usuarios);
+        
     }
     
     localStorage.setItem("menuLoad", JSON.stringify(menu));
@@ -196,7 +203,12 @@ function cargarMenuFavoritos(carpetas) {
 
    
 
-
+    var usuarios = {
+        "menu_title": "Usuarios",
+        "menu_icon": "ti-user",
+        "path": "/app/usuarios",
+        "child_routes": null
+    };
 
    
 
@@ -243,6 +255,8 @@ function cargarMenuFavoritos(carpetas) {
     if(tipoUsuario === 'admin'){
         menu.category1.push(configuracion);
         menu.category1.push(invite);
+        menu.category1.push(usuarios);
+        
     }
     
 

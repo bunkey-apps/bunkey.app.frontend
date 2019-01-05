@@ -2,6 +2,8 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
+
 import {
     GET_USUARIOS,
     GET_USUARIOS_FAILURE,
@@ -33,7 +35,8 @@ export const getUsuarios = () => (dispatch) => {
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
@@ -41,7 +44,7 @@ export const getUsuarios = () => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.get('v1/users')
+    instance2.get('v1/clients/' + clienteSelectJson._id + '/workspaces')
         .then((response) => {
             console.log('response usuarios2',response);
             dispatch({ type: GET_USUARIOS_SUCCES, payload: response.data });
@@ -54,31 +57,36 @@ export const getUsuarios = () => (dispatch) => {
 export const addUsuario = (user) => (dispatch) => {
     console.log('addUsuario FORM',user);
     dispatch({ type: ADD_USUARIOS });
+    
+
+        console.log('inviteUser FORM',user);
+   
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
         timeout: 3000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
+
    
-    instance2.post('v1/users',{
-        email: user.email,
-        password: user.password,
-        name: user.name,
-        role: user.role,
-        clietntOwner: ''
+    instance2.post('v1/invitations',{
+        'fullname': user.name,
+        'email': user.email,
+        'client': clienteSelectJson._id
     })
         .then((response) => {
-            console.log('response user',response);
+            console.log('invite user',response);
             dispatch({ type: ADD_USUARIOS_SUCCES });
+            NotificationManager.success('Invitado correctamente');
         })
         .catch(error => {
-            // error handling
             dispatch({ type: ADD_USUARIOS_FAILURE});
+        NotificationManager.error(error.message);
         })
 }
 
@@ -121,7 +129,8 @@ export const deleteUsuario = (user) => (dispatch) => {
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
@@ -129,7 +138,7 @@ export const deleteUsuario = (user) => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.delete('v1/users/' + user._id)
+    instance2.delete('v1/users/' + user._id + '/workspaces/' + clienteSelectJson._id)
         .then((response) => {
             console.log('response user',response);
             dispatch({ type: DELETE_USUARIOS_SUCCES });

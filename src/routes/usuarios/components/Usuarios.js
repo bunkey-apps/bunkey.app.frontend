@@ -113,9 +113,9 @@ class Usuarios extends Component {
 
   onSubmitAddNewCustomerForm() {
     const { addNewCustomerDetails } = this.state;
-    if (addNewCustomerDetails.email !== '' && addNewCustomerDetails.password !== '' && addNewCustomerDetails.name !== '' 
-    && addNewCustomerDetails.role !== '') {
-        if(addNewCustomerDetails.password === addNewCustomerDetails.passwordRepeat){
+    if (addNewCustomerDetails.email !== '' && addNewCustomerDetails.name !== '' 
+   ) {
+        
             this.setState({ editCustomerModal: false});
             console.log('addNewCustomerDetails',addNewCustomerDetails);
             this.props.addUsuario(addNewCustomerDetails);
@@ -123,14 +123,7 @@ class Usuarios extends Component {
             setTimeout(() => {
               this.props.getUsuarios();
           }, 1000);
-        }else{
-            console.log('claves distintas');
-            addNewCustomerDetails.passInvalid = true;
-            this.setState({
-                addNewCustomerDetails:addNewCustomerDetails
-            })
-        }
-       
+        
         
     }
 }
@@ -229,8 +222,7 @@ deleteCustomer() {
                   <TableRow hover>
                     <TableCell><b>Nombre</b></TableCell>
                     <TableCell><b>E-mail</b></TableCell>
-                    <TableCell><b>Estado</b></TableCell>
-                    <TableCell><b>Rol</b></TableCell>
+                   
                     <TableCell><b>Acciones</b></TableCell>
                   </TableRow>
                 </TableHead>
@@ -241,23 +233,14 @@ deleteCustomer() {
                         <TableRow hover key={index}>
                           <TableCell>{n.name}</TableCell>
                           <TableCell>{n.email}</TableCell>
-                          {n.status ?  <TableCell>Activo</TableCell> : <TableCell>Pendiente</TableCell>}
-
-                         
-                          <TableCell>{n.role}</TableCell>
-                          <TableCell>
-                          <div className="row">
-                          <div className="col-md-6">
-                          <a href="javascript:void(0)"  onClick={() => this.onEditCustomer(n)}>
-                                        <i className="zmdi zmdi-edit"></i>
-                                    </a>
-                          </div>
-                          <div className="col-md-6">
+                        
+                          <TableCell className="text-center">
+                          
                           <a href="javascript:void(0)"   onClick={() => this.onDeleteCustomer(n)}>
                                         <i className="zmdi zmdi-delete"></i>
                                     </a>
-                          </div>
-                          </div>
+                        
+                         
                           </TableCell>
                         </TableRow>
                       );
@@ -277,7 +260,7 @@ deleteCustomer() {
                     <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                           Estas seguro de eliminarlo de forma permanente.
+                           Estas seguro de eliminarlo del espacio de trabajo.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -296,7 +279,7 @@ deleteCustomer() {
                         toggle={this.toggleEditCustomerModal}
                     >
                         <ModalHeader toggle={this.toggleEditCustomerModal}>
-                            {addNewCustomerForm ? 'Crear Usuario' : 'Editar Usuario'}
+                            {addNewCustomerForm ? 'Invitar Usuario' : 'Editar Usuario'}
                         </ModalHeader>
                         <ModalBody>
                             {addNewCustomerForm ?
@@ -312,29 +295,7 @@ deleteCustomer() {
                                             onChange={(e) => this.onChangeCustomerAddNewForm('email', e.target.value)}
                                         />
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Label for="name">Crear Clave</Label>
-                                        <Input
-                                            required="true"
-                                            type="password"
-                                            name="password"
-                                            id="password"
-                                            value={addNewCustomerDetails.password}
-                                            onChange={(e) => this.onChangeCustomerAddNewForm('password', e.target.value)}
-                                        />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="name">Repetir Clave</Label>
-                                        <Input
-                                            required="true"
-                                            type="password"
-                                            name="passwordRepeat"
-                                            id="passwordRepeat"
-                                            value={addNewCustomerDetails.passwordRepeat}
-                                            onChange={(e) => this.onChangeCustomerAddNewForm('passwordRepeat', e.target.value)}
-                                        />
-                                        {addNewCustomerDetails.passInvalid ? <p className="claves-invalidas">Las claves no son iguales </p> : null}
-                                    </FormGroup>
+                                   
                                     <FormGroup>
                                         <Label for="name">Nombre</Label>
                                         <Input
@@ -346,17 +307,7 @@ deleteCustomer() {
                                             onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
                                         />
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Label for="telefono">Rol</Label>
-                                        <Input type="select" 
-                                            name="role" 
-                                            id="role" 
-                                            value={addNewCustomerDetails.role}
-                                            onChange={(e) => this.onChangeCustomerAddNewForm('role', e.target.value)}
-                                            >
-                                                <option value="admin">Admin</option>
-                                        </Input>
-                                    </FormGroup>
+                                  
                                    
                                 </Form>
                                 : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >

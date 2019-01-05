@@ -446,7 +446,12 @@ function cargarMenuFavoritosExplorar(carpetas) {
 
 
    
-
+    var usuarios = {
+        "menu_title": "Usuarios",
+        "menu_icon": "ti-user",
+        "path": "/app/usuarios",
+        "child_routes": null
+    };
 
 
     var configuracion = {
@@ -486,6 +491,7 @@ function cargarMenuFavoritosExplorar(carpetas) {
     if(tipoUsuario === 'admin'){
         menu.category1.push(configuracion);
         menu.category1.push(invite);
+        menu.category1.push(usuarios);
     }
     
 
