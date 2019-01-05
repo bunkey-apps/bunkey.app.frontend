@@ -345,7 +345,10 @@ const AsyncRegistroComponent = Loadable({
     loader: () => import("../../routes/registro/index.js"),
     loading: () => <RctPageLoader />,
 });
-
+const AsyncCompartidosComponent = Loadable({
+    loader: () => import("../../routes/compartidos/index.js"),
+    loading: () => <RctPageLoader />,
+});
 
 /*---------------- Editor -------------------*/
 
@@ -591,6 +594,7 @@ export {
     AsyncSessionPage500Component,
     AsyncTermsConditionComponent,
     AsyncRegistroComponent,
+    AsyncCompartidosComponent,
     AsyncQuillEditorComponent,
     AsyncWysiwygEditorComponent,
     AsyncFormElementsComponent,

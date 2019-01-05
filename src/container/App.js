@@ -18,6 +18,7 @@ import MainApp from '../routes';
 import AppSignIn from './SigninFirebase';
 import AppSignUp from './SignupFirebase';
 import AppRegistro from '../routes/registro/components/Registro';
+import AppCompartidos from '../routes/compartidos/components/Compartidos';
 
 // App locale
 import AppLocale from '../lang';
@@ -110,6 +111,8 @@ class App extends Component {
             <Route path="/session/500" component={AsyncSessionPage500Component} />
             <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
             <Route path="/usuario-invitado" component={AppRegistro} />
+            <Route path="/archivos-compartidos" component={AppCompartidos} />
+
           </React.Fragment>
         </IntlProvider>
       </MuiThemeProvider>

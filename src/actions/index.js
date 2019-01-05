@@ -18,6 +18,7 @@ export * from './BusquedaActions';
 export * from './InviteActions';
 export * from './RegistroActions';
 export * from './ConfirmarActions';
+export * from './CompartidosActions';
 
 
 
