@@ -297,3 +297,28 @@ export const getClientSelectHeader = () => (dispatch) => {
    
     
 }
+
+export const getAllTags = () => (dispatch) => {
+   
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.get('v1/tags?all=true')
+        .then((response) => {
+            console.log('response getAllTags', response);
+            localStorage.setItem("allTags", JSON.stringify(response.data));
+            
+
+        })
+        .catch(error => {
+            // error handling
+        })
+}

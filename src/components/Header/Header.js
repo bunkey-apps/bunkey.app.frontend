@@ -21,7 +21,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import $ from 'jquery';
 
 // actions
-import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader } from '../../actions';
+import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags } from '../../actions';
 
 // components
 import Notifications from './Notifications';
@@ -106,6 +106,9 @@ class Header extends Component {
     console.log('getClientSelectHeader 1');
     this.props.getUserMe();
     this.props.getClientSelectHeader();
+    this.props.getAllTags();
+
+    
 	}
 
   componentWillReceiveProps(nextProps) {
@@ -409,5 +412,5 @@ const mapStateToProps = ({ settings }) => ({
 });
 
 export default withRouter(connect(mapStateToProps, {
-  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader
+  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags
 })(Header));
