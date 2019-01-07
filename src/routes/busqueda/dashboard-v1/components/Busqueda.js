@@ -29,13 +29,27 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { Collapse } from 'reactstrap';
+import { WithContext as ReactTags } from 'react-tag-input';
+
+import Dropzone from 'react-dropzone';
+
 // redux action
 import {
-  getSearch,
+  getObjects,
+  createObject,
+  cambiarObject,
+  removeObject,
+  uploadArchivo,
+  getObjectsByID,
   agregarFavoritos,
-  cambiarObjectSearch,
+  uploadExplorarMultipleFile,
+  getObjectsByHideID,
+  uploadExplorarMultipleFileDescription,
+  compartirExplorar,
+  moveExplorar,
+  getSearch,
   removeObjectSearch,
-  getObjectsByHideID
+  cambiarObjectSearch
 } from '../../../../actions';
 
 
@@ -52,18 +66,34 @@ const data = [
   createData(3, '1111-03', 'Atrasado', '$ 600.000', 'Si')
 ];
 
+const styleDragFile = {
+  'position': 'relative',
+  'width': '100%',
+  'height': '200px',
+  'border-width': '2px',
+  'border-color': 'rgb(102, 102, 102)',
+  'border-style': 'dashed',
+  'border-radius': '5px'
+}
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 
 class Busqueda extends Component {
 
   constructor() {
     super()
-   
     this.state = {
-      selectObject: [],
+      copyRight: 'free',
+      startDate: new Date(),
+      filePDF: [],
+      selectObject: '-1',
       isAdmin: false,
-      busqueda: '',
-      background: '',
+      files: [],
       addNewCustomerForm: false,
       editCustomerModal: false,
       archivoModal: false,
@@ -72,6 +102,7 @@ class Busqueda extends Component {
       alertDialog: false,
       file: '',
       imagePreviewUrl: '',
+      pdfPreviewUrl: '',
       nombreCliente: '',
       nombreFolder: '',
       collapse: '-1',
@@ -89,20 +120,124 @@ class Busqueda extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [],
+      suggestions: [],
+      correoCompartir: '',
+      idObjectCompartir: '',
+      isMoveObject: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
+    this.handleSubmitCompartir = this.handleSubmitCompartir.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
 
-  }
 
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleTagClick = this.handleTagClick.bind(this);
+
+  }
   handleSubmitSearch(event) {
     event.preventDefault();
     this.goToBusqueda();
     
   }
+  moverObject(){
+    console.log('moverObject');
+
+    this.props.moveExplorar();
+
+
+    this.setState({ isMoveObject: false });
+    
+  }
+  handleSubmitCompartir(event) {
+    event.preventDefault();
+    this.onSubmitCompartirForm();
+  }
+
+  toggleCompartirModal = () => {
+    this.setState({
+      compartirModal: !this.state.compartirModal
+    });
+  }
+
+  abrirCompartir(n) {
+    console.log('abrirCompartir',n);
+    this.setState({
+      compartirModal: true,
+      correoCompartir: '',
+      idObjectCompartir: n._id
+    });
+
+   
+  }
+  onSubmitCompartirForm() {
+    
+    console.log('idObjectCompartir',this.state.idObjectCompartir);
+    console.log('correoCompartir',this.state.correoCompartir);
+
+    var objeto = {
+      'idObjectCompartir': this.state.idObjectCompartir,
+      'correoCompartir': this.state.correoCompartir
+    }
+    this.props.compartirExplorar(objeto);
+
+    this.setState({
+      compartirModal: !this.state.compartirModal
+    });
+}
+  handlePDFChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let filePDF = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        filePDF: filePDF,
+        pdfPreviewUrl: reader.result
+      });
+      console.log(this.state);
+    }
+    reader.readAsDataURL(filePDF)
+
+  }
+  handleTagClick(index) {
+
+    console.log('The tag at index ' + index + ' was clicked');
+  }
+  handleDelete(i) {
+    console.log('handleDelete');
+    const { tags } = this.state;
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i),
+    });
+  }
+
+  handleAddition(tag) {
+    console.log('handleAddition');
+
+    this.setState(state => ({ tags: [...state.tags, tag] }));
+  }
+
+  handleDrag(tag, currPos, newPos) {
+    console.log('handleDrag');
+
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
+  }
+
+
+
   parseUrlstring(query) {
     var vars = query.split("?");
     var query_string = {};
@@ -124,6 +259,7 @@ class Busqueda extends Component {
     }
     return query_string;
   }
+  
   componentWillMount() {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
@@ -167,6 +303,7 @@ class Busqueda extends Component {
 
     }
   }
+
   onAddCarpeta() {
     this.setState({
       editCustomerModal: true,
@@ -203,7 +340,16 @@ class Busqueda extends Component {
         clietntOwner: '',
         passwordRepeat: '',
         passInvalid: false
-      }
+      },
+      tags: [],
+      suggestions: [],
+      files: [],
+      copyRight: 'free',
+      startDate: new Date(),
+      filePDF: [],
+      files: [],
+      imagePreviewUrl: '',
+      pdfPreviewUrl: ''
     });
 
     // this.props.changePassword();
@@ -233,7 +379,11 @@ class Busqueda extends Component {
     this.onEditCustomer(folder);
 
   }
-
+  handleClickMove(folder) {
+   
+    localStorage.setItem("moveObject", JSON.stringify(folder));
+    this.setState({ isMoveObject: true });
+  }
   deleteCustomer() {
     this.setState({ alertDialog: false });
 
@@ -273,12 +423,38 @@ class Busqueda extends Component {
   }
   onSubmitAddArchiveForm() {
     const { addNewCustomerDetails } = this.state;
-    if (addNewCustomerDetails.name !== '') {
-      this.setState({ archivoModal: false });
-      console.log('onSubmitAddArchiveForm', addNewCustomerDetails);
-      this.props.uploadArchivo(addNewCustomerDetails, this.state.file);
+    console.log('this.state.files', this.state.files);
+    console.log('copyRight', this.state.copyRight);
+    console.log('tags', this.state.tags);
 
+
+    var arrTags = [];
+    for (var i = 0; i < this.state.tags.length; i++) {
+
+      arrTags.push(this.state.tags[i].text);
     }
+
+    console.log('arrTags', arrTags);
+
+    if (this.state.files.length > 0) {
+      this.setState({ archivoModal: false });
+
+      var objectDec = this.state;
+
+      objectDec.descriptiveTags = arrTags;
+
+
+      console.log('startDate',this.state.startDate);
+      //descriptiveTags
+      this.props.uploadExplorarMultipleFileDescription(objectDec);
+      // this.state.files = [];
+    }
+
+
+
+
+    //  this.props.uploadExplorarMultipleFile(this.state.files);
+
 
   }
 
@@ -319,12 +495,17 @@ class Busqueda extends Component {
 
 
   goToImagenes = (n) => {
-
-
     console.log('objecto', n);
-    // localStorage.setItem("folderSelect", JSON.stringify(n));
     const { match, history } = this.props;
     history.push('/app/exlporar?id=' + n._id + '?name=' + n.name);
+
+
+    function Play() {
+      console.log('mouse over');
+    }
+
+    /*const { match, history } = this.props;
+   history.push('/app/exlporar');*/
 
   }
 
@@ -370,8 +551,8 @@ class Busqueda extends Component {
       }
       this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
     } else {
-
       this.props.getObjectsByHideID(objecto._id);
+
       if (objecto.type === 'video') {
 
         this.setState({ tipoObject: 'image' });
@@ -379,12 +560,12 @@ class Busqueda extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type });
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
       }
 
@@ -427,21 +608,21 @@ class Busqueda extends Component {
     if (this.state.posicion > 0) {
       var index = this.state.posicion - 1;
       console.log('entra', imageVideos[index].name);
-
       this.props.getObjectsByHideID(imageVideos[index]._id);
+
       if (imageVideos[index].type === 'video') {
 
         this.setState({ tipoObject: 'image' });
 
-
+       
         setTimeout(() => {
 
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]  });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type , selectObject: imageVideos[index] });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]  });
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type , selectObject: imageVideos[index] });
 
       }
 
@@ -473,12 +654,12 @@ class Busqueda extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]  });
+          this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]  });
+        this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]   });
 
       }
 
@@ -495,6 +676,18 @@ class Busqueda extends Component {
     }
 
   }
+
+  onDrop(files) {
+    this.setState({
+      files
+    });
+  }
+
+  onCancel() {
+    this.setState({
+      files: []
+    })
+  }
   onChangeFiltroSearch(filtro){
     this.setState({filtroBusqeuda: filtro});
   }
@@ -505,76 +698,94 @@ class Busqueda extends Component {
     const { posicion } = this.state;
     const { author } = this.state;
     const { isAdmin } = this.state;
-    const { background } = this.state;
-    const { busqueda } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
+    const { copyRight } = this.state;
+    const { tags, suggestions } = this.state;
+    const { startDate } = this.state;
+    const { compartirModal } = this.state;
+    const { correoCompartir } = this.state;
+    const { selectObject } = this.state;
+    const { isMoveObject } = this.state;
+    const { background, busqueda } = this.state;
+    const { filtroBusqeuda } = this.state;
 
-    
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
 
       <div>
+        <div className="row row-eq-height">
+        
+        </div>
 
+        <RctCollapsibleCard>
+          <div className={'rct-block-title'}>
 
-
- <div className="fondo-busqueda text-white"
+           
+          </div>
+          <div className="fondo-busqueda text-white"
                   style={{ backgroundImage: `url(${background})` }}
 
 
                 >
-                <Form onSubmit={this.handleSubmitSearch}>
-        <div>
-          <div className="margen-busqueda text-white padding-top-busqueda">
-            <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
-            <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
-          </div>
 
 
-          <div>
+
+                  
+                  <Form onSubmit={this.handleSubmitSearch}>
+                    <div>
+                      <div className="margen-busqueda text-white padding-top-busqueda">
+                        <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                        <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+                      </div>
 
 
-            <div className="row">
-              <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+                      <div>
 
-                <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
-                </input>
 
-              </div>
-              <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
-                <div className="div-separador-search-form"></div>
-              </div>
-              <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
-                <Input type="select"
-                  name="tipoArchivo"
-                  id="tipoArchivo"
-                  className="select-resultados altura-select-search"
-                  onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
-                >
-                               <option value="-1">Tipo de Archivo</option>
+                        <div className="row">
+                          <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+
+                            <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+                            </input>
+
+                          </div>
+                          <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+                            <div className="div-separador-search-form"></div>
+                          </div>
+                          <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+                            <Input type="select"
+                              name="tipoArchivo"
+                              id="tipoArchivo"
+                              value = {filtroBusqeuda}
+                              className="select-resultados altura-select-search"
+                              onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
+                            >
+                              <option value="-1">Tipo de Archivo</option>
                               <option value="image">imágen</option>
                               <option value="video">Video</option>
-                </Input>
-                <i class="fa fa-chevron-down flecha-select-test"></i>
-              </div>
-              <div className="input-group col-md-2 padding-bottom-busqueda">
-                <button type="submit"  className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search">
-                  <i className="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+                            </Input>
+                            <i class="fa fa-chevron-down flecha-select-test"></i>
+                          </div>
+                          <div className="input-group col-md-2 padding-bottom-busqueda">
+                            <button  type="submit" className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" >
+                              <i className="fa fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
 
-        </div>
-        </Form>
- </div>
-        <RctCollapsibleCard>
-          <div className={'rct-block-title'}>
+                    </div>
+                    </Form>
+                  
 
 
-          </div>
 
+
+
+
+                </div>
 
           {loading &&
             <div className="d-flex justify-content-center loader-overlay">
@@ -599,8 +810,8 @@ class Busqueda extends Component {
                     <p>{n.name}</p>
                   </ContextMenuTrigger>
                   <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    
+                    <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Compartir</span>
                     </MenuItem>
@@ -609,7 +820,7 @@ class Busqueda extends Component {
                       <span className="padding-click-derecho">Cambiar Nombre</span>
                     </MenuItem>
 
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                    <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                       <span className="padding-click-derecho">Mover</span>
                     </MenuItem>
@@ -646,7 +857,7 @@ class Busqueda extends Component {
 
                       {n.type === 'image' &&
                         <GridListTile key={index}>
-                        <div className="heigth-div-objetos">
+                         <div className="heigth-div-objetos">
                           <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
@@ -654,7 +865,7 @@ class Busqueda extends Component {
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
-                          <div className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                          <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
                             <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                               <BigPlayButton position="center" />
                               <ControlBar disableDefaultControls={true} />
@@ -672,11 +883,11 @@ class Busqueda extends Component {
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={() => { window.open(n.originalURL, '_blank') }} data={{ item: { index } }}>
+                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem   onClick={() => this.abrirCompartir(n)}  data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Compartir</span>
                       </MenuItem>
@@ -685,7 +896,7 @@ class Busqueda extends Component {
                         <span className="padding-click-derecho">Cambiar Nombre</span>
                       </MenuItem>
 
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Mover</span>
                       </MenuItem>
@@ -738,7 +949,7 @@ class Busqueda extends Component {
 
                           </div>
                           <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
-                           
+                            
                               {tipoObject === 'image' &&
 
                                 <img className="image-colapse-max-width-height" src={urlVideo}></img>
@@ -757,26 +968,79 @@ class Busqueda extends Component {
 
 
                               }
-                           
+                            
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                          <div>
+                          <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                          <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+
+                          </div>
                             <div className="fondo-videos-padding-top-desc">
                               <h3 className="text-white">{author}</h3>
 
                             </div>
                             <div>
                               <b className="text-white"></b>
-                              <IconButton> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
 
 
 
-                            <div className=" ">
-                              <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close"></i>
+                            {selectObject !== '-1' &&
+                              <div>
 
-                              <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right"></i>
+
+                                <div>
+                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
+                                    <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                  ))}
+                                </div>
+                                <div> 
+                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
+                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
+                                  ))}
+                                </div>
+                                <div>
+                                  {selectObject.metadata.copyRight === 'free' &&
+                                    <span className="text-white">Copy Right: Libre</span>
+                                  }
+
+                                  {selectObject.metadata.copyRight === 'limited' &&
+                                    <span className="text-white">Copy Right: Limitado</span>
+                                  }
+                                  {selectObject.metadata.copyRight === 'own' &&
+                                    <span className="text-white">Copy Right: Propio</span>
+                                  }
+
+                                </div>
+                                <div>
+                                  {selectObject.metadata.createdDate &&
+                                    <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                  }
+                                </div>
+
+                                {selectObject.metadata.licenseFile &&
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                    <a href="javascript:void(0)">
+                                      Copy Right: CopyRight.pdf  </a>
+                                  </div>
+                                }
+
+
+                              </div>
+                            }
+
+
+
+
+
+
+
+                            <div className=" ">
+
 
                             </div>
 
@@ -901,24 +1165,86 @@ class Busqueda extends Component {
         </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+
                 <FormGroup>
-                  <Label for="name">Nombre</Label>
+                  <div>
+
+
+                    <ReactTags tags={tags}
+                      allowDragDrop={false}
+                      suggestions={suggestions}
+                      handleDelete={this.handleDelete}
+                      handleAddition={this.handleAddition}
+                      handleTagClick={this.handleTagClick}
+                      delimiters={delimiters}
+                      placeholder={'Tags de la colección'}
+                    >
+
+                    </ReactTags>
+                  </div>
+                </FormGroup>
+
+
+                <FormGroup>
+                  <Label for="copyRight:">Copy Right:</Label>
+                  <Input type="select"
+                    name="copyRight"
+                    id="copyRight"
+                    required="true"
+                    value={copyRight}
+                    onChange={(event) => this.setState({ copyRight: event.target.value })}
+                  >
+                    <option value="free">Libre</option>
+                    <option value="limited">Limitado</option>
+                    <option value="own">Propio</option>
+                  </Input>
+                </FormGroup>
+
+
+                {(copyRight === 'limited' || copyRight === 'own') &&
+                  <FormGroup>
+                    <Label for="pdfCopy">PDF Copy Right:</Label>
+                    <Input required="true" name="pdfCopy" className="fileInput"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => this.handlePDFChange(e)} />
+                  </FormGroup>
+
+                }
+
+                <FormGroup>
+                  <Label for="startDate">Fecha de creación</Label>
                   <Input
                     required="true"
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={addNewCustomerDetails.name}
-                    onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
+                    onChange={(event) => this.setState({ startDate: event.target.value })}
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label for="avatar">Archivo</Label>
-                  <Input required="true" name="avatar" className="fileInput"
-                    type="file"
-                    onChange={(e) => this.handleImageChange(e)} />
-                </FormGroup>
+
+                <section>
+                  <div className="dropzone">
+                    <Dropzone
+                      style={styleDragFile}
+                      onDrop={this.onDrop.bind(this)}
+                      onFileDialogCancel={this.onCancel.bind(this)}
+                    >
+                      <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
+                    </Dropzone>
+                  </div>
+                  <aside>
+                    <h2>Archivos seleccionados</h2>
+                    <ul className="padding-10-px">
+                      {
+                        this.state.files.map(f => <li key={f.name}>{f.name}</li>)
+                      }
+                    </ul>
+                  </aside>
+                </section>
               </Form>
+
 
             </ModalBody>
             <ModalFooter>
@@ -936,6 +1262,47 @@ class Busqueda extends Component {
 
 
 
+      {compartirModal &&
+        <Modal
+          isOpen={compartirModal}
+          toggle={this.toggleCompartirModal}
+        >
+          <ModalHeader toggle={this.toggleCompartirModal}>
+            Compartir
+      </ModalHeader>
+          <ModalBody>
+            <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
+
+<FormGroup>
+                  <Label for="name">Email</Label>
+                  <Input
+                    required="true"
+                    type="email"
+                    name="correoCompartir"
+                    id="correoCompartir"
+                    value={correoCompartir}
+                    onChange={(event) => this.setState({ correoCompartir: event.target.value })} 
+                  />
+                </FormGroup>
+            
+         
+             
+            </Form>
+
+
+          </ModalBody>
+          <ModalFooter>
+
+            <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
+              <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
+
+
+
+          </ModalFooter>
+        </Modal>
+
+
+      }
 
 
 
@@ -950,5 +1317,5 @@ const mapStateToProps = ({ busqueda }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getSearch, agregarFavoritos, cambiarObjectSearch, removeObjectSearch, getObjectsByHideID
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar, getSearch, removeObjectSearch, cambiarObjectSearch
 })(Busqueda));

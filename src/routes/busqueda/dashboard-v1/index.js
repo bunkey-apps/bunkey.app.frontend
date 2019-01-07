@@ -204,75 +204,7 @@ export default class ExplorarPage extends Component {
 
 
 
-        <Form >
-        <div className="row row-eq-height">
-            <div className="col-sm-2 col-md-2 col-lg-2">
-              <FormGroup className="border-select-resultado">
-                <Input type="select"
-                  name="tipoArchivo"
-                  id="tipoArchivo"
-                  className="select-resultados"
-                >
-                  <option value="tipoArchivo">Tipo de Archivo</option>
-                  <option value="Video">Video</option>
-                  <option value="Imagen">Imagen</option>
-                </Input>
-                <i class="fa fa-chevron-down select-resultados-flecha"></i>
-              </FormGroup>
-            </div>
-
-            <div className="col-sm-2 col-md-2 col-lg-2">
-              <FormGroup>
-                <Input type="select"
-                  name="lugar"
-                  id="lugar"
-                  className="select-resultados"
-                >
-                  <option value="lugar">Lugar</option>
-                  <option value="Rural">Rural</option>
-                  <option value="Playa">Playa</option>
-                </Input>
-                <i class="fa fa-chevron-down select-resultados-flecha"></i>
-              </FormGroup>
-
-            </div>
-            <div className="col-sm-2 col-md-2 col-lg-2">
-              <FormGroup>
-                <Input type="select"
-                  name="fecha"
-                  id="fecha"
-                  className="select-resultados"
-                >
-                  <option value="fecha">Fecha</option>
-                  <option value="Hoy">Hoy</option>
-                  <option value="Ayer">Ayer</option>
-                </Input>
-                <i class="fa fa-chevron-down select-resultados-flecha"></i>
-              </FormGroup>
-            </div>
-            <div className="col-sm-3 col-md-3 col-lg-3">
-              <FormGroup>
-                <Input type="select"
-                  name="tags"
-                  id="tags"
-                  className="select-resultados"
-                >
-                  <option value="tags">Tags Audiovisuales</option>
-                  <option value="dron">Dron</option>
-                  <option value="santiago">Santiago</option>
-                </Input>
-                <i class="fa fa-chevron-down select-resultados-flecha"></i>
-              </FormGroup>
-            </div>
-           
-          </div>
-
-
-
-
-
-
-        </Form>
+       
 
         <Busqueda/>
 
