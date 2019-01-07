@@ -86,7 +86,7 @@ class Explorar extends Component {
     super()
     this.state = {
       copyRight: 'free',
-      startDate: '',
+      startDate: new Date(),
       filePDF: [],
       selectObject: '-1',
       isAdmin: false,
@@ -377,7 +377,7 @@ class Explorar extends Component {
       suggestions: [],
       files: [],
       copyRight: 'free',
-      startDate: '',
+      startDate: new Date(),
       filePDF: [],
       files: [],
       imagePreviewUrl: '',
@@ -1244,7 +1244,7 @@ class Explorar extends Component {
                     type="date"
                     name="startDate"
                     id="startDate"
-                    value={startDate}
+                    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
                     onChange={(event) => this.setState({ startDate: event.target.value })}
                   />
                 </FormGroup>
