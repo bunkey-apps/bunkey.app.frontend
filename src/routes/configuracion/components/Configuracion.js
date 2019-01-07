@@ -155,6 +155,7 @@ class Configuracion extends Component {
               <div className="row row-eq-height text-center">
               <div className="col-sm-4 col-md-3 col-lg-4">
                 <h4 className="titulo-vistas-mis-contenidos configuracion-titulo-card"><b>Cambiar Logo</b></h4>
+               
             </div>
 
                 <div className="col-sm-4 col-md-3 col-lg-4">
@@ -163,6 +164,7 @@ class Configuracion extends Component {
                     type="file"
                     onChange={(e) => this.handleImageChange(e)} />
  </FormGroup>
+ <span>Recomendado JPG de 250x250 pixeles.</span>
                 </div>
                 <div className="col-sm-4 col-md-3 col-lg-4">
 
