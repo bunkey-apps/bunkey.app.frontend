@@ -41,6 +41,7 @@ class Header extends Component {
   constructor() {
     super()
     this.state = {
+      showHeaderHome: true,
       customizer: false,
       addNewCustomerForm: false,
       editCustomerModal: false,
@@ -117,6 +118,12 @@ class Header extends Component {
     console.log('de cleintes a dash 2');
     this.props.getClientSelectHeader();
     }
+
+    if (this.props.location.pathname === '/app/clientes') {
+      this.setState({showHeaderHome: false});
+    }else{
+      this.setState({showHeaderHome: true});
+    } 
     
   }
 
@@ -214,7 +221,7 @@ class Header extends Component {
       $('.dashboard-overlay').addClass('d-none');
       $('body').css('overflow', '');
     });
-    const {  newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
+    const {showHeaderHome,  newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
     const { loading, userMeName, userMeImagen, clienteSelectAvatar } = this.props;
     return (
 
@@ -239,26 +246,31 @@ class Header extends Component {
           <ul className="navbar-right list-inline margen-ul-bunkey">
 
 
-
+{showHeaderHome &&
   <li className="list-inline-item margen-li-bunkey">
-            <Link to="/app/dashboard">
-              <a href="javascript:void(0)"  className="header-icon text-secondary border-secondary border-none-home-heder">
-                <i className="zmdi ti-home color-header-bunkey"></i>
-              </a>
-              </Link>
-            </li>
+  <Link to="/app/dashboard">
+    <a href="javascript:void(0)"  className="header-icon text-secondary border-secondary border-none-home-heder">
+      <i className="zmdi ti-home color-header-bunkey"></i>
+    </a>
+    </Link>
+  </li>
 
-           
-            
+}
+ 
+ {showHeaderHome &&
+      
 
-            <li className="list-inline-item margen-li-bunkey">
-            <Link to="/app/confirmar">
-              <a href="javascript:void(0)" className="header-icon text-secondary border-secondary">
-                <i className="zmdi ti-info color-header-bunkey"></i>
-              </a>
-              </Link>
-            </li>
+      <li className="list-inline-item margen-li-bunkey">
+      <Link to="/app/confirmar">
+        <a href="javascript:void(0)" className="header-icon text-secondary border-secondary">
+          <i className="zmdi ti-info color-header-bunkey"></i>
+        </a>
+        </Link>
+      </li>
 
+ 
+ }
+       
       
             <li className="list-inline-item margen-li-bunkey">
 
