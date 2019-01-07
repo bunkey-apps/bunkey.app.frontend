@@ -20,6 +20,7 @@ import busquedaReducer from './BusquedaReducer';
 import registroReducer from './RegistroReducer';
 import confirmarReducer from './ConfirmarReducer';
 import compartidosReducer from './CompartidosReducer';
+import recuperarReducer from './RecuperarReducer';
 
 
 
@@ -43,7 +44,8 @@ const reducers = combineReducers({
   busqueda: busquedaReducer,
   registro: registroReducer,
   confirmar: confirmarReducer,
-  compartidos: compartidosReducer
+  compartidos: compartidosReducer,
+  recuperar: recuperarReducer
 
 
 });

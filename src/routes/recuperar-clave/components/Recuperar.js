@@ -1,34 +1,38 @@
-/**
- * Signin Firebase
- */
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import { Media } from 'reactstrap';
+import IconButton from 'material-ui/IconButton';
+import axios from 'axios';
+import { connect } from "react-redux";
+import { CircularProgress } from 'material-ui/Progress';
+import update from 'react-addons-update';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import Button from 'material-ui/Button';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import { Link } from 'react-router-dom';
-import { Form, FormGroup, Input } from 'reactstrap';
-import { LinearProgress } from 'material-ui/Progress';
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle, } from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
+import Avatar from 'material-ui/Avatar';
+import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
+// page title bar
+import PageTitleBar from '../../../components/PageTitleBar/PageTitleBar';
+import { Link } from 'react-router-dom';
 
-// components
-import SessionSlider from '../components/Widgets/SessionSlider';
+// intl messages
+import IntlMessages from '../../../util/IntlMessages';
+
+// rct card box
+import RctCollapsibleCard from '../../../components/RctCollapsibleCard/RctCollapsibleCard';
+import { LinearProgress } from 'material-ui/Progress';
 
 // app config
-import AppConfig from '../constants/AppConfig';
-
+import AppConfig from '../../../constants/AppConfig';
 // redux action
 import {
-  signinUserInFirebase,
-  signinUserWithFacebook,
-  signinUserWithGoogle,
-  signinUserWithGithub,
-  signinUserWithTwitter,
-  signinUserWithBunkey
-} from '../actions';
+    recuperarClave
+    
+} from '../../../actions';
 
-class Signin extends Component {
+class Recuperar extends Component {
 
   state = {
     email: '',
@@ -40,8 +44,8 @@ class Signin extends Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.email !== '' && this.state.password !== '') {
-      this.props.signinUserWithBunkey(this.state, this.props.history);
+    if (this.state.email !== '' ) {
+      this.props.recuperarClave(this.state.email);
     }
   }
 
@@ -61,6 +65,7 @@ class Signin extends Component {
           {loading &&
             <LinearProgress />
           }
+          
         
           <div className="session-inner-wrapper w-100">
             <div className="container ">
@@ -70,30 +75,27 @@ class Signin extends Component {
                 <div className="col-sm-8 col-md-7 col-lg-8">
                   <div className="session-body text-center">
                     <div className="session-head mb-30">
-                      <h2>Bienvenidos</h2>
-                      <small className="mb-0">Ingresa a tu cuenta de Administrador</small>
+                      <h2>Recuperar Clave</h2>
+                      <small className="mb-0">Ingresa tu correo electrónico para recuperar la clave</small>
                     </div>
                     <Form onSubmit={this.handleSubmit}>
                       <FormGroup className="has-wrapper">
                         <Input required="true" type="mail" value={email} name="user-mail" id="user-mail" className="has-input input-lg" placeholder="Email" onChange={(event) => this.setState({ email: event.target.value })} />
                         <span className="has-icon"><i className="ti-email"></i></span>
                       </FormGroup>
-                      <FormGroup className="has-wrapper">
-                        <Input required="true" value={password} type="Password" name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Password" onChange={(event) => this.setState({ password: event.target.value })} />
-                        <span className="has-icon"><i className="ti-lock"></i></span>
-                      </FormGroup>
+                     
                       <FormGroup className="mb-15 session-form-padding-button">
                         <Button
                           className="btn-success text-white btn-lg circle-btn-sm btn-block session-button-color"
                           variant="raised"
                           type="submit">
-                          Ingresar
+                          Recuperar
                             </Button>
                       </FormGroup>
                     </Form>
-                    <p><Link to="/recuperar-clave" className="text-muted">Recuperar Contraseña</Link></p>
+                   
+                    <p><Link to="/" className="text-muted">Volver</Link></p>
 
-                  
                   </div>
                 </div>
                 <div className="col-sm-2 col-md-1 col-lg-2">
@@ -108,16 +110,11 @@ class Signin extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
-  const { user, loading } = authUser;
-  return { user, loading }
-}
+const mapStateToProps = ({ recuperar }) => {
+    return recuperar;
+  }
 
 export default connect(mapStateToProps, {
-  signinUserInFirebase,
-  signinUserWithFacebook,
-  signinUserWithGoogle,
-  signinUserWithGithub,
-  signinUserWithTwitter,
-  signinUserWithBunkey
-})(Signin);
+    recuperarClave
+    
+})(Recuperar);

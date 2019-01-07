@@ -19,6 +19,7 @@ import AppSignIn from './SigninFirebase';
 import AppSignUp from './SignupFirebase';
 import AppRegistro from '../routes/registro/components/Registro';
 import AppCompartidos from '../routes/compartidos/components/Compartidos';
+import AppRecuperar from '../routes/recuperar-clave/components/Recuperar';
 
 // App locale
 import AppLocale from '../lang';
@@ -112,6 +113,9 @@ class App extends Component {
             <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
             <Route path="/usuario-invitado" component={AppRegistro} />
             <Route path="/archivos-compartidos" component={AppCompartidos} />
+            <Route path="/recuperar-clave" component={AppRecuperar} />
+
+            
 
           </React.Fragment>
         </IntlProvider>
