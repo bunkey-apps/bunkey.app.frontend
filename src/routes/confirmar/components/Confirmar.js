@@ -71,6 +71,20 @@ class Confirmar extends Component {
     var tipoArr = props.objectoPending.originalURL.split('.');
     var extens = tipoArr[tipoArr.length -1];
 
+    const allTags = localStorage.getItem('allTags');
+
+    const allTagsJson = JSON.parse(allTags);
+
+    var arrTagsAudiovisuales = [];
+    var auxTag = {};
+    for(var j=0;j<allTagsJson.length;j++){
+      auxTag.id = allTagsJson[j].id;
+      auxTag.name = allTagsJson[j].name;
+      arrTagsAudiovisuales.push(auxTag);
+      auxTag = {};
+    }
+
+    
 
     this.state = {
       objeto: props.objectoPending,
@@ -83,7 +97,9 @@ class Confirmar extends Component {
       name: props.objectoPending.name,
       startDate: props.objectoPending.metadata.createdDate,
       loading: false,
-      extension: extens
+      extension: extens,
+      tagsAudiovisuales : arrTagsAudiovisuales,
+      selectsTags: []
 
     }
 
@@ -150,7 +166,9 @@ class Confirmar extends Component {
 
 
     console.log('isUpdate?;', isUpdate);
-
+    if(this.state.selectsTags.length > 0){
+      isUpdate = true;
+    }
 
     if (isUpdate) {
       var objectChange = {
@@ -159,7 +177,8 @@ class Confirmar extends Component {
           'copyRight': this.state.copyRight,
           'licenseFile': licenseFile,
           'descriptiveTags': arrTags,
-          'createdDate': moment(this.state.startDate).utc().format()
+          'createdDate': moment(this.state.startDate).utc().format(),
+          'audiovisualTags': this.state.selectsTags
         },
         'isChangePDF': isChangePDF,
         'id': this.state.id,
@@ -229,6 +248,33 @@ class Confirmar extends Component {
     this.refs.player.pause();
   }
 
+  onChangeAudiovisuales(visual){
+    console.log('onChangeAudiovisuales',visual);
+   
+
+    var arrAux = this.state.selectsTags;
+    arrAux.push(visual);
+    this.setState({selectsTags: arrAux})
+    console.log(' this.state.selectsTags', this.state.selectsTags);
+  }
+
+  removeSelectTagAudiovisual(visual){
+
+    console.log('visual ',visual);
+    var arrAux = this.state.selectsTags;
+    var cont = 0;
+    for(var j=0;j<arrAux.length;j++){
+      if(arrAux[j] === visual){
+        cont = j;
+      }
+      
+
+     
+    }
+
+    arrAux.splice(cont,1);
+    this.setState({selectsTags: arrAux})
+  }
   render() {
 
     const { loading } = this.state;
@@ -305,7 +351,39 @@ class Confirmar extends Component {
     </ReactTags>
   </div>
 </FormGroup>
+<FormGroup>
+  <div>
+{this.state.selectsTags.map((select, i) =>
+            
+  <span className="tagsAudiovisuales-select">{select}
+  <a onClick={() => this.removeSelectTagAudiovisual(select)}  class="ReactTags__remove">×</a></span>
+                
+                 
+                )}
+  </div>
 
+
+    <Label for="audiovisuales">Tags audiovisuales </Label>
+
+    
+  
+
+    <Input type="select" 
+        name="audiovisuales" 
+        id="audiovisuales" 
+       // value={editCustomer.role}
+        onChange={(e) => this.onChangeAudiovisuales( e.target.value)}
+        >
+         <option value="" >tags audiovisuales</option>
+         {this.state.tagsAudiovisuales.map((category, i) =>
+                <option key={i} value={category.id}>
+                  {category.name}
+                </option>
+              )}
+           
+    </Input>
+    
+                                    </FormGroup>
 <FormGroup>
   <Label for="startDate">Fecha de creación</Label>
   <Input

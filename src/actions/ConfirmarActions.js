@@ -110,7 +110,8 @@ export const updatePendingObject = (objeto) => (dispatch) => {
             'copyRight': objeto.metadata.copyRight,
             'licenseFile': objeto.metadata.licenseFile,
             'descriptiveTags' : objeto.metadata.descriptiveTags,
-            'createdDate': objeto.metadata.createdDate
+            'createdDate': objeto.metadata.createdDate,
+            'audiovisualTags': objeto.metadata.audiovisualTags
         }
     })
         .then((response) => {
