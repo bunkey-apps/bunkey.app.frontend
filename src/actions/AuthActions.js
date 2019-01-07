@@ -160,8 +160,10 @@ export const signinUserWithTwitter = (history) => (dispatch) => {
 export const signinUserWithBunkey = (user, history) => (dispatch) => {
     console.log('signinUserWithBunkey24',user);
     dispatch({ type: LOGIN_USER });
+    var email = user.email.replace(/\s/g, '');
+
     instance.post('v1/auth/sign-in',{
-        email: user.email,
+        email: email,
         password: user.password})
     .then((user) => {
         console.log('usuario es3',user);
