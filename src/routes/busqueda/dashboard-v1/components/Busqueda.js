@@ -58,6 +58,7 @@ class Busqueda extends Component {
 
   constructor() {
     super()
+   
     this.state = {
       selectObject: [],
       isAdmin: false,
@@ -146,6 +147,8 @@ class Busqueda extends Component {
 
   goToBusqueda(){
     localStorage.setItem('textoBusqeuda', this.state.busqueda);
+    localStorage.setItem('filtroBusqeuda', this.state.filtroBusqeuda);
+
     this.props.getSearch();
   }
 
@@ -492,6 +495,9 @@ class Busqueda extends Component {
     }
 
   }
+  onChangeFiltroSearch(filtro){
+    this.setState({filtroBusqeuda: filtro});
+  }
   render() {
     const { items, loading, userById, parents, imageVideos } = this.props;
     const { collapse } = this.state;
@@ -503,6 +509,8 @@ class Busqueda extends Component {
     const { busqueda } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
+
+    
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -542,11 +550,11 @@ class Busqueda extends Component {
                   name="tipoArchivo"
                   id="tipoArchivo"
                   className="select-resultados altura-select-search"
+                  onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
                 >
-                  <option value="tipoArchivo">Tipo de Archivo</option>
-                  <option value="Imagen">imágen</option>
-                  <option value="vector">vector</option>
-                  <option value="clip">clip</option>
+                               <option value="-1">Tipo de Archivo</option>
+                              <option value="image">imágen</option>
+                              <option value="video">Video</option>
                 </Input>
                 <i class="fa fa-chevron-down flecha-select-test"></i>
               </div>

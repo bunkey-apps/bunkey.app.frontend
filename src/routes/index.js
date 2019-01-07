@@ -70,7 +70,9 @@ class MainApp extends Component {
     const { match, history } = this.props;
     console.log('texto', this.state.busqueda)
     localStorage.setItem('textoBusqeuda', this.state.busqueda);
+    localStorage.setItem('filtroBusqeuda', this.state.filtroBusqeuda);
 
+    
     history.push('/app/busqueda');
 
   }
@@ -99,9 +101,14 @@ class MainApp extends Component {
 
   }
 
+  onChangeFiltroSearch(filtro){
+    this.setState({filtroBusqeuda: filtro});
+  }
+
   render() {
     const { navCollapsed } = this.props.settings;
     const { background, busqueda } = this.state;
+    const { filtroBusqeuda } = this.state;
     return (
       <div className={classnames('app', { 'collapsed-sidebar': navCollapsed })}>
         <div className="app-container">
@@ -144,12 +151,13 @@ class MainApp extends Component {
                             <Input type="select"
                               name="tipoArchivo"
                               id="tipoArchivo"
+                              value = {filtroBusqeuda}
                               className="select-resultados altura-select-search"
+                              onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
                             >
-                              <option value="tipoArchivo">Tipo de Archivo</option>
-                              <option value="Imagen">imágen</option>
-                              <option value="vector">vector</option>
-                              <option value="clip">clip</option>
+                              <option value="-1">Tipo de Archivo</option>
+                              <option value="image">imágen</option>
+                              <option value="video">Video</option>
                             </Input>
                             <i class="fa fa-chevron-down flecha-select-test"></i>
                           </div>

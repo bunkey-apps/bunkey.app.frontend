@@ -31,7 +31,14 @@ export const getSearch = () => (dispatch) => {
     console.log('folderSelectJson',folderSelectJson);
 
     const textoBusqeuda = localStorage.getItem('textoBusqeuda');
-    
+    const filtroBusqeuda = localStorage.getItem('filtroBusqeuda');
+    var typeUrl = '';
+        if(filtroBusqeuda && filtroBusqeuda !== 'undefined' && filtroBusqeuda !== '-1'){
+            typeUrl = '&type=' + filtroBusqeuda;
+        }
+
+
+
     console.log('textoBusqeuda',textoBusqeuda);
 
     if(!clienteSelectJson){
@@ -45,7 +52,7 @@ export const getSearch = () => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda)
+      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl)
       .then((response) => {
             console.log('response search',response);
             var arrImageVideo = [];
