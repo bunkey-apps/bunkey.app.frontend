@@ -959,8 +959,15 @@ class Folders extends Component {
 
 
                                 <div>
+                                 
                                   {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
                                     <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                  ))}
+                                </div>
+
+                                 <div> 
+                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
+                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
                                   ))}
                                 </div>
                                 <div>

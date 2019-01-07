@@ -697,6 +697,11 @@ this.setState({ alertDialog: false });
                                     <span key={'tags-com' + numTag} className="text-white tags-collapse-border"> {tags}</span>
                                   ))}
                                 </div>
+                                <div> 
+                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
+                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
+                                  ))}
+                                </div>
                                 <div>
                                   {selectObject.metadata.copyRight === 'free' &&
                                     <span className="text-white">Copy Right: Libre</span>
