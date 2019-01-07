@@ -253,8 +253,20 @@ class Confirmar extends Component {
    
 
     var arrAux = this.state.selectsTags;
-    arrAux.push(visual);
-    this.setState({selectsTags: arrAux})
+    var flag = false;
+    for(var j=0;j<arrAux.length;j++){
+      if(arrAux[j] === visual){
+        flag = true;
+      }
+
+    }
+
+    if(!flag){
+      arrAux.push(visual);
+      this.setState({selectsTags: arrAux})
+    }
+
+    
     console.log(' this.state.selectsTags', this.state.selectsTags);
   }
 
