@@ -312,7 +312,7 @@ class Confirmar extends Component {
 
  {this.state.objeto.type === 'image' &&
 
-<div className="heigth-div-objetos">
+<div className="heigth-div-objetos-confirmar">
   <img className="imagenes-tam-confirm" src={this.state.objeto.originalURL} alt={this.state.objeto.name} />
 </div>
 
@@ -320,10 +320,10 @@ class Confirmar extends Component {
 
 {this.state.objeto.type === 'video' &&
 
-<div className="heigth-div-objetos" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
-  <Player className="border-object-div" ref={'player'} fluid={false} width={254} height={184} muted={true}>
+<div className="heigth-div-objetos-confirmar" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
+  <Player className="border-object-div" ref={'player'} fluid={false} width={'100%'} height={400} muted={true}>
     <BigPlayButton position="center" />
-    <ControlBar disableDefaultControls={true} />
+    
     <source src={this.state.objeto.originalURL} />
   </Player>
 
