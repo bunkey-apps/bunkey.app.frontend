@@ -455,7 +455,7 @@ function cargarMenuFavoritosExplorar(carpetas) {
 
 
     var configuracion = {
-        "menu_title": "Configuracion",
+        "menu_title": "Configuración",
         "menu_icon": "ti-settings",
         "path": "/app/configuracion",
         "child_routes": null

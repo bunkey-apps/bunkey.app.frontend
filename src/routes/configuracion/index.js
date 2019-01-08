@@ -45,7 +45,7 @@ class ConfiguracionPage extends Component {
      return (
         <div className="dashboard-v1">
            
-            <PageTitleBar title={<IntlMessages id="Configuracion" />} match={match} />
+            <PageTitleBar title={<IntlMessages id="Configuración" />} match={match} />
 
 
 

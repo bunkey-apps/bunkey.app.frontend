@@ -1177,7 +1177,7 @@ class Busqueda extends Component {
                       handleAddition={this.handleAddition}
                       handleTagClick={this.handleTagClick}
                       delimiters={delimiters}
-                      placeholder={'Tags de la colección'}
+                      placeholder={'Agregar nuevo tag'}
                     >
 
                     </ReactTags>
