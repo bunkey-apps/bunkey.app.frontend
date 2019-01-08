@@ -111,22 +111,6 @@ class UserBlock extends Component {
 
                
 
-                <div className="sidebar-user-block media">
-                {this.state.showChangeCliente && this.state.imagenCliente &&
-                        <div className="text-center nombre-cliente-menu">
-                                    <Link to="/app/clientes" className="logo-normal user-title-menu">
-                                    Cambiar cliente
-                                    </Link>
-                                </div>
-                }
-                {this.state.showChangeCliente && !this.state.imagenCliente &&
-                        <div className="text-center nombre-cliente-menu">
-                                    <Link to="/app/clientes" className="logo-normal user-title-menu">
-                                    Seleccionar cliente
-                                    </Link>
-                                </div>
-                }
-                </div>
                 <SupportPage
                     isOpen={this.state.isSupportModal}
                     onCloseSupportPage={() => this.onCloseSupportPage()}

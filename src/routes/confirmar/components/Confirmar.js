@@ -364,15 +364,7 @@ class Confirmar extends Component {
   </div>
 </FormGroup>
 <FormGroup>
-  <div>
-{this.state.selectsTags.map((select, i) =>
-            
-  <span className="tagsAudiovisuales-select">{select}
-  <a onClick={() => this.removeSelectTagAudiovisual(select)}  class="ReactTags__remove">×</a></span>
-                
-                 
-                )}
-  </div>
+ 
 
 
     <Label for="audiovisuales">Tags audiovisuales </Label>
@@ -395,6 +387,15 @@ class Confirmar extends Component {
            
     </Input>
     
+    <div className="margin-top-div-tags-audiovisuales">
+{this.state.selectsTags.map((select, i) =>
+            
+  <span className="tagsAudiovisuales-select">{select}
+  <a onClick={() => this.removeSelectTagAudiovisual(select)}  class="ReactTags__remove">×</a></span>
+                
+                 
+                )}
+  </div>
                                     </FormGroup>
 <FormGroup>
   <Label for="startDate">Fecha de creación</Label>

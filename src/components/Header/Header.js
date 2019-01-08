@@ -48,7 +48,7 @@ class Header extends Component {
       editCustomer: null,
       selectedDeletedCustomer: null,
       alertDialog: false,
-      file: '', 
+      file: '',
       imagePreviewUrl: '',
       name: '',
       imagen: '',
@@ -68,7 +68,7 @@ class Header extends Component {
   }
   handleSubmitEdit(event) {
     event.preventDefault();
-   this.onSubmitCustomerEditDetailForm();
+    this.onSubmitCustomerEditDetailForm();
   }
   handleSubmitAdd(event) {
     event.preventDefault();
@@ -108,26 +108,77 @@ class Header extends Component {
     this.props.getUserMe();
     this.props.getClientSelectHeader();
     this.props.getAllTags();
+    const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+    const userMe = localStorage.getItem('user_me');
+			const userMeJson = JSON.parse(userMe);
+			var showChangeCliente = false;
+			var tipoUsuario = localStorage.getItem('tipoUsuario');
+      
+			if((userMeJson.workClients && userMeJson.workClients.length > 1) || tipoUsuario === 'admin'){
 
-    
-	}
+				showChangeCliente = true;
+			}
+
+      this.setState({ showChangeCliente: showChangeCliente});
+
+  }
 
   componentWillReceiveProps(nextProps) {
-    
+
     if (nextProps.location.pathname === '/app/dashboard' && this.props.location.pathname === '/app/clientes') {
-    console.log('de cleintes a dash 2');
-    this.props.getClientSelectHeader();
+      console.log('de cleintes a dash 2');
+      this.props.getClientSelectHeader();
+      const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+      const userMe = localStorage.getItem('user_me');
+			const userMeJson = JSON.parse(userMe);
+			var showChangeCliente = false;
+			var tipoUsuario = localStorage.getItem('tipoUsuario');
+      
+			if((userMeJson.workClients && userMeJson.workClients.length > 1) || tipoUsuario === 'admin'){
+
+				showChangeCliente = true;
+			}
+
+      this.setState({ showChangeCliente: showChangeCliente });
+
     }
 
     if (this.props.location.pathname === '/app/clientes') {
-      this.setState({showHeaderHome: false});
-    }else{
-      this.setState({showHeaderHome: true});
-    } 
-    
+      const userMe = localStorage.getItem('user_me');
+      const userMeJson = JSON.parse(userMe);
+      const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+			var showChangeCliente = false;
+			var tipoUsuario = localStorage.getItem('tipoUsuario');
+      
+			if((userMeJson.workClients && userMeJson.workClients.length > 1) || tipoUsuario === 'admin'){
+
+				showChangeCliente = true;
+			}
+
+
+      this.setState({ showHeaderHome: false,showChangeCliente: showChangeCliente });
+    } else {
+      const userMe = localStorage.getItem('user_me');
+      const userMeJson = JSON.parse(userMe);
+      const clienteSelect = localStorage.getItem('clienteSelect');
+		const clienteSelectJson = JSON.parse(clienteSelect);
+			var showChangeCliente = false;
+			var tipoUsuario = localStorage.getItem('tipoUsuario');
+      
+			if((userMeJson.workClients && userMeJson.workClients.length > 1) || tipoUsuario === 'admin'){
+
+				showChangeCliente = true;
+			}
+
+      this.setState({ showHeaderHome: true,showChangeCliente: showChangeCliente });
+    }
+
   }
 
-  
+
 
   toggleEditCustomerModal = () => {
     this.setState({
@@ -150,7 +201,7 @@ class Header extends Component {
   onToggleNavCollapsed = (event) => {
     const val = !this.props.collapsedSidebar;
     this.props.collapsedSidebarAction(val);
-    
+
   }
 
   // open dashboard overlay
@@ -213,7 +264,7 @@ class Header extends Component {
 
   logoutUser() {
     this.props.logoutUserFromFirebase();
-}
+  }
 
   render() {
     $('body').click(function () {
@@ -221,7 +272,7 @@ class Header extends Component {
       $('.dashboard-overlay').addClass('d-none');
       $('body').css('overflow', '');
     });
-    const {showHeaderHome,  newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
+    const { showHeaderHome, newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
     const { loading, userMeName, userMeImagen, clienteSelectAvatar } = this.props;
     return (
 
@@ -235,70 +286,70 @@ class Header extends Component {
               </IconButton>
             </li>
 
-          
-      
+
+
 
 
           </ul>
 
 
-        
+
           <ul className="navbar-right list-inline margen-ul-bunkey">
 
 
-{showHeaderHome &&
-  <li className="list-inline-item margen-li-bunkey">
-  <Link to="/app/dashboard">
-    <a href="javascript:void(0)"  className="header-icon text-secondary border-secondary border-none-home-heder">
-      <i className="zmdi ti-home color-header-bunkey"></i>
-    </a>
-    </Link>
-  </li>
+            {showHeaderHome &&
+              <li className="list-inline-item margen-li-bunkey">
+                <Link to="/app/dashboard">
+                  <a href="javascript:void(0)" className="header-icon text-secondary border-secondary border-none-home-heder">
+                    <i className="zmdi ti-home color-header-bunkey"></i>
+                  </a>
+                </Link>
+              </li>
 
-}
- 
- {showHeaderHome &&
-      
+            }
 
-      <li className="list-inline-item margen-li-bunkey">
-      <Link to="/app/confirmar">
-        <a href="javascript:void(0)" className="header-icon text-secondary border-secondary">
-          <i className="zmdi ti-info color-header-bunkey"></i>
-        </a>
-        </Link>
-      </li>
+            {showHeaderHome &&
 
- 
- }
-       
-      
+
+              <li className="list-inline-item margen-li-bunkey">
+                <Link to="/app/confirmar">
+                  <a href="javascript:void(0)" className="header-icon text-secondary border-secondary">
+                    <i className="zmdi ti-info color-header-bunkey"></i>
+                  </a>
+                </Link>
+              </li>
+
+
+            }
+
+
             <li className="list-inline-item margen-li-bunkey">
 
 
               <UncontrolledDropdown className="list-inline-item rct-dropdown">
                 <DropdownToggle caret nav >
-                
+
                   <a href="javascript:void(0)">
-                  <div className="row div-row-logo-avatar"> 
-                    <div className="div-logo-cliente-header">
-                      <img src={clienteSelectAvatar} className="imge-logo-cliente-header fondo-logo-cliente-header" />
+                    <div className="row div-row-logo-avatar">
+                      <div className="div-logo-cliente-header">
+                        <img src={clienteSelectAvatar} className="imge-logo-cliente-header fondo-logo-cliente-header" />
+
+                      </div>
+                      <div className="div-avatar-usuario-header">
+                        {userMeImagen &&
+                          <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129" />
+
+                        }
+                        {!userMeImagen &&
+                          <img src={require('../../assets/img/peril-bunkey-generico.png')} className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129" />
+                        }
+                      </div>
 
                     </div>
-                    <div className="div-avatar-usuario-header">
-                  {userMeImagen && 
-                                    <img src={userMeImagen} alt="user profile" className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129" />
-
-                  }
-                  {!userMeImagen && 
-                  <img src={require('../../assets/img/peril-bunkey-generico.png')} className="img-fluid rounded-circle borde-perfil-bunkey imge-avatar-usuario-header" width="60" height="129"/>
-                  }
-                     </div>
-
-                     </div>
                   </a>
                 </DropdownToggle>
                 <DropdownMenu className="mt-15" right>
-                <div className=" color-header-bunkey padding-name-dropdown text-center"> {userMeName}</div>
+                  <div className=" color-header-bunkey padding-name-dropdown text-center"> {userMeName}</div>
                   <ul className="list-unstyled mb-0">
                     <li>
                       <a href="javascript:void(0)" onClick={() => this.cambiarClave()}>
@@ -312,12 +363,23 @@ class Header extends Component {
                         <IntlMessages id="Cambiar Avatar" />
                       </a>
                     </li>
+                    {this.state.showChangeCliente && 
                     <li className="border-top">
-                                    <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
-                                        <i className="ti ti-power-off"></i>
-                                        Salir
+                      
+                        <a href="#/app/clientes">
+                          <i className="icon-briefcase"></i>
+                          Cambiar Cliente
                                     </a>
-                                </li>
+                      
+                    </li>
+                    }
+
+                                        <li className="border-top">
+                      <a href="javascript:void(0)" onClick={() => this.logoutUser()}>
+                        <i className="ti ti-power-off"></i>
+                        Salir
+                                    </a>
+                    </li>
                   </ul>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -377,14 +439,14 @@ class Header extends Component {
 
                 </Form>
                 : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >
-                   {loading &&
+                  {loading &&
                     <div className="d-flex justify-content-center loader-overlay">
                       <CircularProgress />
                     </div>
                   }
 
                   <FormGroup>
-                  <Label for="avatar">Avatar</Label>
+                    <Label for="avatar">Avatar</Label>
                     <Input required="true" name="avatar" className="fileInput"
                       type="file"
                       onChange={(e) => this.handleImageChange(e)} />
@@ -418,8 +480,8 @@ const mapStateToProps = ({ settings }) => ({
   collapsedSidebar: settings.navCollapsed,
   rtlLayout: settings.rtlLayout,
   loading: settings.loading,
-  userMeName: settings.userMeName, 
-  userMeImagen : settings.userMeImagen,
+  userMeName: settings.userMeName,
+  userMeImagen: settings.userMeImagen,
   clienteSelectAvatar: settings.clienteSelectAvatar
 });
 
