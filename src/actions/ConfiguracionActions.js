@@ -142,6 +142,7 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
 
             dispatch({ type: GET_URL_SUCCES });
             NotificationManager.success('Actualizado correctamente');
+            location.reload();
         })
         .catch(error => {
             // error handling
