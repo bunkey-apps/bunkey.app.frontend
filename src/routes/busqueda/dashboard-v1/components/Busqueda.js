@@ -18,6 +18,7 @@ import { Player, BigPlayButton, ControlBar } from 'video-react';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
+import Editar from '../../../../components/editar/Editar';
 
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -49,7 +50,8 @@ import {
   moveExplorar,
   getSearch,
   removeObjectSearch,
-  cambiarObjectSearch
+  cambiarObjectSearch,
+  editObjectSearch
 } from '../../../../actions';
 
 
@@ -138,6 +140,13 @@ class Busqueda extends Component {
     this.handleAddition = this.handleAddition.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
 
+  }
+  handleClickEditObject(object){
+    object.from = "search";
+    
+    this.setState({ objectoEdit: object });
+
+    this.props.editObjectSearch();
   }
   handleSubmitSearch(event) {
     event.preventDefault();
@@ -692,7 +701,7 @@ class Busqueda extends Component {
     this.setState({filtroBusqeuda: filtro});
   }
   render() {
-    const { items, loading, userById, parents, imageVideos } = this.props;
+    const { items, loading, userById, parents, imageVideos, editarObjetoSearchModal } = this.props;
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
@@ -709,7 +718,7 @@ class Busqueda extends Component {
     const { isMoveObject } = this.state;
     const { background, busqueda } = this.state;
     const { filtroBusqeuda } = this.state;
-
+    const { objectoEdit } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     return (
 
@@ -891,9 +900,9 @@ class Busqueda extends Component {
                         <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Compartir</span>
                       </MenuItem>
-                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                        <span className="padding-click-derecho">Editar</span>
                       </MenuItem>
 
                       <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
@@ -1305,6 +1314,10 @@ class Busqueda extends Component {
       }
 
 
+{editarObjetoSearchModal &&
+          <Editar key="editarSearch" objectoPending={objectoEdit} />
+
+    }
 
       </div>
     )
@@ -1317,5 +1330,5 @@ const mapStateToProps = ({ busqueda }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar, getSearch, removeObjectSearch, cambiarObjectSearch
+  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar, getSearch, removeObjectSearch, cambiarObjectSearch, editObjectSearch
 })(Busqueda));

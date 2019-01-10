@@ -8,7 +8,9 @@ import { NotificationManager } from 'react-notifications';
 import {
     GET_SEARCH,
     GET_SEARCH_FAILURE,
-    GET_SEARCH_SUCCES
+    GET_SEARCH_SUCCES,
+    EDIT_OBJECT_SEARCH,
+    CLOSE_OBJECT_SEARCH
 } from '../actions/types';
 
 /**
@@ -19,16 +21,22 @@ const INIT_STATE = {
     items: [],
     userById: [],
     parents: [],
-    imageVideos: []
+    imageVideos: [],
+    editarObjetoSearchModal: false
    
 };
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
-   
+        case EDIT_OBJECT_SEARCH:
+        return { ...state, editarObjetoSearchModal: true };
+
+        case CLOSE_OBJECT_SEARCH:
+        return { ...state, editarObjetoSearchModal: false };
+
         case GET_SEARCH:
-            return { ...state, loading: true };
+            return { ...state, loading: true, editarObjetoSearchModal: false };
 
         case GET_SEARCH_FAILURE:
             return { ...state, loading: false };

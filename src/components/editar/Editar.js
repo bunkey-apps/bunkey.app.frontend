@@ -27,7 +27,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 
 // redux action
 import {
-  getPendingObject, confirmPending, updatePendingRouting, closeObjectExplorar, updateObjectExplorar, updateObjectFolder, closeObjectFolder
+  getPendingObject, confirmPending, updatePendingRouting, closeObjectExplorar, updateObjectExplorar, updateObjectFolder, closeObjectFolder, updateObjectSearch, closeObjectSearch
 } from '../../actions';
 
 
@@ -170,7 +170,7 @@ class Editar extends Component {
       isUpdate = true;
     }
 
-    if (isUpdate) {
+    
       var objectChange = {
         'name': this.state.name,
         'metadata': {
@@ -194,10 +194,16 @@ class Editar extends Component {
         this.props.updateObjectFolder(objectChange);
 
       }
+      if(this.state.from ==='search'){
+        this.props.updateObjectSearch(objectChange);
+
+      }
+
+      
 
 
 
-    } 
+    
 
    
 
@@ -291,6 +297,9 @@ class Editar extends Component {
   toggleEditCustomerModal = () => {
     this.props.closeObjectExplorar();
     this.props.closeObjectFolder();
+    this.props.closeObjectSearch();
+
+    
     
   }
   render() {
@@ -464,5 +473,5 @@ const mapStateToProps = ({ confirmar }) => {
 }
 
 export default connect(mapStateToProps, {
-  getPendingObject, confirmPending, updatePendingRouting, closeObjectExplorar, updateObjectExplorar, updateObjectFolder, closeObjectFolder
+  getPendingObject, confirmPending, updatePendingRouting, closeObjectExplorar, updateObjectExplorar, updateObjectFolder, closeObjectFolder, updateObjectSearch, closeObjectSearch
 })(Editar);
