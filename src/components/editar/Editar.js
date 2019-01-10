@@ -99,7 +99,7 @@ class Editar extends Component {
       loading: false,
       extension: extens,
       tagsAudiovisuales : arrTagsAudiovisuales,
-      selectsTags: []
+      selectsTags: props.objectoPending.metadata.audiovisualTags
 
     }
 
