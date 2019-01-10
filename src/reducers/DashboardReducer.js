@@ -29,7 +29,9 @@ import {
     GET_RECIENTES_SUCCES,
     GET_COMPARTIDOS,
     GET_COMPARTIDOS_FAILURE,
-    GET_COMPARTIDOS_SUCCES
+    GET_COMPARTIDOS_SUCCES,
+    EDIT_OBJECT_FOLDER,
+    CLOSE_OBJECT_FOLDER
 } from '../actions/types';
 
 /**
@@ -50,12 +52,17 @@ const INIT_STATE = {
     loadingCompartidos: false,
     compartidos: [],
     parentsCompartidos: [],
-    imageVideosCompartidos: []
+    imageVideosCompartidos: [],
+    editarObjetoFolderModal: false
 };
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
+        case EDIT_OBJECT_FOLDER:
+        return { ...state, editarObjetoFolderModal: true };
 
+        case CLOSE_OBJECT_FOLDER:
+        return { ...state, editarObjetoFolderModal: false };
         case GET_USER_DETAILS:
             return { ...state, loading: true };
 
@@ -81,7 +88,7 @@ export default (state = INIT_STATE, action) => {
             };
 
         case GET_FOLDERS:
-            return { ...state, loading: true };
+            return { ...state, loading: true, editarObjetoFolderModal: false };
 
         case GET_FOLDERS_FAILURE:
             return { ...state, loading: false };

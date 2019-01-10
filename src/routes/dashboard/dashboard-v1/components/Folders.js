@@ -19,6 +19,7 @@ import { Player, BigPlayButton, ControlBar } from 'video-react';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
+import Editar from '../../../../components/editar/Editar';
 
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -47,7 +48,8 @@ import {
   getObjectsByHideID,
   uploadMultipleFileDescription,
   compartirDashboard,
-  moveDashboard
+  moveDashboard,
+  editObjectFolder
 } from '../../../../actions';
 
 
@@ -139,7 +141,13 @@ class Folders extends Component {
 
   }
 
+  handleClickEditObject(object){
+    object.from = "folders";
+    
+    this.setState({ objectoEdit: object });
 
+    this.props.editObjectFolder();
+  }
   handleTagClick(index) {
 
     console.log('The tag at index ' + index + ' was clicked');
@@ -679,7 +687,7 @@ class Folders extends Component {
     })
   }
   render() {
-    const { items, loading, userById, parents, imageVideos } = this.props;
+    const { items, loading, userById, parents, imageVideos, editarObjetoFolderModal } = this.props;
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
@@ -693,7 +701,7 @@ class Folders extends Component {
     const { correoCompartir } = this.state;
 
     const { isMoveObject } = this.state;
-
+    const { objectoEdit } = this.state;
     const { tipoObject } = this.state;
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -856,9 +864,9 @@ class Folders extends Component {
                         <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Compartir</span>
                       </MenuItem>
-                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                      <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                        <span className="padding-click-derecho">Editar</span>
                       </MenuItem>
 
                       <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
@@ -1272,6 +1280,10 @@ class Folders extends Component {
 
         }
 
+        {editarObjetoFolderModal &&
+          <Editar key="editarExplorar" objectoPending={objectoEdit} />
+
+    }
 
       </div>
     )
@@ -1284,5 +1296,5 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard, moveDashboard
+  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard, moveDashboard, editObjectFolder
 })(Folders));
