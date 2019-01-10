@@ -162,7 +162,7 @@ export const changePendingPDF = (file, objetoDesc) => (dispatch) => {
         })
         .catch(error => {
             // error handling
-            dispatch({ type: CHANGE_AVATAR_FAILURE });
+            dispatch({ type: GET_PENDING_OBJECT_FAILURE });
             NotificationManager.error('A ocurrido un error, intente mas tarde.');
 
         })

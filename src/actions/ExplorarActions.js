@@ -18,7 +18,9 @@ import {
     DELETE_OBJECT_SUCCES,
     AGREGAR_FAVORITOS,
     AGREGAR_FAVORITOS_FAILURE,
-    AGREGAR_FAVORITOS_SUCCES
+    AGREGAR_FAVORITOS_SUCCES,
+    EDIT_OBJECT_EXPLORAR,
+    CLOSE_OBJECT_EXPLORAR
     
 } from './types';
 
@@ -889,4 +891,151 @@ export const moveExplorar = () => (dispatch) => {
             dispatch({ type: GET_OBJECT_FAILURE})
         NotificationManager.error(error.message);
         })
+}
+
+export const editObjectExplorar = () => (dispatch) => {
+
+    dispatch({ type: EDIT_OBJECT_EXPLORAR, editarObjetoModal: true });
+
+}
+
+export const closeObjectExplorar = () => (dispatch) => {
+
+    dispatch({ type: CLOSE_OBJECT_EXPLORAR, editarObjetoModal: false });
+
+}
+
+
+export const updatePendingObjectExplorar = (objeto) => (dispatch) => {
+   
+    
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.put('/v1/clients/' + clienteSelectJson._id + '/objects/' + objeto.id, {
+        'name': objeto.name,
+        'metadata':{
+            'copyRight': objeto.metadata.copyRight,
+            'licenseFile': objeto.metadata.licenseFile,
+            'descriptiveTags' : objeto.metadata.descriptiveTags,
+            'createdDate': objeto.metadata.createdDate,
+            'audiovisualTags': objeto.metadata.audiovisualTags
+        }
+    })
+        .then((response) => {
+            console.log('response GET_FOLDERS_SUCCES', response);
+            dispatch(getObjects());
+            
+        })
+        .catch(error => {
+            // error handling
+        })
+}
+
+
+
+
+
+
+
+export const changePendingPDFExplorar = (file, objetoDesc) => (dispatch) => {
+    console.log('changePendingPDFExplorar FORM');
+    
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    
+    
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    var instance2 = axios.create({
+        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
+    });
+
+
+    console.log('file.type', file.type);
+    var tipoArr = file.type.split('/');
+
+    instance2.post('/v1/url-signature', {
+        clientId: clienteSelectJson._id,
+        extention: tipoArr[1],
+        mimeType: file.type
+    })
+        .then((response) => {
+            console.log('response user', response);
+            dispatch(addPendingPDFExplorar(response.data.url, file, response.data.futureFileURL,objetoDesc))
+            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
+
+        })
+        .catch(error => {
+            // error handling
+            dispatch({ type: GET_PENDING_OBJECT_FAILURE });
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+        })
+}
+
+export const addPendingPDFExplorar = (urlImage, file, futureFileURL,objetoDesc) => (dispatch) => {
+    console.log('addPendingPDF FORM', file);
+
+    // dispatch({ type: PUT_IMAGE });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    console.log('urlImage', urlImage);
+    var instance2 = axios.create({
+        baseURL: urlImage,
+        timeout: 3000,
+        body: file
+    });
+
+
+    var instance = axios.create();
+
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+        .then(function (result) {
+            console.log(result);
+            console.log('antes d33  imagenes', objetoDesc);
+
+            objetoDesc.metadata.licenseFile = futureFileURL;
+            console.log('antes de enviara objetoDesc  imagenes', objetoDesc);
+            dispatch(updatePendingObjectExplorar(objetoDesc))
+            //dispatch({ type: PUT_IMAGE_SUCCES});
+        })
+        .catch(function (err) {
+            console.log(err);
+           
+            NotificationManager.error('A ocurrido un error, intente mas tarde.');
+
+        });
+}
+
+
+export const updateObjectExplorar = (objectChange) => (dispatch) => {
+    console.log('updatePendingRouting');
+   
+    dispatch({ type: UPDATE_OBJECT });
+    
+    
+    if(objectChange.isChangePDF){
+        dispatch(changePendingPDFExplorar(objectChange.filePDF, objectChange))
+    }else{
+        dispatch(updatePendingObjectExplorar(objectChange))
+    }
+   
+
+
+
 }

@@ -17,7 +17,9 @@ import {
     DELETE_OBJECT_SUCCES,
     AGREGAR_FAVORITOS,
     AGREGAR_FAVORITOS_FAILURE,
-    AGREGAR_FAVORITOS_SUCCES
+    AGREGAR_FAVORITOS_SUCCES,
+    EDIT_OBJECT_EXPLORAR,
+    CLOSE_OBJECT_EXPLORAR
 } from '../actions/types';
 
 /**
@@ -28,13 +30,21 @@ const INIT_STATE = {
     items: [],
     userById: [],
     parents: [],
-    imageVideos: []
+    imageVideos: [],
+    editarObjetoModal: false
+    
 };
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
-   
+        case EDIT_OBJECT_EXPLORAR:
+        return { ...state, editarObjetoModal: true };
+
+        case CLOSE_OBJECT_EXPLORAR:
+        return { ...state, editarObjetoModal: false };
+
+
         case GET_OBJECT:
             return { ...state, loading: true };
 
@@ -51,7 +61,7 @@ export default (state = INIT_STATE, action) => {
                 imageVideos: action.imageVideos
             };
         case UPDATE_OBJECT:
-            return { ...state, loading: true };
+            return { ...state, loading: true, editarObjetoModal: false };
 
         case UPDATE_OBJECTS_FAILURE:
             return { ...state, loading: false };
