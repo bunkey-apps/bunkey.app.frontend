@@ -302,7 +302,7 @@ class Header extends Component {
             {showHeaderHome &&
               <li className="list-inline-item margen-li-bunkey">
                 <Link to="/app/dashboard">
-                  <a href="javascript:void(0)" className="header-icon text-secondary border-secondary border-none-home-heder">
+                  <a href="javascript:void(0)" className="header-icon icon-header-fontsize-change text-secondary border-secondary border-none-home-heder">
                     <i className="zmdi ti-home color-header-bunkey"></i>
                   </a>
                 </Link>
@@ -315,7 +315,7 @@ class Header extends Component {
 
               <li className="list-inline-item margen-li-bunkey">
                 <Link to="/app/confirmar">
-                  <a href="javascript:void(0)" className="header-icon text-secondary border-secondary border-none-home-heder">
+                  <a href="javascript:void(0)" className="header-icon icon-header-fontsize-change text-secondary border-secondary border-none-home-heder">
                     <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span ">
                     {countPending && countPending !== '0' && countPending !== 0 &&
                                       <span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span>
