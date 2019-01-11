@@ -740,7 +740,7 @@ class Busqueda extends Component {
 
            
           </div>
-          <div className="fondo-busqueda text-white"
+          <div className="fondo-busqueda text-white margen-div-busqueda-page-contenedor"
                   style={{ backgroundImage: `url(${background})` }}
 
 
