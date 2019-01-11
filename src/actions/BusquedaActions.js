@@ -18,7 +18,7 @@ import AppConfig from '../constants/AppConfig';
 
 
 
-export const getSearch = () => (dispatch) => {
+export const getSearch = (page) => (dispatch) => {
     dispatch({ type: GET_SEARCH });
     const token = localStorage.getItem('user_id');
 
@@ -47,13 +47,17 @@ export const getSearch = () => (dispatch) => {
             _id : '1'
         }
     }
+    var pageAux = 1;
+    if(page){
+        pageAux = page;
+    }
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
         timeout: 3000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl)
+      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl + '&page=' + pageAux)
       .then((response) => {
             console.log('response search',response);
             var arrImageVideo = [];
@@ -96,7 +100,14 @@ export const getSearch = () => (dispatch) => {
                 }
                 
             }
-            dispatch({ type: GET_SEARCH_SUCCES, payload: response.data, parents: response.data.parents, imageVideos: arrImageVideo  });
+            var limit= response.headers['x-pagination-limit'];
+            var totalCount= response.headers['x-pagination-total-count'];
+
+            var totalCountAux = parseInt(totalCount);
+            var limitAux = parseInt(limit);
+            console.log('totalCountAux',totalCountAux);
+            console.log('limitAux',limitAux);
+            dispatch({ type: GET_SEARCH_SUCCES, payload: response.data, parents: response.data.parents, imageVideos: arrImageVideo, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux  });
             
         })
         .catch(error => {

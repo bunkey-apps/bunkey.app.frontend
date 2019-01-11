@@ -22,7 +22,10 @@ const INIT_STATE = {
     userById: [],
     parents: [],
     imageVideos: [],
-    editarObjetoSearchModal: false
+    editarObjetoSearchModal: false,
+    limit: 10,
+    totalCount: 1,
+    pageActive: 1
    
 };
 
@@ -46,7 +49,8 @@ export default (state = INIT_STATE, action) => {
                 items: action.payload,
                 loading: false,
                 parents: action.parents,
-                imageVideos: action.imageVideos
+                imageVideos: action.imageVideos,
+                limit: action.limit, totalCount: action.totalCount, pageActive: action.pageActive
             };
         
         default: return { ...state };

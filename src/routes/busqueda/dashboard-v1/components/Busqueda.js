@@ -19,6 +19,7 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 import Editar from '../../../../components/editar/Editar';
+import Pagination from "react-js-pagination";
 
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -139,7 +140,13 @@ class Busqueda extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+  }
 
+  handlePageChange(pageNumber) {
+    this.props.getSearch(pageNumber);
+   
+   
   }
   handleClickEditObject(object){
     object.from = "search";
@@ -701,7 +708,7 @@ class Busqueda extends Component {
     this.setState({filtroBusqeuda: filtro});
   }
   render() {
-    const { items, loading, userById, parents, imageVideos, editarObjetoSearchModal } = this.props;
+    const { items, loading, userById, parents, imageVideos, editarObjetoSearchModal,totalCount, limit,pageActive } = this.props;
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
@@ -1087,6 +1094,15 @@ class Busqueda extends Component {
         </RctCollapsibleCard>
 
 
+ <div className="text-center">
+  <Pagination
+      hideNavigation
+      activePage={pageActive}
+      itemsCountPerPage={limit}
+      totalItemsCount={totalCount}
+      onChange={this.handlePageChange}
+    />
+      </div>
 
 
 
