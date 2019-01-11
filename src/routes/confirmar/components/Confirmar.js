@@ -107,7 +107,9 @@ class Confirmar extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
-
+   
+    
+    
   }
 
 

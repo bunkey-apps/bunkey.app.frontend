@@ -57,8 +57,12 @@ class ListPending extends Component {
        
         this.handlePageChange = this.handlePageChange.bind(this);
 
-    
+ 
+
+        setTimeout(() => {
+          this.refs['topListPending'].scrollIntoView({ block: 'center', behavior: 'smooth' });
         
+        }, 1000);
       }
   
       handlePageChange(pageNumber) {
@@ -106,7 +110,7 @@ class ListPending extends Component {
             </div>
           }
            <RctCollapsibleCard>
-          <div className="">
+          <div className="" ref="topListPending">
           <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button>{' '}
 
           </div>
