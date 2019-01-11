@@ -310,13 +310,18 @@ class Header extends Component {
 
             }
 
-            {showHeaderHome &&
+            {showHeaderHome && 
 
 
               <li className="list-inline-item margen-li-bunkey">
                 <Link to="/app/confirmar">
                   <a href="javascript:void(0)" className="header-icon text-secondary border-secondary border-none-home-heder">
-                    <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span "><span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span></i>
+                    <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span ">
+                    {countPending && countPending !== '0' && countPending !== 0 &&
+                                      <span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span>
+
+                  }
+                  </i>
                   </a>
                 </Link>
               </li>
