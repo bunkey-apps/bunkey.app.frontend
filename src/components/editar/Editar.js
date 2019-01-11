@@ -13,7 +13,8 @@ import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 // page title bar
 
 // intl messages
@@ -95,7 +96,7 @@ class Editar extends Component {
       pdfPreviewUrl: '',
       id: props.objectoPending._id,
       name: props.objectoPending.name,
-      startDate: props.objectoPending.metadata.createdDate,
+      startDate: moment(props.objectoPending.metadata.createdDate),
       loading: false,
       extension: extens,
       tagsAudiovisuales: arrTagsAudiovisuales,
@@ -302,6 +303,12 @@ class Editar extends Component {
 
 
   }
+  handleChangeDate = (date) => {
+   
+    this.setState({
+      startDate: date
+    });
+}
   render() {
 
     const { tags, suggestions } = this.state;
@@ -420,14 +427,8 @@ class Editar extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="startDate">Fecha de creación</Label>
-                <Input
-                  required="true"
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={moment(new Date(startDate)).format('YYYY-MM-DD')}
-                  onChange={(event) => this.setState({ startDate: event.target.value })}
-                />
+                <DatePicker  required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+
               </FormGroup>
               <FormGroup>
                 <Label>Extensión: {' ' + extension}</Label>

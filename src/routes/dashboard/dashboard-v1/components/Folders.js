@@ -20,7 +20,8 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 import Editar from '../../../../components/editar/Editar';
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
 
@@ -137,7 +138,7 @@ class Folders extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
-
+    this.handleChangeDate = this.handleChangeDate.bind(this);
 
   }
 
@@ -686,6 +687,13 @@ class Folders extends Component {
       files: []
     })
   }
+
+  handleChangeDate = (date) => {
+   
+    this.setState({
+      startDate: date
+    });
+}
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoFolderModal } = this.props;
     const { collapse } = this.state;
@@ -1192,15 +1200,9 @@ class Folders extends Component {
 
                 <FormGroup>
                   <Label for="startDate">Fecha de creación</Label>
-                  <Input
-                    required="true"
-                    type="date"
-                    name="startDate"
-                    id="startDate"
-                    
-                    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
-                    onChange={(event) => this.setState({ startDate: event.target.value })}
-                  />
+                  <DatePicker  required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+
+                 
                 </FormGroup>
 
                 <section>
