@@ -67,7 +67,7 @@ class Editar extends Component {
     }
 
     var tipoArr = props.objectoPending.originalURL.split('.');
-    var extens = tipoArr[tipoArr.length -1];
+    var extens = tipoArr[tipoArr.length - 1];
 
     const allTags = localStorage.getItem('allTags');
 
@@ -75,18 +75,18 @@ class Editar extends Component {
 
     var arrTagsAudiovisuales = [];
     var auxTag = {};
-    for(var j=0;j<allTagsJson.length;j++){
+    for (var j = 0; j < allTagsJson.length; j++) {
       auxTag.id = allTagsJson[j].id;
       auxTag.name = allTagsJson[j].name;
       arrTagsAudiovisuales.push(auxTag);
       auxTag = {};
     }
 
-    
+
 
     this.state = {
       from: props.objectoPending.from,
-        editObjectModal: true,
+      editObjectModal: true,
       objeto: props.objectoPending,
       tags: arrTag,
       suggestions: [],
@@ -98,7 +98,7 @@ class Editar extends Component {
       startDate: props.objectoPending.metadata.createdDate,
       loading: false,
       extension: extens,
-      tagsAudiovisuales : arrTagsAudiovisuales,
+      tagsAudiovisuales: arrTagsAudiovisuales,
       selectsTags: props.objectoPending.metadata.audiovisualTags
 
     }
@@ -166,46 +166,46 @@ class Editar extends Component {
 
 
     console.log('isUpdate?;', isUpdate);
-    if(this.state.selectsTags.length > 0){
+    if (this.state.selectsTags.length > 0) {
       isUpdate = true;
     }
 
-    
-      var objectChange = {
-        'name': this.state.name,
-        'metadata': {
-          'copyRight': this.state.copyRight,
-          'licenseFile': licenseFile,
-          'descriptiveTags': arrTags,
-          'createdDate': moment(this.state.startDate).utc().format(),
-          'audiovisualTags': this.state.selectsTags
-        },
-        'isChangePDF': isChangePDF,
-        'id': this.state.id,
-        'filePDF': this.state.filePDF
 
-      }
+    var objectChange = {
+      'name': this.state.name,
+      'metadata': {
+        'copyRight': this.state.copyRight,
+        'licenseFile': licenseFile,
+        'descriptiveTags': arrTags,
+        'createdDate': moment(this.state.startDate).utc().format(),
+        'audiovisualTags': this.state.selectsTags
+      },
+      'isChangePDF': isChangePDF,
+      'id': this.state.id,
+      'filePDF': this.state.filePDF
 
-      if(this.state.from ==='explorar'){
-        this.props.updateObjectExplorar(objectChange);
+    }
 
-      }
-      if(this.state.from ==='folders'){
-        this.props.updateObjectFolder(objectChange);
+    if (this.state.from === 'explorar') {
+      this.props.updateObjectExplorar(objectChange);
 
-      }
-      if(this.state.from ==='search'){
-        this.props.updateObjectSearch(objectChange);
+    }
+    if (this.state.from === 'folders') {
+      this.props.updateObjectFolder(objectChange);
 
-      }
+    }
+    if (this.state.from === 'search') {
+      this.props.updateObjectSearch(objectChange);
 
-      
+    }
 
 
 
-    
 
-   
+
+
+
+
 
 
   }
@@ -255,209 +255,242 @@ class Editar extends Component {
     this.refs.player.pause();
   }
 
-  onChangeAudiovisuales(visual){
-    console.log('onChangeAudiovisuales',visual);
-   
+  onChangeAudiovisuales(visual) {
+    console.log('onChangeAudiovisuales', visual);
+
 
     var arrAux = this.state.selectsTags;
     var flag = false;
-    for(var j=0;j<arrAux.length;j++){
-      if(arrAux[j] === visual){
+    for (var j = 0; j < arrAux.length; j++) {
+      if (arrAux[j] === visual) {
         flag = true;
       }
 
     }
 
-    if(!flag){
+    if (!flag) {
       arrAux.push(visual);
-      this.setState({selectsTags: arrAux})
+      this.setState({ selectsTags: arrAux })
     }
 
-    
+
     console.log(' this.state.selectsTags', this.state.selectsTags);
   }
 
-  removeSelectTagAudiovisual(visual){
+  removeSelectTagAudiovisual(visual) {
 
-    console.log('visual ',visual);
+    console.log('visual ', visual);
     var arrAux = this.state.selectsTags;
     var cont = 0;
-    for(var j=0;j<arrAux.length;j++){
-      if(arrAux[j] === visual){
+    for (var j = 0; j < arrAux.length; j++) {
+      if (arrAux[j] === visual) {
         cont = j;
       }
-      
 
-     
+
+
     }
 
-    arrAux.splice(cont,1);
-    this.setState({selectsTags: arrAux})
+    arrAux.splice(cont, 1);
+    this.setState({ selectsTags: arrAux })
   }
   toggleEditCustomerModal = () => {
     this.props.closeObjectExplorar();
     this.props.closeObjectFolder();
     this.props.closeObjectSearch();
 
-    
-    
+
+
   }
   render() {
 
     const { tags, suggestions } = this.state;
-    const { copyRight, name,editObjectModal } = this.state;
+    const { copyRight, name, editObjectModal } = this.state;
     const { startDate, extension } = this.state;
 
     return (
 
 
       <div>
-      <Modal
-            isOpen={editObjectModal}
-            toggle={this.toggleEditCustomerModal}
-          >
-            <ModalHeader toggle={this.toggleEditCustomerModal}>
-              Editar
-            </ModalHeader>
-            <ModalBody>
-
-       
-
-
-
-
-<Form >
-
-<FormGroup>
-  <Label for="name">Nombre</Label>
-  <Input
-    required="true"
-    type="text"
-    name="name"
-    id="name"
-    value={name}
-    onChange={(event) => this.setState({ name: event.target.value })}
-  />
-</FormGroup>
-<FormGroup>
-  <div>
-    <ReactTags tags={tags}
-      allowDragDrop={false}
-      suggestions={suggestions}
-      handleDelete={this.handleDelete}
-      handleAddition={this.handleAddition}
-      handleTagClick={this.handleTagClick}
-      delimiters={delimiters}
-      placeholder={'Agregar nuevo tag'}
-    >
-
-    </ReactTags>
-  </div>
-</FormGroup>
-<FormGroup>
- 
-
-
-    <Label for="audiovisuales">Tags audiovisuales </Label>
-
-    
-  
-
-    <Input type="select" 
-        name="audiovisuales" 
-        id="audiovisuales" 
-       // value={editCustomer.role}
-        onChange={(e) => this.onChangeAudiovisuales( e.target.value)}
+        <Modal  className="ancho-modal-editar"
+        id="modalEditar"
+          isOpen={editObjectModal}
+          toggle={this.toggleEditCustomerModal}
+          
         >
-         <option value="" >tags audiovisuales</option>
-         {this.state.tagsAudiovisuales.map((category, i) =>
-                <option key={i} value={category.id}>
-                  {category.name}
-                </option>
-              )}
-           
-    </Input>
-    
-    <div className="margin-top-div-tags-audiovisuales">
-{this.state.selectsTags.map((select, i) =>
-            
-  <span className="tagsAudiovisuales-select">{select}
-  <a onClick={() => this.removeSelectTagAudiovisual(select)}  class="ReactTags__remove">×</a></span>
-                
-                 
-                )}
-  </div>
-                                    </FormGroup>
-<FormGroup>
-  <Label for="startDate">Fecha de creación</Label>
-  <Input
-    required="true"
-    type="date"
-    name="startDate"
-    id="startDate"
-    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
-    onChange={(event) => this.setState({ startDate: event.target.value })}
-  />
-</FormGroup>
-<FormGroup>
-  <Label>Extensión: {' ' + extension}</Label>
-  
-  
-</FormGroup>
-<FormGroup>
-  <Label for="copyRight:">Copy Right:</Label>
-  <Input type="select"
-    name="copyRight"
-    id="copyRight"
-    required="true"
-    value={copyRight}
-    onChange={(event) => this.setState({ copyRight: event.target.value })}
-  >
-    <option value="free">Libre</option>
-    <option value="limited">Limitado</option>
-    <option value="own">Propio</option>
-  </Input>
-</FormGroup>
+          <ModalHeader toggle={this.toggleEditCustomerModal}>
+            Editar
+            </ModalHeader>
+          <ModalBody>
 
 
+ <div className="row">
 
-<div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank', 'download=true') }}>
-  <a href="javascript:void(0)">
-    {this.state.objeto.metadata.licenseFile}</a>
+<div className="col-sm-5 col-md-5 col-lg-5">
+
+{this.state.objeto.type === 'image' &&
+
+<div className="heigth-div-objetos-confirmar">
+ <img className="imagenes-tam-confirm" src={this.state.objeto.originalURL} alt={this.state.objeto.name} />
 </div>
 
-{(copyRight === 'limited' || copyRight === 'own') &&
-  <FormGroup>
-    <Label for="pdfCopy">PDF Copy Right:</Label>
-    <Input name="pdfCopy" className="fileInput"
-      type="file"
-      accept=".pdf"
-      onChange={(e) => this.handlePDFChange(e)} />
-  </FormGroup>
+}
+
+{this.state.objeto.type === 'video' &&
+
+<div className="heigth-div-objetos-confirmar" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
+ <Player className="border-object-div" ref={'player'} fluid={false} width={'100%'} height={400} muted={true}>
+   <BigPlayButton position="center" />
+   
+   <source src={this.state.objeto.originalURL} />
+ </Player>
+
+</div>
+
+
 
 }
-</Form>
+</div>
+
+<div className="col-sm-6 col-md-6 col-lg-6">
+
+
+
+            <Form >
+
+              <FormGroup>
+                <Label for="name">Nombre</Label>
+                <Input
+                  required="true"
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={name}
+                  onChange={(event) => this.setState({ name: event.target.value })}
+                />
+              </FormGroup>
+              <FormGroup>
+                <div>
+                  <ReactTags tags={tags}
+                    allowDragDrop={false}
+                    suggestions={suggestions}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                    handleTagClick={this.handleTagClick}
+                    delimiters={delimiters}
+                    placeholder={'Agregar nuevo tag'}
+                  >
+
+                  </ReactTags>
+                </div>
+              </FormGroup>
+              <FormGroup>
+
+
+
+                <Label for="audiovisuales">Tags audiovisuales </Label>
 
 
 
 
- </ModalBody>
-            <ModalFooter>
-            <Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin"  onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
-<Button onClick={() => this.onSubmitAddArchiveForm()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar" /></Button>{' '}
+                <Input type="select"
+                  name="audiovisuales"
+                  id="audiovisuales"
+                  // value={editCustomer.role}
+                  onChange={(e) => this.onChangeAudiovisuales(e.target.value)}
+                >
+                  <option value="" >tags audiovisuales</option>
+                  {this.state.tagsAudiovisuales.map((category, i) =>
+                    <option key={i} value={category.id}>
+                      {category.name}
+                    </option>
+                  )}
 
-  </ModalFooter>
-          </Modal>
+                </Input>
+
+                <div className="margin-top-div-tags-audiovisuales">
+                  {this.state.selectsTags.map((select, i) =>
+
+                    <span className="tagsAudiovisuales-select">{select}
+                      <a onClick={() => this.removeSelectTagAudiovisual(select)} class="ReactTags__remove">×</a></span>
+
+
+                  )}
+                </div>
+              </FormGroup>
+              <FormGroup>
+                <Label for="startDate">Fecha de creación</Label>
+                <Input
+                  required="true"
+                  type="date"
+                  name="startDate"
+                  id="startDate"
+                  value={moment(new Date(startDate)).format('YYYY-MM-DD')}
+                  onChange={(event) => this.setState({ startDate: event.target.value })}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>Extensión: {' ' + extension}</Label>
+
+
+              </FormGroup>
+              <FormGroup>
+                <Label for="copyRight:">Copy Right:</Label>
+                <Input type="select"
+                  name="copyRight"
+                  id="copyRight"
+                  required="true"
+                  value={copyRight}
+                  onChange={(event) => this.setState({ copyRight: event.target.value })}
+                >
+                  <option value="free">Libre</option>
+                  <option value="limited">Limitado</option>
+                  <option value="own">Propio</option>
+                </Input>
+              </FormGroup>
 
 
 
-         
+              <div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank', 'download=true') }}>
+                <a href="javascript:void(0)">
+                  {this.state.objeto.metadata.licenseFile}</a>
+              </div>
+
+              {(copyRight === 'limited' || copyRight === 'own') &&
+                <FormGroup>
+                  <Label for="pdfCopy">PDF Copy Right:</Label>
+                  <Input name="pdfCopy" className="fileInput"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => this.handlePDFChange(e)} />
+                </FormGroup>
+
+              }
+            </Form>
 
 
 
-       
+</div>
 
-       
+</div>
+
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+            <Button onClick={() => this.onSubmitAddArchiveForm()} type="button" variant="raised" className="btn-primary text-white"><IntlMessages id="Confirmar" /></Button>{' '}
+
+          </ModalFooter>
+        </Modal>
+
+
+
+
+
+
+
+
+
+
 
 
 
