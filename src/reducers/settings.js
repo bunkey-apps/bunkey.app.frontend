@@ -21,7 +21,8 @@ import {
     CHANGE_AVATAR_FAILURE,
     GET_USER_ME,
     GET_USER_ME_SUCCES,
-    GET_CLIENTE_SELECT_HEADER
+    GET_CLIENTE_SELECT_HEADER,
+    GET_COUNT_PENDING
 } from '../actions/types';
 
 // app config
@@ -31,6 +32,7 @@ import AppConfig from '../constants/AppConfig';
  * initial app settings
  */
 const INIT_STATE = {
+  countPending: '0',
   loading: false,
   userMeName: '',
   userMeImagen: '',
@@ -236,6 +238,10 @@ export default (state = INIT_STATE, action) => {
   case CHANGE_AVATAR_FAILURE:
   NotificationManager.error('Ocurrio un error, intente más tarde');
 
+  
+  case GET_COUNT_PENDING:
+  console.log('GET_COUNT_PENDING33',localStorage.getItem('countPending'));
+  return { ...state, countPending: localStorage.getItem('countPending') };
   case GET_USER_ME:
       return { ...state, loading: true };
 

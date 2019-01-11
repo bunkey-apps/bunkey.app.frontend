@@ -21,7 +21,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import $ from 'jquery';
 
 // actions
-import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags } from '../../actions';
+import { collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags, getPendingObject } from '../../actions';
 
 // components
 import Notifications from './Notifications';
@@ -108,6 +108,7 @@ class Header extends Component {
     this.props.getUserMe();
     this.props.getClientSelectHeader();
     this.props.getAllTags();
+    this.props.getPendingObject();
     const clienteSelect = localStorage.getItem('clienteSelect');
 		const clienteSelectJson = JSON.parse(clienteSelect);
     const userMe = localStorage.getItem('user_me');
@@ -274,7 +275,7 @@ class Header extends Component {
       $('body').css('overflow', '');
     });
     const { showHeaderHome, newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, name, imagen } = this.state;
-    const { loading, userMeName, userMeImagen, clienteSelectAvatar } = this.props;
+    const { loading, userMeName, userMeImagen, clienteSelectAvatar, countPending } = this.props;
     return (
 
       <AppBar position="fixed" className="rct-header">
@@ -315,7 +316,7 @@ class Header extends Component {
               <li className="list-inline-item margen-li-bunkey">
                 <Link to="/app/confirmar">
                   <a href="javascript:void(0)" className="header-icon text-secondary border-secondary border-none-home-heder">
-                    <i className="zmdi icon-check color-header-bunkey"></i>
+                    <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span "><span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span></i>
                   </a>
                 </Link>
               </li>
@@ -483,9 +484,10 @@ const mapStateToProps = ({ settings }) => ({
   loading: settings.loading,
   userMeName: settings.userMeName,
   userMeImagen: settings.userMeImagen,
-  clienteSelectAvatar: settings.clienteSelectAvatar
+  clienteSelectAvatar: settings.clienteSelectAvatar,
+  countPending: settings.countPending
 });
 
 export default withRouter(connect(mapStateToProps, {
-  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags
+  collapsedSidebarAction, changePassword, changeAvatar, logoutUserFromFirebase, getUserMe, getClientSelectHeader, getAllTags, getPendingObject
 })(Header));

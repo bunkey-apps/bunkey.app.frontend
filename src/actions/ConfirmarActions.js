@@ -8,7 +8,8 @@ import { NotificationManager } from 'react-notifications';
 import {
     GET_PENDING_OBJECT,
     GET_PENDING_OBJECT_FAILURE,
-    GET_PENDING_OBJECT_SUCCES
+    GET_PENDING_OBJECT_SUCCES,
+    GET_COUNT_PENDING
 } from './types';
 
 // app config
@@ -43,11 +44,19 @@ export const getPendingObject = () => (dispatch) => {
 
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending')
         .then((response) => {
-            console.log('response GET_PENDING_OBJECT_SUCCES', response.data);
+            console.log('response GET_PENDING_OBJECT_SUCCES', response);
            
+            try{
+                localStorage.setItem("countPending",response.headers['x-pagination-total-count']);
+                dispatch({ type: GET_COUNT_PENDING });
+            }catch(e){
+                console.log('e',e);
+            }
             
             dispatch({ type: GET_PENDING_OBJECT_SUCCES, payload: response.data  });
             
+                     
+
         })
         .catch(error => {
             dispatch({ type: GET_PENDING_OBJECT_FAILURE });

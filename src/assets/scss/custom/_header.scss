@@ -14,6 +14,29 @@
 }
 
 
+.circulo-numero-pending{
+  
+  height: 17px;
+  width: 17px;
+  display: table-cell;
+  text-align: center;
+  font-size: 14px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background:red;
+  color: #ffffff !important;
+ 
+}
+
+.notificaciones-header-icon-span{
+  display: flex !important;
+  margin-top: 12px;
+}
+
+.notificaciones-header-span-margin{
+  margin-top: 6px;
+}
+
 .div-logo-cliente-header{
   height: 58px;
     width: 140px;
