@@ -33,7 +33,6 @@ import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
 import { WithContext as ReactTags } from 'react-tag-input';
-
 // redux action
 import {
   getUserDetails,
@@ -181,6 +180,7 @@ class Folders extends Component {
   }
 
   componentWillMount() {
+    
     //this.props.getFavoritos();
     this.props.getFolders();
     //this.props.getUserDetails();

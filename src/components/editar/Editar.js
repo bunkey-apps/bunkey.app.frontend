@@ -427,7 +427,7 @@ class Editar extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="startDate">Fecha de creación</Label>
-                <DatePicker  required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+                <DatePicker required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
 
               </FormGroup>
               <FormGroup>
