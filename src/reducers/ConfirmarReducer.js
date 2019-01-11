@@ -16,7 +16,10 @@ import {
  */
 const INIT_STATE = {
     loading: false,
-    items: []
+    items: [],
+    limit: 10,
+    totalCount: 1,
+    pageActive: 1
 };
 
 export default (state = INIT_STATE, action) => {
@@ -29,7 +32,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false };
         // get Contratos
         case GET_PENDING_OBJECT_SUCCES:
-            return { ...state, loading: false, items: action.payload };
+            return { ...state, loading: false, items: action.payload, limit: action.limit, totalCount: action.totalCount, pageActive: action.pageActive };
 
         default: return { ...state };
     }

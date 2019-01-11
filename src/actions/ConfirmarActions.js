@@ -23,7 +23,7 @@ import AppConfig from '../constants/AppConfig';
 
 
 
-export const getPendingObject = () => (dispatch) => {
+export const getPendingObject = (page) => (dispatch) => {
     dispatch({ type: GET_PENDING_OBJECT });
     const token = localStorage.getItem('user_id');
 
@@ -42,7 +42,12 @@ export const getPendingObject = () => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending')
+    var pageAux = 1;
+    if(page){
+        pageAux = page;
+    }
+
+    instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending&page=' + pageAux)
         .then((response) => {
             console.log('response GET_PENDING_OBJECT_SUCCES', response);
            
@@ -52,8 +57,16 @@ export const getPendingObject = () => (dispatch) => {
             }catch(e){
                 console.log('e',e);
             }
-            
-            dispatch({ type: GET_PENDING_OBJECT_SUCCES, payload: response.data  });
+
+            var limit= response.headers['x-pagination-limit'];
+            var totalCount= response.headers['x-pagination-total-count'];
+
+            var totalCountAux = parseInt(totalCount);
+            var limitAux = parseInt(limit);
+            console.log('totalCountAux',totalCountAux);
+            console.log('limitAux',limitAux);
+
+            dispatch({ type: GET_PENDING_OBJECT_SUCCES, payload: response.data, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux  });
             
                      
 

@@ -12,6 +12,8 @@ import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle, }
 import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
+import Pagination from "react-js-pagination";
+
 // page title bar
 import PageTitleBar from '../../../components/PageTitleBar/PageTitleBar';
 
@@ -51,15 +53,20 @@ class ListPending extends Component {
     constructor() {
         super()
         this.state = {
-        
         }
        
-        
+        this.handlePageChange = this.handlePageChange.bind(this);
+
     
         
       }
   
-  
+      handlePageChange(pageNumber) {
+        this.props.getPendingObject(pageNumber);
+       
+       
+      }
+      
   componentWillMount() {
   
     console.log('LIST PENDING');
@@ -83,9 +90,12 @@ class ListPending extends Component {
 
     
   }
+
+ 
   render() {
 
-    const { loading,items } = this.props;
+    const { loading,items,totalCount, limit,pageActive } = this.props;
+
     return (
 
 
@@ -109,7 +119,15 @@ class ListPending extends Component {
         </RctCollapsibleCard>
 
 
-
+ <div className="text-center">
+  <Pagination
+      hideNavigation
+      activePage={pageActive}
+      itemsCountPerPage={limit}
+      totalItemsCount={totalCount}
+      onChange={this.handlePageChange}
+    />
+      </div>
 
       </div>
     )
