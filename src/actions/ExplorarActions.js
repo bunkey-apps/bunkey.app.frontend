@@ -20,7 +20,8 @@ import {
     AGREGAR_FAVORITOS_FAILURE,
     AGREGAR_FAVORITOS_SUCCES,
     EDIT_OBJECT_EXPLORAR,
-    CLOSE_OBJECT_EXPLORAR
+    CLOSE_OBJECT_EXPLORAR,
+    GET_COUNT_PENDING
     
 } from './types';
 
@@ -801,6 +802,14 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
         .then((response) => {
             console.log('response updateFile', response);
             console.log('position', position);
+            try{
+                var countPending = localStorage.getItem("countPending");
+                var countPendingAux = parseInt(countPending) +1 ;
+                localStorage.setItem("countPending",countPendingAux);
+                dispatch({ type: GET_COUNT_PENDING });
+            }catch(e){
+                console.log('e',e);
+            }
             dispatch(uploadExplorarMultipleFile(files,position+1,objetoDesc))
             NotificationManager.success(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' Subido correctamente');
         })

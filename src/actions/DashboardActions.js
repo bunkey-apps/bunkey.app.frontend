@@ -32,7 +32,8 @@ import {
     GET_COMPARTIDOS_FAILURE,
     GET_COMPARTIDOS_SUCCES,
     EDIT_OBJECT_FOLDER,
-    CLOSE_OBJECT_FOLDER
+    CLOSE_OBJECT_FOLDER,
+    GET_COUNT_PENDING
 
 } from './types';
 
@@ -783,6 +784,14 @@ export const updateFile = (futureFileURL, tipo, guid, file, position, files, obj
         .then((response) => {
             console.log('response updateFile', response);
             console.log('position', position);
+            try{
+                var countPending = localStorage.getItem("countPending");
+                var countPendingAux = parseInt(countPending) +1 ;
+                localStorage.setItem("countPending",countPendingAux);
+                dispatch({ type: GET_COUNT_PENDING });
+            }catch(e){
+                console.log('e',e);
+            }
             dispatch(uploadMultipleFile(files,position+1,objetoDesc))
             NotificationManager.success(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' Subido correctamente');
         })
@@ -886,6 +895,8 @@ export const updateObjeto = (futureFileURL, detalle, tipo, guid) => (dispatch) =
     })
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES', response);
+
+          
             dispatch(getFolders());
         })
         .catch(error => {
