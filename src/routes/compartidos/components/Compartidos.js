@@ -762,8 +762,18 @@ class Compartidos extends Component {
     return (
 
       <div className="dashboard-v1">
+       <div className="site-logo">
+
+
+
+</div>
+<div className="fondo-logo-compartidos-bunkey">
+<img src={require('../../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
+
+</div>
+
       <div>
-        <div className="row row-eq-height">
+        <div>
           <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
             {parents.map((padre, index) => {
               return (
