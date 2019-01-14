@@ -152,14 +152,14 @@ class MainApp extends Component {
                               name="tipoArchivo"
                               id="tipoArchivo"
                               value = {filtroBusqeuda}
-                              className="select-resultados altura-select-search"
+                              className="select-resultados altura-select-search flecha-select-icon-down"
                               onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
                             >
                               <option value="-1">Tipo de Archivo</option>
                               <option value="image">imágen</option>
                               <option value="video">Video</option>
                             </Input>
-                            <i class="fa fa-chevron-down flecha-select-test"></i>
+                          
                           </div>
                           <div className="input-group col-md-2 padding-bottom-busqueda">
                             <button  type="submit" className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" >
