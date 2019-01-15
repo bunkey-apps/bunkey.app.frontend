@@ -59,10 +59,6 @@ class ListPending extends Component {
 
  
 
-        setTimeout(() => {
-          this.refs['topListPending'].scrollIntoView({ block: 'center', behavior: 'smooth' });
-        
-        }, 1500);
       }
   
       handlePageChange(pageNumber) {
@@ -70,6 +66,8 @@ class ListPending extends Component {
        
        
       }
+
+     
       
   componentWillMount() {
   

@@ -113,7 +113,14 @@ class Confirmar extends Component {
     
   }
 
-
+  componentDidMount(){
+    console.log('redenrr');
+   
+      window.scrollTo(0, 100);
+   
+  
+   // this.refs['topListPending'].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
   onSubmitAddArchiveForm() {
 
     console.log('onSubmitAddArchiveForm id', this.state.id);
