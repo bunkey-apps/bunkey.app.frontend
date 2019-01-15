@@ -768,7 +768,7 @@ class Compartidos extends Component {
 
 </div>
 <div className="fondo-logo-compartidos-bunkey">
-<img src={require('../../../assets/img/logo_bunkey-w.svg')} className="img-fluid" alt="site-logo" />
+<img src={require('../../../assets/img/logo_bunkey-w.svg')} className="img-fluid anchoImagenCompartidosLogo" alt="site-logo" />
 
 </div>
 

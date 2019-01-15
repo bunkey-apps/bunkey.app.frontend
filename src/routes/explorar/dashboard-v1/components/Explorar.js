@@ -788,7 +788,7 @@ class Explorar extends Component {
       <div>
         {isMoveObject && 
   <div>
-    Se esta moviendo  {localStorage.getItem('nameMoveObject')}
+    Se esta moviendo  <b>{localStorage.getItem('nameMoveObject')}</b>, selecciona el destino.
   </div>
        
   }
