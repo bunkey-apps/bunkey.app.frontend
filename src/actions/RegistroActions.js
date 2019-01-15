@@ -33,7 +33,7 @@ export const validateInvite = (webToken) => (dispatch) => {
     dispatch({ type: VALIDATE_INVITE });
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json'}
       });
 
@@ -73,7 +73,7 @@ export const registroInvite = (usuario,accessToken) => (dispatch) => {
   
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + accessToken}
       });
 
@@ -110,7 +110,7 @@ export const responderInvite = (accessToken) => (dispatch) => {
   
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + accessToken}
       });
 

@@ -426,6 +426,8 @@ class Explorar extends Component {
   handleClickMove(folder) {
    
     localStorage.setItem("moveObject", JSON.stringify(folder));
+    localStorage.setItem("nameMoveObject", folder.name);
+
     this.setState({ isMoveObject: true });
   }
   deleteCustomer() {
@@ -784,6 +786,12 @@ class Explorar extends Component {
 
 
       <div>
+        {isMoveObject && 
+  <div>
+    Se esta moviendo  {localStorage.getItem('nameMoveObject')}
+  </div>
+       
+  }
         <div className="row row-eq-height">
           <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
             {parents.map((padre, index) => {

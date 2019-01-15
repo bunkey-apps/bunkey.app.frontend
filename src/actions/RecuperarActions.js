@@ -30,7 +30,7 @@ export const recuperarClave = (email) => (dispatch) => {
     dispatch({ type: RECUPERAR_CLAVE });
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json'}
       });
 

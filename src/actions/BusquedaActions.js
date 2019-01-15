@@ -53,7 +53,7 @@ export const getSearch = (page) => (dispatch) => {
     }
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -127,7 +127,7 @@ export const cambiarObjectSearch = (caperta) => (dispatch) => {
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -157,7 +157,7 @@ export const removeObjectSearch = (caperta) => (dispatch) => {
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -202,7 +202,7 @@ export const updatePendingObjectSearch = (objeto) => (dispatch) => {
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -244,7 +244,7 @@ export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -282,7 +282,7 @@ export const addPendingPDFSearch = (urlImage, file, futureFileURL,objetoDesc) =>
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 3000,
+        timeout: 10000,
         body: file
     });
 

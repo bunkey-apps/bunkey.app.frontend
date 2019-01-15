@@ -331,6 +331,7 @@ class Folders extends Component {
   handleClickMove(folder) {
    
     localStorage.setItem("moveObject", JSON.stringify(folder));
+    localStorage.setItem("nameMoveObject", folder.name);
     this.setState({ isMoveObject: true });
 
   }
@@ -718,6 +719,12 @@ class Folders extends Component {
 
 
       <div>
+  {isMoveObject && 
+  <div>
+    Se esta moviendo  {localStorage.getItem('nameMoveObject')}
+  </div>
+       
+  }
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
 
@@ -1099,6 +1106,7 @@ class Folders extends Component {
                   <FormGroup>
                     <Label for="name">Nombre</Label>
                     <Input
+                      autofocus="true"
                       required="true"
                       type="text"
                       name="name"
@@ -1114,6 +1122,7 @@ class Folders extends Component {
                   <FormGroup>
                     <Label for="name">Nombre</Label>
                     <Input
+                    autofocus="true"
                       required="true"
                       type="text"
                       name="name"
@@ -1164,6 +1173,7 @@ class Folders extends Component {
                       handleTagClick={this.handleTagClick}
                       delimiters={delimiters}
                       placeholder={'Agregar nuevo tag'}
+                      
                     >
 
                     </ReactTags>
@@ -1257,6 +1267,7 @@ class Folders extends Component {
                 <FormGroup>
                   <Label for="name">Email</Label>
                   <Input
+                  autofocus="true"
                     required="true"
                     type="email"
                     name="correoCompartir"

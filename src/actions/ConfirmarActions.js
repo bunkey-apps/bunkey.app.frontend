@@ -38,7 +38,7 @@ export const getPendingObject = (page) => (dispatch) => {
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -91,7 +91,7 @@ export const confirmPending = (objeto) => (dispatch) => {
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -122,7 +122,7 @@ export const updatePendingObject = (objeto) => (dispatch) => {
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -163,7 +163,7 @@ export const changePendingPDF = (file, objetoDesc) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -201,7 +201,7 @@ export const addPendingPDF = (urlImage, file, futureFileURL,objetoDesc) => (disp
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 3000,
+        timeout: 10000,
         body: file
     });
 
@@ -261,7 +261,7 @@ export const confirmAllPending = (objeto) => (dispatch) => {
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 

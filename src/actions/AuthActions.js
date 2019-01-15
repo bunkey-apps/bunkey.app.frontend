@@ -19,7 +19,7 @@ import {
 
 const instance = axios.create({
     baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-    timeout: 30000,
+    timeout: 100000,
     headers: {'Content-Type': 'application/json'}
   });
 

@@ -763,7 +763,7 @@ class Busqueda extends Component {
                         <div className="row">
                           <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
 
-                            <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imagenes, videos o vectores" id="example-search-input">
+                            <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imágenes, videos o vectores" id="example-search-input">
                             </input>
 
                           </div>
@@ -779,7 +779,7 @@ class Busqueda extends Component {
                               onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
                             >
                               <option value="-1">Tipo de Archivo</option>
-                              <option value="image">imágen</option>
+                              <option value="image">Imagen</option>
                               <option value="video">Video</option>
                             </Input>
                           </div>

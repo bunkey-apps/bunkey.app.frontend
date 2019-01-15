@@ -32,7 +32,7 @@ export const getCompartidosInvitado = (webToken) => (dispatch) => {
     dispatch({ type: GET_COMPARTIDOS_INVITADOS });
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json'}
       });
 
@@ -69,7 +69,7 @@ export const getObjectsCompartidos = (accessToken, idCliente, idObject) => (disp
 
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + accessToken}
       });
    
@@ -165,7 +165,7 @@ export const getObjectsCompartidosExplore = () => (dispatch) => {
     }
     var instance2 = axios.create({
         baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 3000,
+        timeout: 10000,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
