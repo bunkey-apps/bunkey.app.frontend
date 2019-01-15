@@ -119,10 +119,8 @@ class Usuarios extends Component {
             this.setState({ editCustomerModal: false});
             console.log('addNewCustomerDetails',addNewCustomerDetails);
             this.props.addUsuario(addNewCustomerDetails);
-            // test despues borrrar y detectar cuando responde el crear
-            setTimeout(() => {
-              this.props.getUsuarios();
-          }, 1000);
+          
+            
         
         
     }
@@ -139,9 +137,7 @@ onSubmitCustomerEditDetailForm() {
       
       this.props.updateUsuario(editCustomer);
       // test despues borrrar y detectar cuando responde el crear
-      setTimeout(() => {
-        this.props.getUsuarios();
-    }, 1000);
+     
       
   }
 }
@@ -183,10 +179,7 @@ deleteCustomer() {
  
   console.log('this.state.selectedDeletedCustomer',this.state.selectedDeletedCustomer);
   this.props.deleteUsuario(this.state.selectedDeletedCustomer);
-  // test despues borrrar y detectar cuando responde el crear
-  setTimeout(() => {
-    this.props.getUsuarios();
-}, 1000);
+
 }
 
       render() {

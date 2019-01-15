@@ -81,7 +81,7 @@ export const addUsuario = (user) => (dispatch) => {
     })
         .then((response) => {
             console.log('invite user',response);
-            dispatch({ type: ADD_USUARIOS_SUCCES });
+            dispatch(getUsuarios());
             NotificationManager.success('Invitado correctamente');
         })
         .catch(error => {
@@ -114,7 +114,7 @@ export const updateUsuario = (user) => (dispatch) => {
     })
         .then((response) => {
             console.log('response user',response);
-            dispatch({ type: ADD_USUARIOS_SUCCES });
+            dispatch(getUsuarios());
         })
         .catch(error => {
             // error handling
@@ -141,7 +141,7 @@ export const deleteUsuario = (user) => (dispatch) => {
     instance2.delete('v1/users/' + user._id + '/workspaces/' + clienteSelectJson._id)
         .then((response) => {
             console.log('response user',response);
-            dispatch({ type: DELETE_USUARIOS_SUCCES });
+            dispatch(getUsuarios());
         })
         .catch(error => {
             // error handling
