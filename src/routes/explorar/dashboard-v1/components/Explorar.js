@@ -23,6 +23,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
+import { NotificationManager } from 'react-notifications';
 
 // rct card box
 import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCollapsibleCard';
@@ -426,7 +427,7 @@ class Explorar extends Component {
   handleClickMove(folder) {
    
     localStorage.setItem("moveObject", JSON.stringify(folder));
-    localStorage.setItem("nameMoveObject", folder.name);
+    NotificationManager.success('Selecciona la ruta en "acción" donde dejarás tu archivo!');
 
     this.setState({ isMoveObject: true });
   }
@@ -786,12 +787,7 @@ class Explorar extends Component {
 
 
       <div>
-        {isMoveObject && 
-  <div>
-    Se esta moviendo  <b>{localStorage.getItem('nameMoveObject')}</b>, selecciona el destino.
-  </div>
-       
-  }
+        
         <div className="row row-eq-height">
           <nav class="mb-0 tour-step-6 breadcrumb volver-paginas-history">
             {parents.map((padre, index) => {

@@ -24,6 +24,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
+import { NotificationManager } from 'react-notifications';
 
 // rct card box
 import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCollapsibleCard';
@@ -331,7 +332,7 @@ class Folders extends Component {
   handleClickMove(folder) {
    
     localStorage.setItem("moveObject", JSON.stringify(folder));
-    localStorage.setItem("nameMoveObject", folder.name);
+    NotificationManager.success('Selecciona la ruta en "acción" donde dejarás tu archivo!');
     this.setState({ isMoveObject: true });
 
   }
@@ -719,12 +720,7 @@ class Folders extends Component {
 
 
       <div>
-  {isMoveObject && 
-  <div>
-    Se esta moviendo  <b>{localStorage.getItem('nameMoveObject')}</b>, selecciona el destino.
-  </div>
-       
-  }
+  
         <RctCollapsibleCard>
           <div className={'rct-block-title'}>
 
