@@ -1070,7 +1070,7 @@ export const getCompartidos = () => (dispatch) => {
                  }
                  
              }
-             localStorage.setItem("objectFavorites", JSON.stringify(response.data));
+            // localStorage.setItem("objectFavorites", JSON.stringify(response.data));
              dispatch({ type: GET_COMPARTIDOS_SUCCES, compartidos: response.data, parentsCompartidos: [], imageVideosCompartidos: arrImageVideo  });
              
         })
