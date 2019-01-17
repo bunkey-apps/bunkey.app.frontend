@@ -558,7 +558,7 @@ this.setState({ alertDialog: false });
                     </MenuItem>
                     <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
                       <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
+                      <span className="padding-click-derecho">Quitar de favoritos</span>
                     </MenuItem>
                   </ContextMenu>
                 </div>
@@ -619,7 +619,7 @@ this.setState({ alertDialog: false });
                       </MenuItem>
                       <MenuItem onClick={() => this.handleClickDeleteFavoritos(n)} data={{ item: 'item 2' }}>
                         <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
+                        <span className="padding-click-derecho">Quitar de favoritos</span>
                       </MenuItem>
                     </ContextMenu>
 
