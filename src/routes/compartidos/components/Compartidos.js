@@ -898,7 +898,7 @@ class Compartidos extends Component {
                               }
 
 
-                              {tipoObject === 'video' &&
+                              {tipoObject === 'video' && collapse === n.rowCollapse &&
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />

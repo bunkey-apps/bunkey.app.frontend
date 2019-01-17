@@ -340,6 +340,7 @@ class Folders extends Component {
 
   handleClickFavoritos(folder) {
     console.log('handleClickFavoritos', folder);
+    
     this.props.addFavoritos(folder);
 
 
@@ -577,6 +578,7 @@ class Folders extends Component {
 
 
       setTimeout(() => {
+       
         console.log('objecto[index].rowCollapse', objecto.rowCollapse);
         this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
 
@@ -941,7 +943,7 @@ class Folders extends Component {
                               }
 
 
-                              {tipoObject === 'video' &&
+                              {tipoObject === 'video' && collapse === n.rowCollapse &&
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
