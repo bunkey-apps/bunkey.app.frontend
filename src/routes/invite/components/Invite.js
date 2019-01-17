@@ -88,7 +88,7 @@ class Invite extends Component {
                       </FormGroup>
                       <FormGroup className="has-wrapper">
                         <Input required="true" value={name} type="text" name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Nombre y apellido" onChange={(event) => this.setState({ name: event.target.value })} />
-                        <span className="has-icon"><i className="ti-lock"></i></span>
+                        <span className="has-icon"><i className="ti-user"></i></span>
                       </FormGroup>
                       <FormGroup className="mb-15 session-form-padding-button">
                         <Button
