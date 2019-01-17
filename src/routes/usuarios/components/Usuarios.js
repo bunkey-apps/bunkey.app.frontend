@@ -280,6 +280,7 @@ deleteCustomer() {
                                   <FormGroup>
                                         <Label for="email">Email</Label>
                                         <Input
+                                        autofocus="true"
                                             required="true"
                                             type="email"
                                             name="email"

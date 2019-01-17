@@ -1169,6 +1169,7 @@ class Explorar extends Component {
                   <FormGroup>
                     <Label for="name">Nombre</Label>
                     <Input
+                    autofocus="true"
                       required="true"
                       type="text"
                       name="name"
@@ -1184,6 +1185,7 @@ class Explorar extends Component {
                   <FormGroup>
                     <Label for="name">Nombre</Label>
                     <Input
+                    autofocus="true"
                       required="true"
                       type="text"
                       name="name"
@@ -1327,6 +1329,7 @@ class Explorar extends Component {
 <FormGroup>
                   <Label for="name">Email</Label>
                   <Input
+                  autofocus="true"
                     required="true"
                     type="email"
                     name="correoCompartir"

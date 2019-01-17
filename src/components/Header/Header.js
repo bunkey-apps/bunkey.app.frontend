@@ -422,6 +422,7 @@ class Header extends Component {
 
                     <Label for="name">Nueva Clave</Label>
                     <Input
+                    autofocus="true"
                       required="true"
                       type="password"
                       name="password"
