@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { NotificationManager } from 'react-notifications';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import AppConfig from '../constants/AppConfig';
 import {
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
@@ -18,8 +19,8 @@ import {
 
 
 const instance = axios.create({
-    baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-    timeout: 100000,
+    baseURL: AppConfig.baseURL,
+    timeout: AppConfig.timeout,
     headers: {'Content-Type': 'application/json'}
   });
 

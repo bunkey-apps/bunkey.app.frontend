@@ -36,8 +36,8 @@ export const getContratos = () => (dispatch) => {
     console.log('clienteSelect',clienteSelect);
     
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
     instance2.get('v1/admin/clients/' + clienteSelectJson._id + '/contracts')
@@ -65,8 +65,8 @@ export const addContrato = (contrato) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -106,8 +106,8 @@ export const updateContrato = (contrato) => (dispatch) => {
    
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -148,8 +148,8 @@ export const deleteContrato = (contrato) => (dispatch) => {
 
   
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    

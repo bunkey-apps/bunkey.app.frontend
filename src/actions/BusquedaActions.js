@@ -52,8 +52,8 @@ export const getSearch = (page) => (dispatch) => {
         pageAux = page;
     }
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -126,8 +126,8 @@ export const cambiarObjectSearch = (caperta) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -156,8 +156,8 @@ export const removeObjectSearch = (caperta) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -201,8 +201,8 @@ export const updatePendingObjectSearch = (objeto) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -243,8 +243,8 @@ export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -282,7 +282,7 @@ export const addPendingPDFSearch = (urlImage, file, futureFileURL,objetoDesc) =>
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
     });
 

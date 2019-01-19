@@ -35,8 +35,8 @@ export const inviteUser = (usuario) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 

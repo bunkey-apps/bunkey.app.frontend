@@ -33,8 +33,8 @@ export const getUrlFile = (file, tipo) => (dispatch) => {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
       });
 
@@ -72,7 +72,7 @@ export const addImage = (urlImage,file,tipo,futureFileURL) => (dispatch) => {
     console.log('urlImage',urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
       });
    
@@ -104,8 +104,8 @@ export const updateAcountSetting = (tipo, rutaImagen) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
       var logo;

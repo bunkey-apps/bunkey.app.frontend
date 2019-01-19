@@ -52,8 +52,8 @@ export const getObjectsByHideID = (idUrl) => (dispatch) => {
 
 
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -93,8 +93,8 @@ export const getObjectsByID = (idUrl) => (dispatch) => {
 
 
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -176,8 +176,8 @@ export const getObjects = () => (dispatch) => {
         }
     }
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -242,8 +242,8 @@ export const createObject = (caperta) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
       const folderSelect = localStorage.getItem('folderSelect');
@@ -270,8 +270,8 @@ export const cambiarObject = (caperta) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -296,8 +296,8 @@ export const removeObject = (caperta) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
@@ -327,8 +327,8 @@ export const uploadArchivo = (detalle, file) => (dispatch) => {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
       });
 
@@ -366,7 +366,7 @@ export const agregarObject = (urlImage,file,futureFileURL, detalle, tipo, guid) 
     console.log('urlImage',urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
       });
    
@@ -397,8 +397,8 @@ export const updateObject = (futureFileURL, detalle, tipo, guid) => (dispatch) =
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -517,8 +517,8 @@ export const obtenerFavoritos = () => (dispatch) => {
     }
     console.log('clienteSelectJson getFavoritos', clienteSelectJson);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -547,8 +547,8 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
     var cobjectFavoritesJson = JSON.parse(objectFavorites);
     console.log('clienteSelectJson._id', clienteSelectJson._id);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -583,8 +583,8 @@ export const changeExplorarPDF = (file, objetoDesc) => (dispatch) => {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -622,7 +622,7 @@ export const addExplorarPDF = (urlImage, file, futureFileURL,objetoDesc) => (dis
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
     });
 
@@ -705,8 +705,8 @@ export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispat
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -745,7 +745,7 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
     });
 
@@ -781,8 +781,8 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
 
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
     const folderSelect = localStorage.getItem('folderSelect');
@@ -834,8 +834,8 @@ export const compartirExplorar = (objeto) => (dispatch) => {
     const userMeJson = JSON.parse(userMe);
     console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -880,8 +880,8 @@ export const moveExplorar = () => (dispatch) => {
     var   folderSelectJson = JSON.parse(folderSelect);
 
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
 
@@ -925,8 +925,8 @@ export const updatePendingObjectExplorar = (objeto) => (dispatch) => {
     const clienteSelectJson = JSON.parse(clienteSelect);
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -967,8 +967,8 @@ export const changePendingPDFExplorar = (file, objetoDesc) => (dispatch) => {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -1006,7 +1006,7 @@ export const addPendingPDFExplorar = (urlImage, file, futureFileURL,objetoDesc) 
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
     });
 

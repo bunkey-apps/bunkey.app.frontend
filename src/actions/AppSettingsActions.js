@@ -134,8 +134,8 @@ export const changePassword = (clave) => (dispatch) => {
     const userMeJson = JSON.parse(userMe);
 
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -163,8 +163,8 @@ export const changeAvatar = (file) => (dispatch) => {
     const userMe = localStorage.getItem('user_me');
     const userMeJson = JSON.parse(userMe);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken },
     });
 
@@ -202,7 +202,7 @@ export const addAvatar = (urlImage, file, futureFileURL) => (dispatch) => {
     console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
-        timeout: 10000,
+        timeout: AppConfig.timeout,
         body: file
     });
 
@@ -235,8 +235,8 @@ export const actualizarAvatar = (url) => (dispatch) => {
     const userMeJson = JSON.parse(userMe);
     userMeJson.avatar = url;
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -263,8 +263,8 @@ export const getUserMe = () => (dispatch) => {
 
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
@@ -306,8 +306,8 @@ export const getAllTags = () => (dispatch) => {
 
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 

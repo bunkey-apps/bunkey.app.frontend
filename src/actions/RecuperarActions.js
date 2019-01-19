@@ -29,8 +29,8 @@ export const recuperarClave = (email) => (dispatch) => {
     console.log('validateInvite FORM',email);
     dispatch({ type: RECUPERAR_CLAVE });
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json'}
       });
 

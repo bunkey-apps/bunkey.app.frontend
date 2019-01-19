@@ -31,8 +31,8 @@ export const getCompartidosInvitado = (webToken) => (dispatch) => {
     console.log('getCompartidosInvitado FORM',webToken);
     dispatch({ type: GET_COMPARTIDOS_INVITADOS });
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json'}
       });
 
@@ -68,8 +68,8 @@ export const getObjectsCompartidos = (accessToken, idCliente, idObject) => (disp
 
 
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + accessToken}
       });
    
@@ -164,8 +164,8 @@ export const getObjectsCompartidosExplore = () => (dispatch) => {
         }
     }
     var instance2 = axios.create({
-        baseURL: 'http://dev-api.bunkey.aureolab.cl/',
-        timeout: 10000,
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
