@@ -296,7 +296,7 @@ class Recientes extends Component {
                                           
                                             {n.type === 'image' &&
                                             <div className="heigth-div-objetos-recientes">
-                                                <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                                <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                                                 </div>
                                             }
                                             {n.type === 'video' &&
@@ -305,7 +305,7 @@ class Recientes extends Component {
                                                     <Player ref={'playerRecientes' + index} fluid={false} width={'100%'} height={180} muted={true}>
                                                         <BigPlayButton position="center" />
                                                         <ControlBar disableDefaultControls={true} />
-                                                        <source src={n.originalURL} />
+                                                        <source src={n.lowQualityURL} />
                                                     </Player>
                                                 </div>
                                             }
@@ -398,7 +398,7 @@ return (o.type === 'image' || o.type === 'video') ?
                             
                               {tipoObject === 'image' &&
 
-                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
+                                <img className="image-colapse-max-width-height" src={selectObject.mediaQualityURL}></img>
 
                               }
 
@@ -407,7 +407,7 @@ return (o.type === 'image' || o.type === 'video') ?
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
-                                  <source src={urlVideo} />
+                                  <source src={selectObject.mediaQualityURL} />
                                 </Player>
 
 

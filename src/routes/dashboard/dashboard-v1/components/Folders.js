@@ -838,7 +838,7 @@ class Folders extends Component {
 
                         <GridListTile key={index}>
                           <div className="heigth-div-objetos">
-                            <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
 
@@ -849,7 +849,7 @@ class Folders extends Component {
                             <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                               <BigPlayButton position="center" />
                               <ControlBar disableDefaultControls={true} />
-                              <source src={n.originalURL} />
+                              <source src={n.lowQualityURL} />
                             </Player>
 
                           </div>
@@ -936,7 +936,7 @@ class Folders extends Component {
                           </div>
                           <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
                             
-                              {tipoObject === 'image' &&
+                              {tipoObject === 'image' && collapse === n.rowCollapse &&
 
                                 <img className="image-colapse-max-width-height" src={urlVideo}></img>
 
@@ -947,7 +947,7 @@ class Folders extends Component {
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
-                                  <source src={urlVideo} />
+                                  <source src={selectObject.mediaQualityURL} />
                                 </Player>
 
 
