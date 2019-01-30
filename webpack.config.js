@@ -22,6 +22,7 @@ const envPublicUrl = process.env.PUBLIC_URL;
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 // the path(s) that should be cleaned
 let pathsToClean = [
@@ -110,6 +111,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'BUNKEY_API_ROOT': JSON.stringify(process.env.BUNKEY_API_ROOT)
+        }),
         new CleanWebpackPlugin(pathsToClean, cleanOptions),
         new HtmlWebPackPlugin({
             template: "./public/index.html",

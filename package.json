@@ -52,6 +52,7 @@
     "dateformat": "^3.0.3",
     "downshift": "^1.31.4",
     "draft-js": "^0.10.5",
+    "file-extension": "^4.0.5",
     "firebase": "^4.12.1",
     "globalize": "^0.1.1",
     "google-map-react": "^0.34.0",

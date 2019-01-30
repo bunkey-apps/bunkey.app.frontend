@@ -4,7 +4,7 @@
 const AppConfig = {
     appLogo: require('../assets/img/logo_bunkey-w.svg'),          // App Logo
     appUrl: 'http://reactify.theironnetwork.org',             // App Url
-    baseURL: 'http://bunkey-api-dev.aureolab.cl/',
+    baseURL: BUNKEY_API_ROOT,
     timeout: 10000,
     brandName: 'Reactify',                                    // Brand Name
     navCollapsed: true,                                      // Sidebar collapse

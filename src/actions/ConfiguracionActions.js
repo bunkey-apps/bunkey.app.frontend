@@ -2,6 +2,7 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import fileExtension from 'file-extension';
 import { NotificationManager } from 'react-notifications';
 
 import {
@@ -44,7 +45,7 @@ export const getUrlFile = (file, tipo) => (dispatch) => {
    
     instance2.post('/v1/url-signature',{
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {

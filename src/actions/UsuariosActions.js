@@ -90,6 +90,31 @@ export const addUsuario = (user) => (dispatch) => {
         })
 }
 
+export const updateUserWorkspaceRole = (client, user, role, cb) => (dispatch) => {
+    NotificationManager.info('Actualizando el Rol');
+    dispatch({ type: UPDATE_USUARIOS });
+    const token = localStorage.getItem('user_id');
+    const tokenJson = JSON.parse(token);
+    axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
+        }).put(`v1/users/${user}/workspaces/${client}`,{
+            action: 'updateRole',
+            role,
+        }).then((response) => {
+            if (cb) {
+                dispatch(getUsuarios());
+                cb(response);
+                NotificationManager.success('Rol actualizado correctamente.');
+            }
+        })
+        .catch(error => {
+            // error handling
+            NotificationManager.error(error.message);
+        })
+}
+
 
 export const updateUsuario = (user) => (dispatch) => {
     console.log('updateUsuario FORM',user);

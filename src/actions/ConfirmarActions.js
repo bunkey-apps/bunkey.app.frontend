@@ -2,6 +2,7 @@
  * Invite Actions
  */
 import axios from 'axios';
+import fileExtension from 'file-extension';
 import moment from 'moment';
 import { NotificationManager } from 'react-notifications';
 
@@ -173,7 +174,7 @@ export const changePendingPDF = (file, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {

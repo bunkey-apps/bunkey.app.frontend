@@ -29,7 +29,8 @@ import AppConfig from '../../../constants/AppConfig';
     getUsuarios,
     addUsuario,
     deleteUsuario,
-    updateUsuario
+    updateUsuario,
+    updateUserWorkspaceRole,
   } from '../../../actions';
    
 
@@ -74,7 +75,13 @@ class Usuarios extends Component {
       }
       handleSubmitEdit(event) {
         event.preventDefault();
-        this.onSubmitCustomerEditDetailForm();
+        // this.onSubmitCustomerEditDetailForm();
+        console.log('handleSubmitEdit -> this.state.editCustomer', this.state.editCustomer);
+        const client = JSON.parse(localStorage.getItem('clienteSelect'));
+        const { _id: user, clientRole } = this.state.editCustomer;
+        this.props.updateUserWorkspaceRole(client._id, user, clientRole, () => {
+            this.setState({ editCustomerModal: false});
+        });
       }
     handleSubmitAdd(event) {
         event.preventDefault();
@@ -215,7 +222,7 @@ deleteCustomer() {
                   <TableRow hover>
                     <TableCell><b>Nombre</b></TableCell>
                     <TableCell><b>E-mail</b></TableCell>
-                   
+                    <TableCell><b>Rol</b></TableCell>
                     <TableCell><b>Acciones</b></TableCell>
                   </TableRow>
                 </TableHead>
@@ -226,14 +233,13 @@ deleteCustomer() {
                         <TableRow hover key={index}>
                           <TableCell>{n.name}</TableCell>
                           <TableCell>{n.email}</TableCell>
-                        
+                          <TableCell>{n.clientRole || n.role}</TableCell>
                           <TableCell className="text-center">
-                          
-                          <a href="javascript:void(0)"   onClick={() => this.onDeleteCustomer(n)}>
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </a>
-                        
-                         
+                            {
+                                n.role === 'operator' &&
+                                <a className="mr-4" href="javascript:void(0)" onClick={() => this.onEditCustomer(n)}><i className="zmdi zmdi-edit"></i></a>
+                            }
+                            <a href="javascript:void(0)" onClick={() => this.onDeleteCustomer(n)}><i className="zmdi zmdi-delete"></i></a>
                           </TableCell>
                         </TableRow>
                       );
@@ -286,8 +292,7 @@ deleteCustomer() {
                                             name="email"
                                             id="email"
                                             value={addNewCustomerDetails.email}
-                                            onChange={(e) => this.onChangeCustomerAddNewForm('email', e.target.value)}
-                                        />
+                                            onChange={(e) => this.onChangeCustomerAddNewForm('email', e.target.value)} />
                                     </FormGroup>
                                    
                                     <FormGroup>
@@ -298,8 +303,7 @@ deleteCustomer() {
                                             name="name"
                                             id="name"
                                             value={addNewCustomerDetails.name}
-                                            onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
-                                        />
+                                            onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)} />
                                     </FormGroup>
                                   
                                    
@@ -314,7 +318,7 @@ deleteCustomer() {
                                             id="email"
                                             value={editCustomer.email}
                                             onChange={(e) => this.onChangeCustomerDetails('email', e.target.value)}
-                                        />
+                                            disabled />
                                     </FormGroup>
                                    
                                     <FormGroup>
@@ -326,19 +330,18 @@ deleteCustomer() {
                                             id="name"
                                             value={editCustomer.name}
                                             onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
-                                        />
+                                            disabled />
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label for="telefono">Rol</Label>
+                                        <Label for="telefono">Rol de cliente</Label>
                                         <Input type="select" 
                                             name="role" 
                                             id="role" 
-                                            value={editCustomer.role}
-                                            onChange={(e) => this.onChangeCustomerDetails('role', e.target.value)}
-                                            >
-                                                <option>Admin</option>
+                                            value={editCustomer.clientRole}
+                                            onChange={(e) => this.onChangeCustomerDetails('clientRole', e.target.value)} >
+                                                <option value="admin">Admin de Cliente</option>
+                                                <option value="operator">Solo Operador</option>
                                         </Input>
-                                        
                                     </FormGroup>
                                 </Form>
                             }
@@ -370,5 +373,9 @@ const mapStateToProps = ({ usuarios }) => {
   }
   
   export default connect(mapStateToProps, {
-    getUsuarios,addUsuario,deleteUsuario,updateUsuario
+    getUsuarios,
+    addUsuario,
+    deleteUsuario,
+    updateUsuario,
+    updateUserWorkspaceRole,
   })(Usuarios);

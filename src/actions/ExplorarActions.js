@@ -3,6 +3,7 @@
  */
 import axios from 'axios';
 import moment from 'moment';
+import fileExtension from 'file-extension';
 
 import { NotificationManager } from 'react-notifications';
 
@@ -330,22 +331,22 @@ export const uploadArchivo = (detalle, file) => (dispatch) => {
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken},
-      });
+    });
 
 
-      console.log('file.type',file.type);
-      var tipoArr = file.type.split('/');
-   
-    instance2.post('/v1/url-signature',{
+    console.log('file.type',file.type);
+    var tipoArr = file.type.split('/');
+    const body = {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
-    })
+    };
+    console.log('body', body);
+    instance2.post('/v1/url-signature', body)
         .then((response) => {
             console.log('response user',response);
             dispatch(agregarObject(response.data.url,file,response.data.futureFileURL, detalle, tipoArr[0], response.data.uuid))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
-
         })
         .catch(error => {
             // error handling
@@ -426,7 +427,7 @@ export const updateObject = (futureFileURL, detalle, tipo, guid) => (dispatch) =
 
 
 function cargarMenuFavoritosExplorar(carpetas) {
-    console.log('Carga el menu');
+    console.log('Carga el menu explorar');
 
     var menu = {
         'category1': []
@@ -594,7 +595,7 @@ export const changeExplorarPDF = (file, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
@@ -716,7 +717,7 @@ export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispat
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
@@ -978,7 +979,7 @@ export const changePendingPDFExplorar = (file, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {

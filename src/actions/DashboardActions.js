@@ -2,6 +2,7 @@
  * Contratos Actions
  */
 import axios from 'axios';
+import fileExtension from 'file-extension';
 import moment from 'moment';
 
 import { NotificationManager } from 'react-notifications';
@@ -98,39 +99,26 @@ export const getUserById = (id) => (dispatch) => {
 }
 
 function cargarMenu(carpetas) {
-    console.log('Carga el menu');
-
+    console.log('Carga el menu the maximo');
     var menu = {
         'category1': []
     };
-
     console.log('carpetas', carpetas);
-
     var child_routes = [];
     for (var i = 0; i < carpetas.length; i++) {
         console.log('carpetas[i]', carpetas[i].name);
-
         var hijos = {
             'menu_title': carpetas[i].name,
             "path": "/app/exlporar?id=" + carpetas[i]._id + '?name=' + carpetas[i].name
         }
-
         child_routes.push(hijos);
     }
-   
-
-
-   
-
     var usuarios = {
         "menu_title": "Usuarios",
         "menu_icon": "ti-user",
         "path": "/app/usuarios",
         "child_routes": null
     };
-
-
-
     var configuracion = {
         "menu_title": "Configuración",
         "menu_icon": "ti-settings",
@@ -146,8 +134,8 @@ function cargarMenu(carpetas) {
     var seccion;
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    if(clienteSelectJson){
-         seccion = {
+    if (clienteSelectJson) {
+        seccion = {
             "menu_title": clienteSelectJson.name,
             "menu_icon": "ti-folder",
             "open": false,
@@ -155,34 +143,44 @@ function cargarMenu(carpetas) {
         }
         localStorage.setItem("seccionCliente", JSON.stringify(seccion));
         menu.category1.push(seccion);
-        try{
-            const seccionFavoritos = localStorage.getItem('seccionFavoritos');
-            const seccionFavoritosJson = JSON.parse(seccionFavoritos);
-            if(seccionFavoritosJson){
-                menu.category1.push(seccionFavoritosJson);
-            }
-        }catch(e){
-            
+        const seccionFavoritos = localStorage.getItem('seccionFavoritos');
+        const seccionFavoritosJson = JSON.parse(seccionFavoritos);
+        if(seccionFavoritosJson){
+            menu.category1.push(seccionFavoritosJson);
         }
-        
-   
-
     }
-
     var tipoUsuario = localStorage.getItem('tipoUsuario');
-    if(tipoUsuario === 'admin'){
+    if (tipoUsuario === 'operator') {
+        const { accessToken } = JSON.parse(localStorage.getItem('user_id'));
+        axios.create({
+            baseURL: AppConfig.baseURL,
+            timeout: AppConfig.timeout,
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        }).get(`/v1/users/me/workspaces/${clienteSelectJson._id}`)
+            .then((response) => {
+                console.log('---X> response', response);
+                const { data: { role } } = response;
+                if (role === 'admin') {
+                    menu.category1.push(configuracion);
+                    menu.category1.push(invite);
+                    menu.category1.push(usuarios);
+                }
+                localStorage.setItem("menuLoad", JSON.stringify(menu));
+            })
+            .catch(error => {
+                // error handling
+            });
+    } else if (tipoUsuario === 'admin') {
         menu.category1.push(configuracion);
         menu.category1.push(invite);
         menu.category1.push(usuarios);
-        
+        localStorage.setItem("menuLoad", JSON.stringify(menu));
     }
-    
-    localStorage.setItem("menuLoad", JSON.stringify(menu));
 }
 
 
 function cargarMenuFavoritos(carpetas) {
-    console.log('Carga el menu');
+    console.log('Carga el menu dashboard');
 
     var menu = {
         'category1': []
@@ -201,11 +199,6 @@ function cargarMenuFavoritos(carpetas) {
 
         child_routes.push(hijos);
     }
-   
-
-
-   
-
     var usuarios = {
         "menu_title": "Usuarios",
         "menu_icon": "ti-user",
@@ -589,7 +582,7 @@ export const changePDF = (file, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
@@ -705,7 +698,7 @@ export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
@@ -829,7 +822,7 @@ export const subirArchivo = (detalle, file) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
@@ -1201,7 +1194,7 @@ export const changePendingPDFFolder = (file, objetoDesc) => (dispatch) => {
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
-        extention: tipoArr[1],
+        extention: fileExtension(file.name),
         mimeType: file.type
     })
         .then((response) => {
