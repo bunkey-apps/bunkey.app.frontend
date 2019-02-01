@@ -475,7 +475,7 @@ class Explorar extends Component {
     console.log('tags', this.state.tags);
 
     let folder = localStorage.getItem('folderSelect');
-
+    let client = localStorage.getItem('clienteSelect');
 
     var arrTags = [];
     for (var i = 0; i < this.state.tags.length; i++) {
@@ -495,7 +495,7 @@ class Explorar extends Component {
 
       console.log('startDate',this.state.startDate);
       //descriptiveTags
-      this.props.uploadExplorarMultipleFileDescription(objectDec, folder);
+      this.props.uploadExplorarMultipleFileDescription(objectDec, folder, client);
       // this.state.files = [];
     }
 
