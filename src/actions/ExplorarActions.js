@@ -650,16 +650,16 @@ export const addExplorarPDF = (urlImage, file, futureFileURL,objetoDesc) => (dis
 
 
 
-export const uploadExplorarMultipleFileDescription = (objetoDesc) => (dispatch) => {
+export const uploadExplorarMultipleFileDescription = (objetoDesc, folder) => (dispatch) => {
     console.log('uploadMultipleFile');
     dispatch({ type: GET_OBJECT });
-    console.log('uploadMultipleFile',objetoDesc);
+    console.log('uploadMultipleFile',objetoDesc, folder);
     
     
     
         if(objetoDesc.copyRight === 'free'){
             console.log('objetoDesc free',objetoDesc);
-            dispatch(uploadExplorarMultipleFile(objetoDesc.files,0,objetoDesc))
+            dispatch(uploadExplorarMultipleFile(objetoDesc.files,0,objetoDesc, folder))
             
         }else{
             console.log('objetoDesc elese',objetoDesc);
@@ -677,8 +677,8 @@ export const uploadExplorarMultipleFileDescription = (objetoDesc) => (dispatch) 
 
 
 
-export const uploadExplorarMultipleFile = (files,position,objetoDesc) => (dispatch) => {
-    console.log('uploadMultipleFile');
+export const uploadExplorarMultipleFile = (files,position,objetoDesc, folder) => (dispatch) => {
+    console.log('uploadMultipleFile', folder);
     dispatch({ type: GET_OBJECT });
     if(!position){
         position = 0;
@@ -688,7 +688,7 @@ export const uploadExplorarMultipleFile = (files,position,objetoDesc) => (dispat
     console.log('position',position);
     console.log('files',files);
     if(position < files.length){
-        dispatch(uploadExplorarFile(files[position],position, files,objetoDesc))
+        dispatch(uploadExplorarFile(files[position],position, files,objetoDesc, folder))
     }else{
         dispatch(getObjects());
     }
@@ -697,7 +697,7 @@ export const uploadExplorarMultipleFile = (files,position,objetoDesc) => (dispat
 
 
 }
-export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispatch) => {
+export const uploadExplorarFile = (file, position, files, objetoDesc, folder) => (dispatch) => {
     console.log('uploadFile');
    
     const token = localStorage.getItem('user_id');
@@ -713,6 +713,7 @@ export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispat
 
 
     console.log('file.type', file.type);
+    console.log('folder', folder);
     var tipoArr = file.type.split('/');
 
     instance2.post('/v1/url-signature', {
@@ -722,20 +723,20 @@ export const uploadExplorarFile = (file, position, files, objetoDesc) => (dispat
     })
         .then((response) => {
             console.log('response user', response);
-            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files, objetoDesc))
+            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files, objetoDesc, folder))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
         })
         .catch(error => {
             // error handling
-            dispatch(uploadExplorarMultipleFile(files,position+1))
+            dispatch(uploadExplorarMultipleFile(files,position+1, folder))
             var tipoArrName = file.name.split('.');
             NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArrName[0] + ' ocurrio un error al subirlo');
            
 
         })
 }
-export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files, objetoDesc) => (dispatch) => {
+export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files, objetoDesc, folder) => (dispatch) => {
     console.log('addFile FORM', file);
 
     // dispatch({ type: PUT_IMAGE });
@@ -756,11 +757,11 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
     instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
         .then(function (result) {
             console.log(result);
-            dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files, objetoDesc))
+            dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files, objetoDesc, folder))
             //dispatch({ type: PUT_IMAGE_SUCCES});
         })
         .catch(function (err) {
-            dispatch(uploadExplorarMultipleFile(files,position+1))
+            dispatch(uploadExplorarMultipleFile(files,position+1, folder))
             var tipoArr = file.name.split('.');
             NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' ocurrio un error al subirlo');
            
@@ -769,7 +770,7 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
 }
 
 
-export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, files, objetoDesc) => (dispatch) => {
+export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, files, objetoDesc, folder) => (dispatch) => {
     dispatch({ type: GET_OBJECT });
     const token = localStorage.getItem('user_id');
 
@@ -786,8 +787,8 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
         timeout: AppConfig.timeout,
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
-    const folderSelect = localStorage.getItem('folderSelect');
-    var   folderSelectJson = JSON.parse(folderSelect);
+    //const folderSelect = localStorage.getItem('folderSelect');
+    var   folderSelectJson = JSON.parse(folder);
     instance2.post('/v1/clients/' + clienteSelectJson._id + '/objects/' + folderSelectJson._id, {
         'name': tipoArr[0],
         "type": tipo,
@@ -811,11 +812,11 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
             }catch(e){
                 console.log('e',e);
             }
-            dispatch(uploadExplorarMultipleFile(files,position+1,objetoDesc))
+            dispatch(uploadExplorarMultipleFile(files,position+1,objetoDesc, folder))
             NotificationManager.success(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' Subido correctamente');
         })
         .catch(error => {
-            dispatch(uploadExplorarMultipleFile(files,position+1))
+            dispatch(uploadExplorarMultipleFile(files,position+1, folder))
 
             NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArr[0] + ' ocurrio un error al subirlo');
            

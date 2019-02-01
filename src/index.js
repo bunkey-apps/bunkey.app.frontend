@@ -9,7 +9,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import { createStore, applyMiddleware } from 'redux';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import Thunk from 'redux-thunk';
@@ -38,11 +37,9 @@ const store = createStore(reducers,
 
 ReactDOM.render(
   <Provider store={store}>
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Router history={history}>
         <Switch>
           <Route path="/" component={App} />
         </Switch>
       </Router>
-    </MuiPickersUtilsProvider>
   </Provider>, document.getElementById('root'));

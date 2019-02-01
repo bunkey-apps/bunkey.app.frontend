@@ -474,6 +474,8 @@ class Explorar extends Component {
     console.log('copyRight', this.state.copyRight);
     console.log('tags', this.state.tags);
 
+    let folder = localStorage.getItem('folderSelect');
+
 
     var arrTags = [];
     for (var i = 0; i < this.state.tags.length; i++) {
@@ -493,7 +495,7 @@ class Explorar extends Component {
 
       console.log('startDate',this.state.startDate);
       //descriptiveTags
-      this.props.uploadExplorarMultipleFileDescription(objectDec);
+      this.props.uploadExplorarMultipleFileDescription(objectDec, folder);
       // this.state.files = [];
     }
 
