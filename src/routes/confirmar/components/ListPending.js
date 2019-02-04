@@ -109,7 +109,7 @@ class ListPending extends Component {
           }
            <RctCollapsibleCard>
           <div className="" ref="topListPending">
-          <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button>{' '}
+          {/* <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button> */}{' '}
 
           </div>
           </RctCollapsibleCard>

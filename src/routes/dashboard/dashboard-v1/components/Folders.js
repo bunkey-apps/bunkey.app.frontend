@@ -542,7 +542,7 @@ class Folders extends Component {
   }
 
   onCollapse(objecto, index) {
-    console.log('objecto', objecto);
+    console.log('objecto1', objecto);
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {

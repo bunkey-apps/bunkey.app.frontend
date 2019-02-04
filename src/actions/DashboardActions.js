@@ -1039,7 +1039,6 @@ export const getCompartidos = () => (dispatch) => {
                             collapseRows ++;
                         }
 
-
                         if(cont === 0){
                             sharedObject.object.marginLeft = '0%';
                             sharedObject.object.paddingLeft = '10%';

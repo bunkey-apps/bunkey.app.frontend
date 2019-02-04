@@ -166,7 +166,6 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loadingCompartidos: true };
 
         case GET_COMPARTIDOS_SUCCES:
-            console.log('print action in reducer',action.compartidos);
             
             return { ...state,
                  loadingCompartidos: false,

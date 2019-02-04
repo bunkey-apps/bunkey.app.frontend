@@ -544,6 +544,7 @@ class Explorar extends Component {
 
 
   goToImagenes = (n) => {
+    this.closeCollapse()
     console.log('objecto', n);
     localStorage.setItem("folderSelect", JSON.stringify(n));
     console.log('get folders');
