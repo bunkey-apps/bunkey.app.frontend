@@ -119,8 +119,10 @@ class Editar extends Component {
     var isUpdate = false;
 
     if (this.state.objeto.name !== this.state.name) {
-      console.log('distintos name');
+      console.log('distintos name', this.state.name);
       isUpdate = true;
+      
+      this.props.changeName(this.state.name);
     } else {
       console.log('iguales name ');
     }

@@ -624,14 +624,6 @@ class Compartidos extends Component {
       }
 
 
-
-
-
-
-
-
-
-
       setTimeout(() => {
         console.log('objecto[index].rowCollapse', objecto.rowCollapse);
         this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -710,8 +702,8 @@ class Compartidos extends Component {
 
           this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index] });
 
-
         }, 100);
+
       } else {
         this.setState({ collapse: imageVideos[index].rowCollapse, urlVideo: imageVideos[index].originalURL, author: imageVideos[index].name, marginLeftCollap: imageVideos[index].marginLeft, posicion: index, tipoObject: imageVideos[index].type, selectObject: imageVideos[index]   });
 
@@ -804,11 +796,6 @@ class Compartidos extends Component {
             {items.map((n, index) => {
 
               return n.type === 'folder' ?
-
-
-
-
-
 
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
@@ -905,9 +892,6 @@ class Compartidos extends Component {
                                   <BigPlayButton position="center" />
                                   <source src={urlVideo} />
                                 </Player>
-
-
-
 
                               }
                             

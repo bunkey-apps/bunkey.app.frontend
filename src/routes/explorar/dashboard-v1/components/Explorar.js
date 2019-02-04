@@ -240,6 +240,12 @@ class Explorar extends Component {
     this.setState({ tags: newTags });
   }
 
+  //changeName
+
+  changeName = (name) => {
+    this.setState({ author:name });
+  }
+
 
 
   parseUrlstring(query) {
@@ -1362,7 +1368,7 @@ class Explorar extends Component {
       }
 
       {editarObjetoModal &&
-            <Editar key="editarExplorar" objectoPending={objectoEdit} />
+            <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName} />
 
       }
 
