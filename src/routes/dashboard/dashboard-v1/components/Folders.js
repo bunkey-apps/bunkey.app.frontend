@@ -315,7 +315,9 @@ class Folders extends Component {
     this.onSubmitCompartirForm();
   }
 
-
+  changeName = (name) => {
+    this.setState({ author:name });
+  }
 
   onEditCustomer(customer) {
     this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
@@ -1295,7 +1297,7 @@ class Folders extends Component {
         }
 
         {editarObjetoFolderModal &&
-          <Editar key="editarExplorar" objectoPending={objectoEdit} />
+          <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName}/>
 
     }
 

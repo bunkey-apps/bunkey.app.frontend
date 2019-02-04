@@ -486,18 +486,6 @@ class Editar extends Component {
         </Modal>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
       </div>
     )
   }

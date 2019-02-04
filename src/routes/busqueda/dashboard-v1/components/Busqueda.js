@@ -389,6 +389,10 @@ class Busqueda extends Component {
     this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
   }
 
+  changeName = (name) => {
+    this.setState({ author:name });
+  }
+
 
   handleClickChangeName(folder) {
     console.log('handleClickChangeName', folder);
@@ -1323,7 +1327,7 @@ class Busqueda extends Component {
 
 
 {editarObjetoSearchModal &&
-          <Editar key="editarSearch" objectoPending={objectoEdit} />
+          <Editar key="editarSearch" objectoPending={objectoEdit} changeName={this.changeName}/>
 
     }
 
