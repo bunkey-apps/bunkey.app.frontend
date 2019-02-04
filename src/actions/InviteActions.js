@@ -26,14 +26,12 @@ import AppConfig from '../constants/AppConfig';
  * Redux Action To ADD Invite
  */
 export const inviteUser = (usuario) => (dispatch) => {
-    console.log('inviteUser FORM',usuario);
     dispatch({ type: ADD_INVITE });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -47,7 +45,6 @@ export const inviteUser = (usuario) => (dispatch) => {
         'client': clienteSelectJson._id
     })
         .then((response) => {
-            console.log('invite user',response);
             dispatch({ type: ADD_INVITE_SUCCES});
             NotificationManager.success('Invitado correctamente');
         })

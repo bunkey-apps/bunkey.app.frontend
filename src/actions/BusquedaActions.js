@@ -30,7 +30,6 @@ export const getSearch = (page) => (dispatch) => {
     const folderSelect = localStorage.getItem('folderSelect');
     var   folderSelectJson = JSON.parse(folderSelect);
 
-    console.log('folderSelectJson',folderSelectJson);
 
     const textoBusqeuda = localStorage.getItem('textoBusqeuda');
     const filtroBusqeuda = localStorage.getItem('filtroBusqeuda');
@@ -40,8 +39,6 @@ export const getSearch = (page) => (dispatch) => {
         }
 
 
-
-    console.log('textoBusqeuda',textoBusqeuda);
 
     if(!clienteSelectJson){
         clienteSelectJson = {
@@ -60,14 +57,12 @@ export const getSearch = (page) => (dispatch) => {
    
       instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl + '&page=' + pageAux)
       .then((response) => {
-            console.log('response search',response);
             var arrImageVideo = [];
             var cont = 0;
             var collapseRows = 0;
             if(response.data){
                 for(var i=0;i<response.data.length;i++){
                     if(response.data[i].type !== 'folder'){
-                        console.log('response.data[i]',response.data[i]);
                         
                         if(cont === 4){
                             cont = 0;
@@ -106,8 +101,6 @@ export const getSearch = (page) => (dispatch) => {
 
             var totalCountAux = parseInt(totalCount);
             var limitAux = parseInt(limit);
-            console.log('totalCountAux',totalCountAux);
-            console.log('limitAux',limitAux);
             dispatch({ type: GET_SEARCH_SUCCES, payload: response.data, parents: response.data.parents, imageVideos: arrImageVideo, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux  });
             
         })
@@ -125,7 +118,6 @@ export const cambiarObjectSearch = (caperta) => (dispatch) => {
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -136,7 +128,6 @@ export const cambiarObjectSearch = (caperta) => (dispatch) => {
         'name': caperta.name
     })
         .then((response) => {
-            console.log('response GET_OBJECT_SUCCES',response);
             NotificationManager.success('Actualizado correctamente.');
 
             dispatch(getSearch());
@@ -155,7 +146,6 @@ export const removeObjectSearch = (caperta) => (dispatch) => {
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -166,7 +156,6 @@ export const removeObjectSearch = (caperta) => (dispatch) => {
        
     })
         .then((response) => {
-            console.log('response DELETE_FOLDERS_SUCCES',response);
             NotificationManager.success('Eliminado correctamente.');
             dispatch(getSearch());
         })
@@ -200,7 +189,6 @@ export const updatePendingObjectSearch = (objeto) => (dispatch) => {
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
-    console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -218,7 +206,6 @@ export const updatePendingObjectSearch = (objeto) => (dispatch) => {
         }
     })
         .then((response) => {
-            console.log('response GET_FOLDERS_SUCCES', response);
             dispatch(getSearch());
             
         })
@@ -234,7 +221,6 @@ export const updatePendingObjectSearch = (objeto) => (dispatch) => {
 
 
 export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
-    console.log('changePendingPDFExplorar FORM');
     
     const token = localStorage.getItem('user_id');
 
@@ -250,7 +236,6 @@ export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
     });
 
 
-    console.log('file.type', file.type);
     var tipoArr = file.type.split('/');
 
     instance2.post('/v1/url-signature', {
@@ -259,7 +244,6 @@ export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
         mimeType: file.type
     })
         .then((response) => {
-            console.log('response user', response);
             dispatch(addPendingPDFSearch(response.data.url, file, response.data.futureFileURL,objetoDesc))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
@@ -273,14 +257,12 @@ export const changePendingPDFSearch = (file, objetoDesc) => (dispatch) => {
 }
 
 export const addPendingPDFSearch = (urlImage, file, futureFileURL,objetoDesc) => (dispatch) => {
-    console.log('addPendingPDF FORM', file);
 
     // dispatch({ type: PUT_IMAGE });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
 
-    console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
         timeout: AppConfig.timeout,
@@ -292,16 +274,14 @@ export const addPendingPDFSearch = (urlImage, file, futureFileURL,objetoDesc) =>
 
     instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
         .then(function (result) {
-            console.log(result);
-            console.log('antes d33  imagenes', objetoDesc);
+
 
             objetoDesc.metadata.licenseFile = futureFileURL;
-            console.log('antes de enviara objetoDesc  imagenes', objetoDesc);
+
             dispatch(updatePendingObjectSearch(objetoDesc))
             //dispatch({ type: PUT_IMAGE_SUCCES});
         })
         .catch(function (err) {
-            console.log(err);
            
             NotificationManager.error('A ocurrido un error, intente mas tarde.');
 
@@ -310,7 +290,6 @@ export const addPendingPDFSearch = (urlImage, file, futureFileURL,objetoDesc) =>
 
 
 export const updateObjectSearch = (objectChange) => (dispatch) => {
-    console.log('updatePendingRouting');
    
     dispatch({ type: GET_SEARCH });
     

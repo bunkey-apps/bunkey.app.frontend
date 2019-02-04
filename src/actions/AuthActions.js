@@ -146,7 +146,6 @@ export const signinUserWithTwitter = (history) => (dispatch) => {
         localStorage.setItem("user_id", "user-id");
         dispatch({ type: LOGIN_USER_SUCCESS, payload: localStorage.getItem('user_id') });
         history.push('/');
-        console.log(result)
         NotificationManager.success('User Login Successfully!');
     }).catch(function (error) {
         dispatch({ type: LOGIN_USER_FAILURE });
@@ -159,7 +158,6 @@ export const signinUserWithTwitter = (history) => (dispatch) => {
  * Redux Action To Signin User in signinUserWithBunkey
  */
 export const signinUserWithBunkey = (user, history) => (dispatch) => {
-    console.log('signinUserWithBunkey24',user);
     dispatch({ type: LOGIN_USER });
     var email = user.email.replace(/\s/g, '');
 
@@ -167,7 +165,7 @@ export const signinUserWithBunkey = (user, history) => (dispatch) => {
         email: email,
         password: user.password})
     .then((user) => {
-        console.log('usuario es3',user);
+    
         localStorage.setItem("user_id", JSON.stringify(user.data));
         
         var decode = jwtDecode(user.data.accessToken);
@@ -177,7 +175,6 @@ export const signinUserWithBunkey = (user, history) => (dispatch) => {
         }else{
             rol = decode.user.role;
         }
-        console.log('rollll',rol);
         localStorage.setItem("tipoUsuario",rol);
         localStorage.setItem("user_me", JSON.stringify(decode.user));
         dispatch({ type: LOGIN_USER_SUCCESS, payload: user.data });

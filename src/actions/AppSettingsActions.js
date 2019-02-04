@@ -130,7 +130,6 @@ export const changePassword = (clave) => (dispatch) => {
 
     const tokenJson = JSON.parse(token);
 
-    console.log('tokenJson5', tokenJson.accessToken);
     const userMe = localStorage.getItem('user_me');
     const userMeJson = JSON.parse(userMe);
 
@@ -144,7 +143,6 @@ export const changePassword = (clave) => (dispatch) => {
         password: clave
     })
         .then((response) => {
-            console.log('response usuarios4', response);
             dispatch({ type: CHANGE_PASSWORD_SUCCES });
         })
         .catch(error => {
@@ -156,7 +154,6 @@ export const changePassword = (clave) => (dispatch) => {
 
 
 export const changeAvatar = (file) => (dispatch) => {
-    console.log('GET_URL FORM');
     dispatch({ type: CHANGE_AVATAR });
     const token = localStorage.getItem('user_id');
 
@@ -170,7 +167,6 @@ export const changeAvatar = (file) => (dispatch) => {
     });
 
 
-    console.log('file.type', file.type);
     var tipoArr = file.type.split('/');
 
     instance2.post('/v1/url-signature', {
@@ -179,7 +175,6 @@ export const changeAvatar = (file) => (dispatch) => {
         mimeType: file.type
     })
         .then((response) => {
-            console.log('response user', response);
             dispatch(addAvatar(response.data.url, file, response.data.futureFileURL))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
@@ -193,14 +188,12 @@ export const changeAvatar = (file) => (dispatch) => {
 }
 
 export const addAvatar = (urlImage, file, futureFileURL) => (dispatch) => {
-    console.log('PUT_IMAGE FORM', file);
 
     // dispatch({ type: PUT_IMAGE });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
 
-    console.log('urlImage', urlImage);
     var instance2 = axios.create({
         baseURL: urlImage,
         timeout: AppConfig.timeout,
@@ -212,12 +205,10 @@ export const addAvatar = (urlImage, file, futureFileURL) => (dispatch) => {
 
     instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
         .then(function (result) {
-            console.log(result);
             dispatch(actualizarAvatar(futureFileURL));
             //dispatch({ type: PUT_IMAGE_SUCCES});
         })
         .catch(function (err) {
-            console.log(err);
             dispatch({ type: CHANGE_AVATAR_FAILURE })
             NotificationManager.error('A ocurrido un error, intente mas tarde.');
 
@@ -231,7 +222,6 @@ export const actualizarAvatar = (url) => (dispatch) => {
 
     const tokenJson = JSON.parse(token);
 
-    console.log('tokenJson5', tokenJson.accessToken);
     const userMe = localStorage.getItem('user_me');
     const userMeJson = JSON.parse(userMe);
     userMeJson.avatar = url;
@@ -245,7 +235,6 @@ export const actualizarAvatar = (url) => (dispatch) => {
         avatar: url
     })
         .then((response) => {
-            console.log('response usuarios4', response);
             localStorage.setItem("user_me", JSON.stringify(userMeJson));
 
             dispatch(getUserMe());
@@ -262,7 +251,6 @@ export const getUserMe = () => (dispatch) => {
 
     const tokenJson = JSON.parse(token);
 
-    console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -271,7 +259,6 @@ export const getUserMe = () => (dispatch) => {
 
     instance2.get('v1/users/me')
         .then((response) => {
-            console.log('response GET_USER_DETAILS', response);
             localStorage.setItem("user_me", JSON.stringify(response.data));
             dispatch({ type: GET_USER_ME_SUCCES, payload: response.data });
 
@@ -292,8 +279,6 @@ export const getClientSelectHeader = () => (dispatch) => {
       logo =  clienteSelectJson.acountSetting.logo;
     }
 
-    console.log('getClientSelectHeader');
-
     dispatch({ type: GET_CLIENTE_SELECT_HEADER, clienteSelectAvatar: logo });
    
     
@@ -304,8 +289,6 @@ export const getAllTags = () => (dispatch) => {
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
-    console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -314,7 +297,6 @@ export const getAllTags = () => (dispatch) => {
 
     instance2.get('v1/tags?all=true')
         .then((response) => {
-            console.log('response getAllTags', response);
             localStorage.setItem("allTags", JSON.stringify(response.data));
             
 

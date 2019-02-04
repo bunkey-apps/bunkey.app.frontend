@@ -1211,7 +1211,7 @@ class Compartidos extends Component {
           <ModalBody>
             <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
 
-<FormGroup>
+                <FormGroup>
                   <Label for="name">Email</Label>
                   <Input
                     required="true"

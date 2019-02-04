@@ -34,7 +34,6 @@ export const getClientes = () => (dispatch) => {
 
     const tokenJson = JSON.parse(token);
 
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -43,7 +42,6 @@ export const getClientes = () => (dispatch) => {
    
     instance2.get('v1/admin/clients')
         .then((response) => {
-            console.log('response clients2',response);
             dispatch({ type: GET_CLIENTES_SUCCES, payload: response.data });
         })
         .catch(error => {
@@ -55,21 +53,16 @@ export const getClientes = () => (dispatch) => {
 
 
 export const getClientesById = (workClients,position,arrayClientes,history) => (dispatch) => {
-    console.log('getClientesById');
     dispatch({ type: GET_CLIENTES });
     if(!position){
         position = 0;
-        console.log('no existe');
     }
 
-    console.log('position',position);
-    console.log('workClients',workClients);
     
     
     if(position < workClients.length){
         dispatch(getClienteById(workClients[position],position, workClients,arrayClientes,history))
     }else{
-        console.log('arrayClientes',arrayClientes);
 
         if(arrayClientes.length > 1){
             dispatch({ type: GET_CLIENTES_SUCCES, payload: arrayClientes });
@@ -79,14 +72,9 @@ export const getClientesById = (workClients,position,arrayClientes,history) => (
 
             history.push('/app/dashboard');
         }
-
-        
-        
+     
     }
    
-
-
-
 }
 
 export const getClienteById = (workClient,position,workClients, arrayClientes,history) => (dispatch) => {
@@ -94,8 +82,6 @@ export const getClienteById = (workClient,position,workClients, arrayClientes,hi
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -104,7 +90,6 @@ export const getClienteById = (workClient,position,workClients, arrayClientes,hi
    
     instance2.get('v1/clients/' + workClient)
         .then((response) => {
-            console.log('response clients2',response);
             arrayClientes.push(response.data);
             dispatch(getClientesById(workClients,position+1,arrayClientes,history))
             
@@ -122,13 +107,10 @@ export const getClienteById = (workClient,position,workClients, arrayClientes,hi
  * Redux Action To ADD Clientes
  */
 export const addClientes = (client) => (dispatch) => {
-    console.log('client FORM',client);
     dispatch({ type: ADD_CLIENTES });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
-    console.log('tokenJson4',tokenJson.accessToken);
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -148,7 +130,6 @@ export const addClientes = (client) => (dispatch) => {
         }
     })
         .then((response) => {
-            console.log('response clients2',response);
             dispatch({ type: ADD_CLIENTES_SUCCES, payload: response.data });
         })
         .catch(error => {
@@ -163,13 +144,10 @@ export const addClientes = (client) => (dispatch) => {
  * Redux Action To Update Clientes
  */
 export const updateClientes = (client) => (dispatch) => {
-    console.log('update FORM',client);
     dispatch({ type: UPDATE_CLIENTES });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
-    console.log('tokenJson4',tokenJson.accessToken);
 
   
     var instance2 = axios.create({
@@ -191,7 +169,6 @@ export const updateClientes = (client) => (dispatch) => {
         }
     })
         .then((response) => {
-            console.log('response clients2',response);
             dispatch({ type: UPDATE_CLIENTES_SUCCES, payload: response.data });
         })
         .catch(error => {
@@ -205,13 +182,10 @@ export const updateClientes = (client) => (dispatch) => {
  * Redux Action To Delete Clientes
  */
 export const daleteClientes = (client) => (dispatch) => {
-    console.log('delete FORM',client);
     dispatch({ type: DELETE_CLIENTES });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
-
-    console.log('tokenJson4',tokenJson.accessToken);
 
   
     var instance2 = axios.create({
@@ -222,7 +196,6 @@ export const daleteClientes = (client) => (dispatch) => {
    
     instance2.delete('v1/admin/clients/' + client._id)
         .then((response) => {
-            console.log('response clients2',response);
             dispatch({ type: DELETE_CLIENTES_SUCCES});
         })
         .catch(error => {

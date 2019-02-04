@@ -839,14 +839,14 @@ export const compartirExplorar = (objeto) => (dispatch) => {
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
-      });
+    });
 
    
     instance2.post('v1/shared',{
         'object': objeto.idObjectCompartir,
         'email': objeto.correoCompartir,
         'user': userMeJson._id
-    })
+        })
         .then((response) => {
            
             

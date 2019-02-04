@@ -22,8 +22,6 @@ import AppConfig from '../constants/AppConfig';
 
 
 
-
-
 /**
  * Redux Action To ADD Invite
  */
@@ -56,17 +54,13 @@ export const getCompartidosInvitado = (webToken) => (dispatch) => {
         })
         .catch(error => {
             dispatch({ type: GET_COMPARTIDOS_INVITADOS_FAILURE });
-        NotificationManager.error(error.message);
+            NotificationManager.error(error.message);
         })
 }
 
 
 export const getObjectsCompartidos = (accessToken, idCliente, idObject) => (dispatch) => {
     
-    
-   
-
-
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,

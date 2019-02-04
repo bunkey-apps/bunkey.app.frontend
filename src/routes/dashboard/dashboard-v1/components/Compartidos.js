@@ -482,8 +482,6 @@ this.setState({ alertDialog: false });
         setTimeout(() => {
           this.refs[imageVideosCompartidos[index].rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
   
-  
-  
         }, 500);
   
   
@@ -493,6 +491,8 @@ this.setState({ alertDialog: false });
 
   render() {
     const { compartidos, loadingCompartidos, userById, parentsCompartidos, imageVideosCompartidos } = this.props;
+    console.log('compartidos component', compartidos);
+    
     const { collapse } = this.state;
     const { urlVideo } = this.state;
     const { posicion } = this.state;
@@ -529,12 +529,6 @@ this.setState({ alertDialog: false });
             {compartidos.map((n, index) => {
 
               return n.object.type === 'folder' ?
-
-
-
-
-
-
 
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
                   <ContextMenuTrigger id={index + 'folder-favoritos'} holdToDisplay={1000}>

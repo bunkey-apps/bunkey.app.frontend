@@ -40,9 +40,6 @@ export default (state = INIT_STATE, action) => {
             imageVideos: action.imageVideos
         };
 
-              
-                 
-
         default: return { ...state };
     }
 }

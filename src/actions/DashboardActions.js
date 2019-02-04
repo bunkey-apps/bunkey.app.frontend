@@ -1002,6 +1002,8 @@ export const compartirDashboard = (objeto) => (dispatch) => {
 
 
 export const getCompartidos = () => (dispatch) => {
+    console.log("llamdo getcompartidos action");
+    
     dispatch({ type: GET_COMPARTIDOS });
     const token = localStorage.getItem('user_id');
 
@@ -1022,47 +1024,51 @@ export const getCompartidos = () => (dispatch) => {
 
     instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/shared')
         .then((response) => {
-            console.log('response getCompartidos', response);
              var arrImageVideo = [];
              var cont = 0;
              var collapseRows = 0;
+             
              if(response.data){
-                 for(var i=0;i<response.data.length;i++){
-                     if(response.data[i].object.type !== 'folder'){
-                         console.log('response.data.data[i].object[i]',response.data[i].object);
+
+                response.data.map((sharedObject) => {
+
+                    if(sharedObject.object.type !== 'folder'){
                          
-                         if(cont === 4){
-                             cont = 0;
-                             collapseRows ++;
-                         }
- 
- 
-                         if(cont === 0){
-                             response.data[i].object.marginLeft = '0%';
-                             response.data[i].object.paddingLeft = '10%';
-                             response.data[i].object.createRowCollapse = true;
-                             
-                         }
-                         if(cont === 1){
-                             response.data[i].object.marginLeft = '-110%';
-                             response.data[i].object.paddingLeft = '36%';
-                         }
-                         if(cont === 2){
-                             response.data[i].object.marginLeft = '-220%';
-                             response.data[i].object.paddingLeft = '62%';
-                         }
-                         if(cont === 3){
-                             response.ddata[i].object.marginLeft = '-330%';
-                             response.data[i].object.paddingLeft = '87%';
-                         }
-                         response.data[i].object.rowCollapse = 'collapse' + collapseRows;
- 
-                         arrImageVideo.push(response.data[i].object);
-                         cont++;
-                     }
-                 }
+                        if(cont === 4){
+                            cont = 0;
+                            collapseRows ++;
+                        }
+
+
+                        if(cont === 0){
+                            sharedObject.object.marginLeft = '0%';
+                            sharedObject.object.paddingLeft = '10%';
+                            sharedObject.object.createRowCollapse = true;
+                            
+                        }
+                        if(cont === 1){
+                            sharedObject.object.marginLeft = '-110%';
+                            sharedObject.object.paddingLeft = '36%';
+                        }
+                        if(cont === 2){
+                            sharedObject.object.marginLeft = '-220%';
+                            sharedObject.object.paddingLeft = '62%';
+                        }
+                        if(cont === 3){
+                            sharedObject.object.marginLeft = '-330%';
+                            sharedObject.object.paddingLeft = '87%';
+                        }
+                        sharedObject.object.rowCollapse = 'collapse' + collapseRows;
+
+                        arrImageVideo.push(sharedObject.object);
+                        cont++;
+                    }
+                    
+                });
+                 
                  
              }
+             
             // localStorage.setItem("objectFavorites", JSON.stringify(response.data));
              dispatch({ type: GET_COMPARTIDOS_SUCCES, compartidos: response.data, parentsCompartidos: [], imageVideosCompartidos: arrImageVideo  });
              

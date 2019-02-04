@@ -57,6 +57,8 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
+    console.log('action type', action);
+    
     switch (action.type) {
         case EDIT_OBJECT_FOLDER:
         return { ...state, editarObjetoFolderModal: true };
@@ -164,6 +166,8 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loadingCompartidos: true };
 
         case GET_COMPARTIDOS_SUCCES:
+            console.log('print action in reducer',action.compartidos);
+            
             return { ...state,
                  loadingCompartidos: false,
                  compartidos: action.compartidos,
