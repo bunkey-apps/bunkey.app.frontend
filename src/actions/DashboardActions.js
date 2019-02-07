@@ -97,8 +97,7 @@ export const getUserById = (id) => (dispatch) => {
             // error handling
         })
 }
-
-function cargarMenu(carpetas) {
+async function cargarMenu(carpetas, dispatch) {
     console.log('Carga el menu the maximo');
     var menu = {
         'category1': []
@@ -106,12 +105,13 @@ function cargarMenu(carpetas) {
     console.log('carpetas', carpetas);
     var child_routes = [];
     for (var i = 0; i < carpetas.length; i++) {
-        console.log('carpetas[i]', carpetas[i].name);
-        var hijos = {
-            'menu_title': carpetas[i].name,
-            "path": "/app/exlporar?id=" + carpetas[i]._id + '?name=' + carpetas[i].name
+        if (carpetas[i].type === 'folder') {
+            var hijos = {
+                'menu_title': carpetas[i].name,
+                "path": "/app/exlporar?id=" + carpetas[i]._id + '?name=' + carpetas[i].name
+            }
+            child_routes.push(hijos);   
         }
-        child_routes.push(hijos);
     }
     var usuarios = {
         "menu_title": "Usuarios",
@@ -132,9 +132,13 @@ function cargarMenu(carpetas) {
         "child_routes": null
     };
     var seccion;
-    const clienteSelect = localStorage.getItem('clienteSelect');
-    const clienteSelectJson = JSON.parse(clienteSelect);
-    if (clienteSelectJson) {
+    let clienteSelect = localStorage.getItem('clienteSelect');
+    let clienteSelectJson = JSON.parse(clienteSelect);
+     console.log('client name',clienteSelectJson.name);
+    const { accessToken } = JSON.parse(localStorage.getItem('user_id'));
+
+
+    if (clienteSelectJson.name) {
         seccion = {
             "menu_title": clienteSelectJson.name,
             "menu_icon": "ti-folder",
@@ -143,20 +147,39 @@ function cargarMenu(carpetas) {
         }
         localStorage.setItem("seccionCliente", JSON.stringify(seccion));
         menu.category1.push(seccion);
-        const seccionFavoritos = localStorage.getItem('seccionFavoritos');
-        const seccionFavoritosJson = JSON.parse(seccionFavoritos);
-        if(seccionFavoritosJson){
-            menu.category1.push(seccionFavoritosJson);
-        }
     }
+
+    const request = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+    });
+
+   const responseFav = await request.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites');
+   console.log('responseFav', responseFav.data);
+
+   var child_routes_favorites = [];
+   const { data: { children : childrenFav } } = responseFav;
+
+   childrenFav.map(child => {
+        if(child.type === 'folder'){
+            child_routes_favorites.push({
+                'menu_title': child.name,
+                "path": "/app/exlporar?id=" +child._id + '?name=' + child.name
+            });
+        }
+   });
+
+    menu.category1.push({
+        "menu_title": 'Favoritos',
+        "menu_icon": "ti-star",
+        "open": false,
+        "child_routes": child_routes_favorites
+    });
+
     var tipoUsuario = localStorage.getItem('tipoUsuario');
     if (tipoUsuario === 'operator') {
-        const { accessToken } = JSON.parse(localStorage.getItem('user_id'));
-        axios.create({
-            baseURL: AppConfig.baseURL,
-            timeout: AppConfig.timeout,
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        }).get(`/v1/users/me/workspaces/${clienteSelectJson._id}`)
+        request.get(`/v1/users/me/workspaces/${clienteSelectJson._id}`)
             .then((response) => {
                 console.log('---X> response', response);
                 const { data: { role } } = response;
@@ -166,6 +189,8 @@ function cargarMenu(carpetas) {
                     menu.category1.push(usuarios);
                 }
                 localStorage.setItem("menuLoad", JSON.stringify(menu));
+                console.log('dashboard action menu operator',menu);
+                dispatch({ type: 'NO_SIRVE' });
             })
             .catch(error => {
                 // error handling
@@ -175,7 +200,9 @@ function cargarMenu(carpetas) {
         menu.category1.push(invite);
         menu.category1.push(usuarios);
         localStorage.setItem("menuLoad", JSON.stringify(menu));
-    }
+        console.log('dashboard action menu admin',menu);
+        dispatch({ type: 'NO_SIRVE' });
+    } 
 }
 
 
@@ -347,7 +374,7 @@ export const getFavoritos = () => (dispatch) => {
     instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites')
         .then((response) => {
             console.log('response getFavoritos', response);
-             cargarMenuFavoritos(response.data.children);
+            //  cargarMenuFavoritos(response.data.children);
              var arrImageVideo = [];
              var cont = 0;
              var collapseRows = 0;
@@ -422,7 +449,7 @@ export const getFolders = () => (dispatch) => {
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects/' + clienteSelectJson.root)
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES', response);
-            cargarMenu(response.data.children);
+            cargarMenu(response.data.children, dispatch).then();
             var arrImageVideo = [];
             var cont = 0;
             var collapseRows = 0;

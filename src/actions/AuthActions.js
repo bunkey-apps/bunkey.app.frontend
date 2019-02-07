@@ -52,14 +52,15 @@ export const logoutUserFromFirebase = () => (dispatch) => {
     firebase.auth().signOut()
         .then(() => {
             dispatch({ type: LOGOUT_USER });
-            localStorage.removeItem('user_id');
-            localStorage.removeItem('clienteSelect');
-            localStorage.removeItem('user_me');
-            localStorage.removeItem('folderSelect');
-            localStorage.removeItem('menuLoad');
-            localStorage.removeItem('seccionFavoritos');
-            localStorage.removeItem('seccionCliente');
-            localStorage.removeItem('moveObject');
+            // localStorage.removeItem('user_id');
+            // localStorage.removeItem('clienteSelect');
+            // localStorage.removeItem('user_me');
+            // localStorage.removeItem('folderSelect');
+            // localStorage.removeItem('menuLoad');
+            // localStorage.removeItem('seccionFavoritos');
+            // localStorage.removeItem('seccionCliente');
+            // localStorage.removeItem('moveObject');
+            localStorage.clear();
             NotificationManager.success('Adios');
         })
         .catch((error) => {

@@ -68,6 +68,7 @@ export const getClientesById = (workClients,position,arrayClientes,history) => (
             dispatch({ type: GET_CLIENTES_SUCCES, payload: arrayClientes });
         }else{
             localStorage.setItem("clienteSelect", JSON.stringify(arrayClientes[0]));
+            
             dispatch({ type: GET_CLIENTES_SUCCES, payload: [] });
 
             history.push('/app/dashboard');

@@ -82,6 +82,7 @@ class Clientes extends Component {
         event.preventDefault();
         this.onSubmitAddNewCustomerForm();
       }
+      
       getContratos = (clienteSelect) => {
        //        history.push(`${match.url}/contratos`); SLIDER
        localStorage.setItem("clienteSelect", JSON.stringify(clienteSelect));

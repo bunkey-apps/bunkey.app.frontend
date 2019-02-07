@@ -22,6 +22,7 @@ export default (state = INIT_STATE, action) => {
       switch (action.type) {
             case TOGGLE_MENU:
                   let index = state.sidebarMenus[action.payload.stateCategory].indexOf(action.payload.menu);
+                  
                   for (var key in state.sidebarMenus) {
                         var obj = state.sidebarMenus[key];
                         for (let i = 0; i < obj.length; i++) {
@@ -72,6 +73,7 @@ export default (state = INIT_STATE, action) => {
             try{
                   var menuLoad = localStorage.getItem('menuLoad');
                   var menuLoadJson = JSON.parse(menuLoad);
+                  
                   if(menuLoadJson){
                         menuLoadJson;
                   }else{
