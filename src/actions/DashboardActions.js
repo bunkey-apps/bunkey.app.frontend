@@ -707,6 +707,14 @@ export const uploadMultipleFile = (files,position, objetoDesc) => (dispatch) => 
 }
 export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
     console.log('uploadFile');
+
+    let typeFile = null;
+    if (!file.type) {
+        typeFile="document";
+    }else{
+        var tipoArr = file.type.split('/');
+        typeFile=tipoArr[0];
+    }
    
     const token = localStorage.getItem('user_id');
 
@@ -721,7 +729,6 @@ export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
 
 
     console.log('file.type', file.type);
-    var tipoArr = file.type.split('/');
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
@@ -730,7 +737,7 @@ export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
     })
         .then((response) => {
             console.log('response user', response);
-            dispatch(addFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files, objetoDesc))
+            dispatch(addFile(response.data.url, file, response.data.futureFileURL, typeFile, response.data.uuid, position, files, objetoDesc))
             //dispatch({ type: GET_URL_SUCCES, payload: response.data });
 
         })

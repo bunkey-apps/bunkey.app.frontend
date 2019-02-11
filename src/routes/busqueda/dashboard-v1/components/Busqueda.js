@@ -34,6 +34,7 @@ import { Collapse } from 'reactstrap';
 import { WithContext as ReactTags } from 'react-tag-input';
 
 import Dropzone from 'react-dropzone';
+import fileExtension from 'file-extension';
 
 // redux action
 import {
@@ -860,6 +861,15 @@ class Busqueda extends Component {
             <div className="row row-eq-height text-center">
               {imageVideos.map((n, index) => {
 
+                let ext = fileExtension(n.lowQualityURL)
+                let title = null;
+
+                if (n.name.length > 20) {
+                  title = `${n.name.substr(0,20)}... .${ext}`
+                }else{
+                  title = `${n.name}.${ext}`
+                }
+
                 return n.type !== 'folder' ?
 
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
@@ -887,7 +897,16 @@ class Busqueda extends Component {
                         </GridListTile>
 
                       }
-                      <p className="color-texto-carpetas-explorar">{n.name}</p>
+                      {
+                        n.type === 'document' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                            <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            </div>
+                          </GridListTile>
+                      }
+                      
+                      <p className="color-texto-carpetas-explorar">{title}</p>
 
 
                     </ContextMenuTrigger>
@@ -973,10 +992,10 @@ class Busqueda extends Component {
                                   <BigPlayButton position="center" />
                                   <source src={urlVideo} />
                                 </Player>
-
-
-
-
+                              }
+                              {
+                                tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
                             
                           </div>
@@ -1183,7 +1202,7 @@ class Busqueda extends Component {
           >
             <ModalHeader toggle={this.toggleArchivoModal}>
               Subir Archivo
-        </ModalHeader>
+            </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
 

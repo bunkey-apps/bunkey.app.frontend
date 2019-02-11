@@ -30,6 +30,7 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
+import fileExtension from 'file-extension';
 // redux action
 import {
     getRecientes, addFavoritos, compartirDashboard
@@ -289,6 +290,14 @@ class Recientes extends Component {
                         <GridList className="grid-list-videos" cols={4.5}>
 
                             {recientes.map((n, index) => {
+                              let ext = fileExtension(n.lowQualityURL)
+                              let title = null;
+              
+                              if (n.name.length > 20) {
+                                title = `${n.name.substr(0,20)}... .${ext}`
+                              }else{
+                                title = `${n.name}.${ext}`
+                              }
 
                                 return (n.type === 'image' || n.type === 'video') ?
 
@@ -308,6 +317,14 @@ class Recientes extends Component {
                                                         <source src={n.lowQualityURL} />
                                                     </Player>
                                                 </div>
+                                            }
+                                            {
+                                              n.type === 'document' &&
+                                                <GridListTile key={index}>
+                                                  <div className="heigth-div-objetos">
+                                                  <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                                  </div>
+                                                </GridListTile>
                                             }
 
 
@@ -413,6 +430,10 @@ return (o.type === 'image' || o.type === 'video') ?
 
 
 
+                              }
+                              {
+                                tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
                            
                           </div>

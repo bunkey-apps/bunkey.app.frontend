@@ -651,11 +651,9 @@ export const addExplorarPDF = (urlImage, file, futureFileURL,objetoDesc) => (dis
 
 
 export const uploadExplorarMultipleFileDescription = (objetoDesc, folder, client) => (dispatch) => {
-    console.log('uploadMultipleFile');
+    console.log('uploadMultipleFile object',objetoDesc);
     dispatch({ type: GET_OBJECT });
     console.log('uploadMultipleFile',objetoDesc, folder, client);
-    
-    
     
         if(objetoDesc.copyRight === 'free'){
             console.log('objetoDesc free',objetoDesc);
@@ -665,11 +663,6 @@ export const uploadExplorarMultipleFileDescription = (objetoDesc, folder, client
             console.log('objetoDesc elese',objetoDesc);
             dispatch(changeExplorarPDF(objetoDesc.filePDF, objetoDesc))
         }
-    
-    
-
-
-
 }
 
 
@@ -678,27 +671,35 @@ export const uploadExplorarMultipleFileDescription = (objetoDesc, folder, client
 
 
 export const uploadExplorarMultipleFile = (files,position,objetoDesc, folder, client) => (dispatch) => {
-    console.log('uploadMultipleFile', folder);
     dispatch({ type: GET_OBJECT });
+    console.log('tipo Archivo', files);
+    
+    
     if(!position){
         position = 0;
         console.log('no existe');
     }
 
-    console.log('position',position);
-    console.log('files',files);
+    
     if(position < files.length){
+        
         dispatch(uploadExplorarFile(files[position],position, files,objetoDesc, folder, client))
     }else{
         dispatch(getObjects());
     }
-   
-
-
-
 }
 export const uploadExplorarFile = (file, position, files, objetoDesc, folder, client) => (dispatch) => {
-    console.log('uploadFile');
+    console.log('uploadExplorarFile',file);
+    let typeFile = null;
+    if (!file.type) {
+        typeFile="document"; 
+    }
+    else{
+        var tipoArr = file.type.split('/');
+        typeFile=tipoArr[0];
+    }
+    console.log('uploadExplorarFile',typeFile);
+    
    
     const token = localStorage.getItem('user_id');
 
@@ -714,27 +715,24 @@ export const uploadExplorarFile = (file, position, files, objetoDesc, folder, cl
 
     console.log('file.type', file.type);
     console.log('folder', folder);
-    var tipoArr = file.type.split('/');
+    // var tipoArr = file.type.split('/');
+    // let typeFile=fileExtension()
 
     instance2.post('/v1/url-signature', {
         clientId: clienteSelectJson._id,
         extention: fileExtension(file.name),
         mimeType: file.type
     })
-        .then((response) => {
-            console.log('response user', response);
-            dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, tipoArr[0], response.data.uuid, position, files, objetoDesc, folder, client))
-            //dispatch({ type: GET_URL_SUCCES, payload: response.data });
-
-        })
-        .catch(error => {
-            // error handling
-            dispatch(uploadExplorarMultipleFile(files,position+1, folder, client))
-            var tipoArrName = file.name.split('.');
-            NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArrName[0] + ' ocurrio un error al subirlo');
-           
-
-        })
+    .then((response) => {
+        dispatch(addExplorarFile(response.data.url, file, response.data.futureFileURL, typeFile, response.data.uuid, position, files, objetoDesc, folder, client))
+        //dispatch({ type: GET_URL_SUCCES, payload: response.data });
+    })
+    .catch(error => {
+        // error handling
+        dispatch(uploadExplorarMultipleFile(files,position+1, folder, client))
+        var tipoArrName = file.name.split('.');
+        NotificationManager.error(position+1 + ' de '  + files.length + ' ' + tipoArrName[0] + ' ocurrio un error al subirlo');
+    })
 }
 export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, position, files, objetoDesc, folder, client) => (dispatch) => {
     console.log('addFile FORM', file);
@@ -780,6 +778,8 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
 
     var tipoArr = file.name.split('.');
 
+    console.log('tipo',tipo);
+    
 
     console.log('tokenJson4', tokenJson.accessToken);
     var instance2 = axios.create({

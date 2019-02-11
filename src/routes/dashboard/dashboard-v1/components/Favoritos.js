@@ -29,6 +29,7 @@ import RctCollapsibleCard from '../../../../components/RctCollapsibleCard/RctCol
 // app config
 import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import fileExtension from 'file-extension';
 
 // redux action
 import {
@@ -570,6 +571,14 @@ this.setState({ alertDialog: false });
           <div className="gallery-wrapper">
             <div className="row row-eq-height text-center">
               {imageVideosFavoritos.map((n, index) => {
+                let ext = fileExtension(n.lowQualityURL)
+                let title = null;
+
+                if (n.name.length > 20) {
+                  title = `${n.name.substr(0,20)}... .${ext}`
+                }else{
+                  title = `${n.name}.${ext}`
+                }
 
                 return n.type !== 'folder' ?
 
@@ -598,7 +607,16 @@ this.setState({ alertDialog: false });
                         </GridListTile>
 
                       }
-                      <p className="color-texto-carpetas-explorar">{n.name}</p>
+                      {
+                        n.type === 'document' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                            <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            </div>
+                          </GridListTile>
+                      }
+                      
+                      <p className="color-texto-carpetas-explorar">{title}</p>
 
 
                     </ContextMenuTrigger>
@@ -673,6 +691,10 @@ this.setState({ alertDialog: false });
 
 
 
+                              }
+                              {
+                                tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
                             
                           </div>
