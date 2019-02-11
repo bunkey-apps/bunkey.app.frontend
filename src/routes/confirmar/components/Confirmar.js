@@ -349,6 +349,14 @@ class Confirmar extends Component {
 
 
 }
+
+{this.state.objeto.type === 'document' &&
+
+<div className="heigth-div-objetos-confirmar">
+  <img className="imagenes-tam-confirm" src={require('../../../assets/img/file.png')} alt={this.state.objeto.name} />
+</div>
+
+}
  </div>
 
 <div className="col-sm-6 col-md-6 col-lg-6">

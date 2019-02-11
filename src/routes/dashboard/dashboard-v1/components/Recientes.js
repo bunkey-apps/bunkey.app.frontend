@@ -128,16 +128,6 @@ class Recientes extends Component {
           }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
         }
     
       }
@@ -278,7 +268,6 @@ class Recientes extends Component {
         return (
             <div>
 
-
                 <RctCollapsibleCard>
                     <div className={'rct-block-title'}>
                         <h4 className="titulo-vistas-recientemente"><b>Vistos Recientemente</b></h4>
@@ -300,7 +289,6 @@ class Recientes extends Component {
                               }
 
                                 return (n.type === 'image' || n.type === 'video') ?
-
                                     <GridListTile key={index}>
                                           
                                             {n.type === 'image' &&
@@ -326,7 +314,6 @@ class Recientes extends Component {
                                                   </div>
                                                 </GridListTile>
                                             }
-
 
                                     </GridListTile>
 

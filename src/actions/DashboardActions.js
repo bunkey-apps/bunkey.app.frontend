@@ -706,10 +706,12 @@ export const uploadMultipleFile = (files,position, objetoDesc) => (dispatch) => 
 
 }
 export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
-    console.log('uploadFile');
+    console.log('uploadFile', file);
 
     let typeFile = null;
     if (!file.type) {
+        typeFile="document";
+    }else if(file.type === 'application/pdf' || file.type === 'application/x-bittorrent'){
         typeFile="document";
     }else{
         var tipoArr = file.type.split('/');

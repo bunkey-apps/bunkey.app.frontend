@@ -644,15 +644,6 @@ class Explorar extends Component {
 
       }
 
-
-
-
-
-
-
-
-
-
       setTimeout(() => {
         console.log('objecto[index].rowCollapse', objecto.rowCollapse);
         this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });

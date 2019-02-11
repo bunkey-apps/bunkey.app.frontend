@@ -694,6 +694,9 @@ export const uploadExplorarFile = (file, position, files, objetoDesc, folder, cl
     if (!file.type) {
         typeFile="document"; 
     }
+    else if(file.type === 'application/pdf' || file.type === 'application/x-bittorrent'){
+        typeFile="document";
+    }
     else{
         var tipoArr = file.type.split('/');
         typeFile=tipoArr[0];
