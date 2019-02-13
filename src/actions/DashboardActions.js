@@ -709,12 +709,9 @@ export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
     console.log('uploadFile', file);
 
     let typeFile = null;
-    if (!file.type) {
-        console.log("uploadFile !file.type", file.type);
-        typeFile="document";
-    }else if(file.type === 'application/pdf' || file.type === 'application/x-bittorrent'){
-        console.log("uploadFile pdf or torrent", file.type);
-        typeFile="document";
+    if (!file.type || (file.type.search('image') == 0) || (file.type.search('video') == 0)) {
+        console.log("uploadExplorarFile search", file.type);
+        typeFile="document"; 
     }else{
         console.log("uploadFile split", file.type);
         var tipoArr = file.type.split('/');
