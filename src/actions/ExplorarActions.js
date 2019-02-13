@@ -690,13 +690,15 @@ export const uploadExplorarMultipleFile = (files,position,objetoDesc, folder, cl
 }
 export const uploadExplorarFile = (file, position, files, objetoDesc, folder, client) => (dispatch) => {
     let typeFile = null;
-    if (!file.type || (file.type.search('image') == 0) || (file.type.search('video') == 0)) {
-        console.log("uploadExplorarFile search", file.type);
+    if (!file.type) {
         typeFile="document"; 
     }else{
-        console.log("uploadExplorarFile split", file.type);
-        var tipoArr = file.type.split('/');
-        typeFile=tipoArr[0];
+        let tipoArr = file.type.split('/');
+        if(tipoArr[0]!=='image' && tipoArr[0]!=='video'){
+            typeFile="document"    
+        }else{
+            typeFile=tipoArr[0];
+        }
     }
     console.log('uploadExplorarFile',typeFile);
     

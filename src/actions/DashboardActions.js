@@ -709,13 +709,17 @@ export const uploadFile = (file, position, files, objetoDesc) => (dispatch) => {
     console.log('uploadFile', file);
 
     let typeFile = null;
-    if (!file.type || (file.type.search('image') == 0) || (file.type.search('video') == 0)) {
+    if (!file.type) {
         console.log("uploadExplorarFile search", file.type);
         typeFile="document"; 
     }else{
         console.log("uploadFile split", file.type);
-        var tipoArr = file.type.split('/');
-        typeFile=tipoArr[0];
+        let tipoArr = file.type.split('/');
+        if(tipoArr[0]!=='image' && tipoArr[0]!=='video'){
+            typeFile="document"    
+        }else{
+            typeFile=tipoArr[0];
+        }
     }
    
     const token = localStorage.getItem('user_id');
