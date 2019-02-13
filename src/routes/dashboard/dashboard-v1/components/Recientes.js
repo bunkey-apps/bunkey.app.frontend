@@ -67,15 +67,15 @@ class Recientes extends Component {
             rowCollapseNum: '-2',
             selectObject: '-1',
             correoCompartir: '',
-      idObjectCompartir: ''
+            idObjectCompartir: ''
 
         }
 
         this.handleSubmitCompartir = this.handleSubmitCompartir.bind(this);
 
     }
-    componentWillMount() {
 
+    componentWillMount() {
 
         this.props.getRecientes();
         var tipoUsuario = localStorage.getItem('tipoUsuario');
@@ -115,11 +115,8 @@ class Recientes extends Component {
             this.setState({ tipoObject: 'image' });
             console.log('entra video');
     
-            setTimeout(() => {
-    
-              this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
-    
-    
+            setTimeout(() => {    
+              this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });   
             }, 100);
           } else {
             console.log('entra imagen');
@@ -143,7 +140,6 @@ class Recientes extends Component {
     
       }
 
- 
       onBack() {
         const { recientes } = this.props;
     
@@ -168,9 +164,7 @@ class Recientes extends Component {
             this.setState({ collapse: recientes[index].rowCollapse, urlVideo: recientes[index].originalURL, author: recientes[index].name, marginLeftCollap: recientes[index].marginLeft, posicion: index, tipoObject: recientes[index].type , selectObject: recientes[index], rowCollapseNum: recientes[index].rowCollapse });
     
           }
-    
-    
-    
+
         }
     
       }
@@ -180,8 +174,6 @@ class Recientes extends Component {
     
         if (recientes.length - 1 > this.state.posicion) {
     
-    
-    
           var index = this.state.posicion + 1;
     
           console.log('entra', recientes[index].name);
@@ -189,21 +181,15 @@ class Recientes extends Component {
     
             this.setState({ tipoObject: 'image' });
     
-    
             setTimeout(() => {
     
               this.setState({ collapse: recientes[index].rowCollapse, urlVideo: recientes[index].originalURL, author: recientes[index].name, marginLeftCollap: recientes[index].marginLeft, posicion: index, tipoObject: recientes[index].type, selectObject: recientes[index], rowCollapseNum: recientes[index].rowCollapse});
-    
     
             }, 100);
           } else {
             this.setState({ collapse: recientes[index].rowCollapse, urlVideo: recientes[index].originalURL, author: recientes[index].name, marginLeftCollap: recientes[index].marginLeft, posicion: index, tipoObject: recientes[index].type, selectObject: recientes[index] , rowCollapseNum:recientes[index].rowCollapse  });
     
           }
-    
-    
-    
-    
     
         }
     
@@ -212,8 +198,7 @@ class Recientes extends Component {
       handleClickFavoritos(folder) {
         console.log('handleClickFavoritos', folder);
         this.props.addFavoritos(folder);
-    
-    
+
       }
 
       handleSubmitCompartir(event) {
@@ -256,14 +241,14 @@ class Recientes extends Component {
         const { loadingRecientes, recientes } = this.props;
         const { isAdmin } = this.state;
         const { collapse } = this.state;
-    const { urlVideo } = this.state;
-    const { posicion } = this.state;
-    const { author } = this.state;
-    const { tipoObject } = this.state;
-    const { rowCollapseNum } = this.state;
-    const { selectObject } = this.state;
-    const { compartirModal } = this.state;
-    const { correoCompartir } = this.state;
+        const { urlVideo } = this.state;
+        const { posicion } = this.state;
+        const { author } = this.state;
+        const { tipoObject } = this.state;
+        const { rowCollapseNum } = this.state;
+        const { selectObject } = this.state;
+        const { compartirModal } = this.state;
+        const { correoCompartir } = this.state;
     
         return (
             <div>
@@ -290,6 +275,7 @@ class Recientes extends Component {
 
                                 return (n.type === 'image' || n.type === 'video') ?
                                     <GridListTile key={index}>
+                                      <ContextMenuTrigger id={index + 'imagevideo-recientes'}>
                                           
                                             {n.type === 'image' &&
                                             <div className="heigth-div-objetos-recientes">
@@ -308,21 +294,12 @@ class Recientes extends Component {
                                             }
                                             {
                                               n.type === 'document' &&
-                                                <GridListTile key={index}>
-                                                  <div className="heigth-div-objetos">
-                                                  <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-                                                  </div>
-                                                </GridListTile>
+                                                <div className="heigth-div-objetos">
+                                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                                </div>
                                             }
-
+                                      </ContextMenuTrigger>
                                     </GridListTile>
-
-
-
-
-
-
-
 
                                     : ''
 
@@ -333,8 +310,6 @@ class Recientes extends Component {
 {recientes.map((o, num) => {
 
 return (o.type === 'image' || o.type === 'video') ?
-
-
     <div key={'contex' + num} >
         <ContextMenu id={num + 'imagevideo-recientes'} className="click-derecho-bunkey">
             <MenuItem onClick={() => { window.open(o.originalURL, '_blank', 'download=true') }} data={{ item: { num } }}>
@@ -354,7 +329,6 @@ return (o.type === 'image' || o.type === 'video') ?
                 <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                 <span className="padding-click-derecho">Mover</span>
             </MenuItem>
-
             <MenuItem onClick={() => this.handleClickFavoritos(o)} data={{ item: 'item 2' }}>
                 <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                 <span className="padding-click-derecho">Agregar a favoritos</span>
@@ -369,9 +343,7 @@ return (o.type === 'image' || o.type === 'video') ?
                     <span className="padding-click-derecho">Eliminar</span>
                 </MenuItem>
             }
-        </ContextMenu>
-
-       
+        </ContextMenu>      
     </div>
 
     : ''
@@ -379,44 +351,25 @@ return (o.type === 'image' || o.type === 'video') ?
 })}
 </div>
 
- <Collapse isOpen={collapse === rowCollapseNum} className="anchoCollapseRecientes padding-top-triangulo-collapse"
-                       
-
-                      >
-
-                   
-
-                        <div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
-
-
-                        >
-
+                      <Collapse isOpen={collapse === rowCollapseNum} className="anchoCollapseRecientes padding-top-triangulo-collapse">
+                        <div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
                           <div className="col-sm-2 col-md-1 col-lg-2">
                             <div className="volver-collap-video-image-left">
                               <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
-
                             </div>
-
                           </div>
-                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
-                            
+                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >                          
                               {tipoObject === 'image' &&
 
                                 <img className="image-colapse-max-width-height" src={selectObject.mediaQualityURL}></img>
 
                               }
-
-
                               {tipoObject === 'video' &&
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
                                   <source src={selectObject.mediaQualityURL} />
                                 </Player>
-
-
-
-
                               }
                               {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
@@ -428,7 +381,6 @@ return (o.type === 'image' || o.type === 'video') ?
                           <div>
                           <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
                           <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
-
                           </div>
                             <div className="fondo-videos-padding-top-desc">
                               <h3 className="text-white">{author}</h3>
@@ -440,14 +392,9 @@ return (o.type === 'image' || o.type === 'video') ?
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
-
-
-
                             {selectObject !== '-1' &&
                               <div>
-
-
-                                <div>
+                               <div>
                                   {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
                                     <span key={'tags-recent' + numTag} className="text-white tags-collapse-border"> {tags}</span>
                                   ))}
@@ -468,44 +415,26 @@ return (o.type === 'image' || o.type === 'video') ?
                                   {selectObject.metadata.copyRight === 'own' &&
                                     <span className="text-white">Copy Right: Propio</span>
                                   }
-
                                 </div>
                                 <div>
                                   {selectObject.metadata.createdDate &&
                                     <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
                                   }
                                 </div>
-
                                 {selectObject.metadata.licenseFile &&
                                   <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
                                     <a href="javascript:void(0)">
                                       Copy Right: CopyRight.pdf  </a>
                                   </div>
                                 }
-
-
                               </div>
                             }
-
-
-
-
-
-
-
                             <div className=" ">
-
-
                             </div>
-
                           </div>
-
                         </div>
-
-                      </Collapse>
-                     
-                    </div>
-                    
+                      </Collapse>                  
+                    </div>                    
                 </RctCollapsibleCard>
 
                   {compartirModal &&
@@ -515,10 +444,9 @@ return (o.type === 'image' || o.type === 'video') ?
           >
             <ModalHeader toggle={this.toggleCompartirModal}>
               Compartir
-        </ModalHeader>
+            </ModalHeader>
             <ModalBody>
               <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
-
                 <FormGroup>
                   <Label for="name">Email</Label>
                   <Input
@@ -530,28 +458,15 @@ return (o.type === 'image' || o.type === 'video') ?
                     onChange={(event) => this.setState({ correoCompartir: event.target.value })}
                   />
                 </FormGroup>
-
-
-
               </Form>
-
-
             </ModalBody>
             <ModalFooter>
-
               <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
                 <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
-
-
-
             </ModalFooter>
           </Modal>
-
-
         }
-
             </div>
-
         )
     }
 }

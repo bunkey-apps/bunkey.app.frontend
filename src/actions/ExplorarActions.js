@@ -689,15 +689,17 @@ export const uploadExplorarMultipleFile = (files,position,objetoDesc, folder, cl
     }
 }
 export const uploadExplorarFile = (file, position, files, objetoDesc, folder, client) => (dispatch) => {
-    console.log('uploadExplorarFile',file);
     let typeFile = null;
     if (!file.type) {
+        console.log("uploadExplorarFile !file.type", file.type);
         typeFile="document"; 
     }
     else if(file.type === 'application/pdf' || file.type === 'application/x-bittorrent'){
         typeFile="document";
+        console.log("uploadExplorarFile pdf or torrent", file.type);
     }
     else{
+        console.log("uploadExplorarFile split", file.type);
         var tipoArr = file.type.split('/');
         typeFile=tipoArr[0];
     }
