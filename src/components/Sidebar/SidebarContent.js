@@ -43,6 +43,7 @@ class SidebarContent extends Component {
                              
                             </ListSubheader>}>
                         {sidebarMenus.category1.map((menu, key) => {
+                            
                             if (menu.child_routes != null) {
                                 return (
                                     <Fragment key={key}>

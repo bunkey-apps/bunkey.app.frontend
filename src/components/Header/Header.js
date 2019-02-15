@@ -103,12 +103,12 @@ class Header extends Component {
   }
 
 
-  componentWillMount() {
+  async componentWillMount() {
     console.log('getClientSelectHeader 1');
-    this.props.getUserMe();
-    this.props.getClientSelectHeader();
-    this.props.getAllTags();
-    this.props.getPendingObject();
+    await this.props.getUserMe();
+    await this.props.getClientSelectHeader();
+    await this.props.getAllTags();
+    await this.props.getPendingObject();
     const clienteSelect = localStorage.getItem('clienteSelect');
 		const clienteSelectJson = JSON.parse(clienteSelect);
     const userMe = localStorage.getItem('user_me');
@@ -317,7 +317,7 @@ class Header extends Component {
                 <Link to="/app/confirmar">
                   <a href="javascript:void(0)" className="header-icon icon-header-fontsize-change text-secondary border-secondary border-none-home-heder">
                     <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span ">
-                    {countPending && countPending !== '0' && countPending !== 0 &&
+                    {countPending && countPending !== '0' && countPending !== 0 && countPending !=='NaN' &&
                                       <span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span>
 
                   }

@@ -20,10 +20,6 @@ import AppConfig from '../constants/AppConfig';
  * Redux Action To Get PENDING OBJECT
  */
 
-
-
-
-
 export const getPendingObject = (page) => (dispatch) => {
     dispatch({ type: GET_PENDING_OBJECT });
     const token = localStorage.getItem('user_id');
@@ -51,7 +47,7 @@ export const getPendingObject = (page) => (dispatch) => {
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending&page=' + pageAux)
         .then((response) => {
             console.log('response GET_PENDING_OBJECT_SUCCES', response);
-           
+            let countPending = response.headers['x-pagination-total-count'];
             try{
                 localStorage.setItem("countPending",response.headers['x-pagination-total-count']);
                 dispatch({ type: GET_COUNT_PENDING });
@@ -145,10 +141,6 @@ export const updatePendingObject = (objeto) => (dispatch) => {
             // error handling
         })
 }
-
-
-
-
 
 
 

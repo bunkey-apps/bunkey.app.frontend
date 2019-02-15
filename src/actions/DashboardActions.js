@@ -125,12 +125,12 @@ async function cargarMenu(carpetas, dispatch) {
         "path": "/app/configuracion",
         "child_routes": null
     };
-    var invite = {
-        "menu_title": "Invite",
-        "menu_icon": "ti-plus",
-        "path": "/app/invite",
-        "child_routes": null
-    };
+    // var invite = {
+    //     "menu_title": "Invite",
+    //     "menu_icon": "ti-plus",
+    //     "path": "/app/invite",
+    //     "child_routes": null
+    // };
     var seccion;
     let clienteSelect = localStorage.getItem('clienteSelect');
     let clienteSelectJson = JSON.parse(clienteSelect);
@@ -185,7 +185,7 @@ async function cargarMenu(carpetas, dispatch) {
                 const { data: { role } } = response;
                 if (role === 'admin') {
                     menu.category1.push(configuracion);
-                    menu.category1.push(invite);
+                    // menu.category1.push(invite);
                     menu.category1.push(usuarios);
                 }
                 localStorage.setItem("menuLoad", JSON.stringify(menu));
@@ -197,7 +197,7 @@ async function cargarMenu(carpetas, dispatch) {
             });
     } else if (tipoUsuario === 'admin') {
         menu.category1.push(configuracion);
-        menu.category1.push(invite);
+        // menu.category1.push(invite);
         menu.category1.push(usuarios);
         localStorage.setItem("menuLoad", JSON.stringify(menu));
         console.log('dashboard action menu admin',menu);
@@ -242,12 +242,12 @@ function cargarMenuFavoritos(carpetas) {
         "child_routes": null
     };
 
-    var invite = {
-        "menu_title": "Invite",
-        "menu_icon": "ti-plus",
-        "path": "/app/invite",
-        "child_routes": null
-    };
+    // var invite = {
+    //     "menu_title": "Invite",
+    //     "menu_icon": "ti-plus",
+    //     "path": "/app/invite",
+    //     "child_routes": null
+    // };
 
     var seccion;
     const clienteSelect = localStorage.getItem('clienteSelect');
@@ -277,7 +277,7 @@ function cargarMenuFavoritos(carpetas) {
     var tipoUsuario = localStorage.getItem('tipoUsuario');
     if(tipoUsuario === 'admin'){
         menu.category1.push(configuracion);
-        menu.category1.push(invite);
+        // menu.category1.push(invite);
         menu.category1.push(usuarios);
         
     }
@@ -824,9 +824,11 @@ export const updateFile = (futureFileURL, tipo, guid, file, position, files, obj
             console.log('response updateFile', response);
             console.log('position', position);
             try{
-                var countPending = localStorage.getItem("countPending");
-                var countPendingAux = parseInt(countPending) +1 ;
-                localStorage.setItem("countPending",countPendingAux);
+                if (tipo === 'image' || tipo === 'video') {
+                    var countPending = localStorage.getItem("countPending");
+                    var countPendingAux = parseInt(countPending) +1 ;
+                    localStorage.setItem("countPending",countPendingAux);   
+                }
                 dispatch({ type: GET_COUNT_PENDING });
             }catch(e){
                 console.log('e',e);

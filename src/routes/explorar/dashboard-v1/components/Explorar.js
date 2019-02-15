@@ -55,6 +55,7 @@ import {
   editObjectExplorar
 } from '../../../../actions';
 
+moment.locale('es');
 
 let id = 0;
 
@@ -785,6 +786,8 @@ class Explorar extends Component {
 
     
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
+
+    
     return (
 
 
@@ -1238,7 +1241,7 @@ class Explorar extends Component {
           >
             <ModalHeader toggle={this.toggleArchivoModal}>
               Subir Archivo
-        </ModalHeader>
+            </ModalHeader>
             <ModalBody>
               <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
 
@@ -1290,7 +1293,7 @@ class Explorar extends Component {
 
                 <FormGroup>
                   <Label for="startDate">Fecha de creación</Label>
-                  <DatePicker  required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+                  <DatePicker  required="true" locale="es" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
 
 
                 </FormGroup>
@@ -1340,11 +1343,11 @@ class Explorar extends Component {
         >
           <ModalHeader toggle={this.toggleCompartirModal}>
             Compartir
-      </ModalHeader>
+          </ModalHeader>
           <ModalBody>
             <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
 
-<FormGroup>
+          <FormGroup>
                   <Label for="name">Email</Label>
                   <Input
                   autofocus="true"

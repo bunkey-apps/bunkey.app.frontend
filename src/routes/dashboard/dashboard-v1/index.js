@@ -9,6 +9,7 @@ import Favoritos from './components/Favoritos';
 import Recientes from './components/Recientes';
 import Compartidos from './components/Compartidos';
 
+
 // Main Component
 export default class DashboardOne extends Component {
 

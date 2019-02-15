@@ -151,8 +151,6 @@ export const changePassword = (clave) => (dispatch) => {
         })
 }
 
-
-
 export const changeAvatar = (file) => (dispatch) => {
     dispatch({ type: CHANGE_AVATAR });
     const token = localStorage.getItem('user_id');

@@ -55,7 +55,7 @@ export const getSearch = (page) => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl + '&page=' + pageAux)
+      instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?search=' + textoBusqeuda + typeUrl + '&page=' + pageAux + '&limit=24')
       .then((response) => {
             var arrImageVideo = [];
             var cont = 0;
@@ -97,6 +97,7 @@ export const getSearch = (page) => (dispatch) => {
                 
             }
             var limit= response.headers['x-pagination-limit'];
+            
             var totalCount= response.headers['x-pagination-total-count'];
 
             var totalCountAux = parseInt(totalCount);

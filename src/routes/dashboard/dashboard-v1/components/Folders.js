@@ -721,6 +721,8 @@ class Folders extends Component {
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
+    moment.locale('es');
+
     return (
 
 

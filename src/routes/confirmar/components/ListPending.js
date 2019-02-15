@@ -13,6 +13,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
 import Pagination from "react-js-pagination";
+import { Route, withRouter } from 'react-router-dom';
 
 // page title bar
 import PageTitleBar from '../../../components/PageTitleBar/PageTitleBar';
@@ -93,46 +94,93 @@ class ListPending extends Component {
     
   }
 
+    
+  goToHome = () => {
+
+    this.props.history.push('/app/dashboard');
+
+  }
+
  
   render() {
 
     const { loading,items,totalCount, limit,pageActive } = this.props;
     
-    return (
+    if (items.length > 0) {
+      return (
       
 
-      <div>
- {loading &&
-            <div className="d-flex justify-content-center loader-overlay">
-              <CircularProgress />
+        <div>
+   {loading &&
+              <div className="d-flex justify-content-center loader-overlay">
+                <CircularProgress />
+              </div>
+            }
+             <RctCollapsibleCard>
+            <div className="" ref="topListPending">
+            {/* <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button> */}{' '}
+  
             </div>
-          }
-           <RctCollapsibleCard>
-          <div className="" ref="topListPending">
-          {/* <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button> */}{' '}
-
-          </div>
+            </RctCollapsibleCard>
+          <RctCollapsibleCard>
+          {items.map((objectoPending, i) => (
+                          <Confirmar key={i} objectoPending={objectoPending} />
+                      ))}
+          
           </RctCollapsibleCard>
-        <RctCollapsibleCard>
-        {items.map((objectoPending, i) => (
-                        <Confirmar key={i} objectoPending={objectoPending} />
-                    ))}
-        
-        </RctCollapsibleCard>
+  
+  
+   <div className="text-center">
+    <Pagination
+        hideNavigation
+        activePage={pageActive}
+        itemsCountPerPage={limit}
+        totalItemsCount={totalCount}
+        onChange={this.handlePageChange}
+      />
+        </div>
+  
+        </div>
+      )
+    }else{
+      return (
 
+        <div>
+        {loading &&
+                   <div className="d-flex justify-content-center loader-overlay">
+                     <CircularProgress />
+                   </div>
+                 }
+                  <RctCollapsibleCard>
+                 <div className="" ref="topListPending">
+                 {/* <Button onClick={() => this.sendAllPending()} type="button" variant="raised" className="btn-primary text-white float-right-confirmar-todos"><IntlMessages id="Confirmar todos" /></Button> */}{' '}
+       
+                 </div>
+                 </RctCollapsibleCard>
+               <RctCollapsibleCard>
+               <div className="row row-eq-height text-center">
+            <div className="col-md-12 mt-">
+              <h1>No hay mas archivos por confirmar</h1>
+            </div>
+            <div className="col-md-12 mt-2">
+              <button className="btn btn-outline-success" onClick={this.goToHome}>
+                  <i className="fa fa-arrow-circle-left"></i> Volver
+              </button>
+            </div>
+          </div>
+               
+               </RctCollapsibleCard>
+       
+       
+        <div className="text-center">
 
- <div className="text-center">
-  <Pagination
-      hideNavigation
-      activePage={pageActive}
-      itemsCountPerPage={limit}
-      totalItemsCount={totalCount}
-      onChange={this.handlePageChange}
-    />
-      </div>
+             </div>
+       
+             </div>
 
-      </div>
-    )
+      );
+    }
+
   }
 }
 
@@ -141,6 +189,6 @@ const mapStateToProps = ({ confirmar }) => {
   return confirmar;
 }
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
     getPendingObject, confirmAllPending
-})(ListPending);
+})(ListPending));

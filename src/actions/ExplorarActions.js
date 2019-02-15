@@ -807,9 +807,11 @@ export const updateExplorarFile = (futureFileURL, tipo, guid, file, position, fi
             console.log('response updateFile', response);
             console.log('position', position);
             try{
-                var countPending = localStorage.getItem("countPending");
-                var countPendingAux = parseInt(countPending) +1 ;
-                localStorage.setItem("countPending",countPendingAux);
+                if (tipo === 'image' || tipo === 'video') {
+                    var countPending = localStorage.getItem("countPending");
+                    var countPendingAux = parseInt(countPending) +1 ;
+                    localStorage.setItem("countPending",countPendingAux);   
+                }
                 dispatch({ type: GET_COUNT_PENDING });
             }catch(e){
                 console.log('e',e);

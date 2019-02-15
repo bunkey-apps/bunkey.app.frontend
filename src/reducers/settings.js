@@ -240,8 +240,11 @@ export default (state = INIT_STATE, action) => {
 
   
   case GET_COUNT_PENDING:
+
   console.log('GET_COUNT_PENDING33',localStorage.getItem('countPending'));
+  
   return { ...state, countPending: localStorage.getItem('countPending') };
+
   case GET_USER_ME:
       return { ...state, loading: true };
 

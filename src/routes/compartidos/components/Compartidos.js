@@ -753,6 +753,8 @@ class Compartidos extends Component {
     const { isMoveObject } = this.state;
 
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
+
+    moment.locale('es');
     return (
 
       <div className="dashboard-v1">

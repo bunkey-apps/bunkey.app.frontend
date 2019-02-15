@@ -506,6 +506,8 @@ this.setState({ alertDialog: false });
     
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
+    moment.locale('es');
+
     return (
 
 
@@ -568,8 +570,9 @@ this.setState({ alertDialog: false });
                 : ''
             })}
           </div>
-          <div className="gallery-wrapper">
-            <div className="row row-eq-height text-center">
+          <div>
+            <div className="text-center">
+            <GridList className="grid-list-videos" cols={4.5}>
               {imageVideosFavoritos.map((n, index) => {
                 let ext = fileExtension(n.lowQualityURL)
                 let title = null;
@@ -796,7 +799,7 @@ this.setState({ alertDialog: false });
 
                   : ''
               })}
-
+              </GridList>
             </div>
           </div>
 

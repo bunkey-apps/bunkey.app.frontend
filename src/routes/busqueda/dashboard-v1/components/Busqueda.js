@@ -305,6 +305,7 @@ class Busqueda extends Component {
     this.props.getSearch();
   }
 
+
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.location !== this.props.location) {
@@ -530,6 +531,13 @@ class Busqueda extends Component {
 
   }
 
+  
+  goToHome = () => {
+    const { history } = this.props;
+    history.push('/app/dashboard');
+
+  }
+
   handleImageChange(e) {
     e.preventDefault();
 
@@ -723,10 +731,624 @@ class Busqueda extends Component {
     const { filtroBusqeuda } = this.state;
     const { objectoEdit } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
-    return (
+    moment.locale('es')
+    if (items.length!=0 || imageVideos.length != 0) {
+
+      return (
 
 
-      <div>
+        <div>
+          <div className="row row-eq-height">
+          
+          </div>
+  
+          <RctCollapsibleCard>
+            <div className={'rct-block-title'}>
+  
+             
+            </div>
+            <div className="fondo-busqueda text-white margen-div-busqueda-page-contenedor"
+                    style={{ backgroundImage: `url(${background})` }}
+  
+  
+                  >
+  
+  
+  
+                    
+                    <Form onSubmit={this.handleSubmitSearch} className="navbar-fixed-top">
+                      <div>
+                        <div className="margen-busqueda text-white padding-top-busqueda">
+                          <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                          <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
+                        </div>
+  
+  
+                        <div>
+  
+  
+                          <div className="row">
+                            <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
+  
+                              <input value={busqueda} onChange={(event) => this.setState({ busqueda: event.target.value })} className="form-control py-2 border-right-0 border input-search-form-new" type="text" placeholder="Encontrar imágenes, videos o vectores" id="example-search-input">
+                              </input>
+  
+                            </div>
+                            <div className="input-group col-md-1 padding-bottom-busqueda margin-left-select-search div-container-separador-form">
+                              <div className="div-separador-search-form"></div>
+                            </div>
+                            <div className="input-group col-md-3 padding-bottom-busqueda margin-left-select-search">
+                              <Input type="select"
+                                name="tipoArchivo"
+                                id="tipoArchivo"
+                                value = {filtroBusqeuda}
+                                className="select-resultados altura-select-search flecha-select-icon-down"
+                                onChange={(e) => this.onChangeFiltroSearch( e.target.value)}
+                              >
+                                <option value="-1">Tipo de Archivo</option>
+                                <option value="image">Imagen</option>
+                                <option value="video">Video</option>
+                              </Input>
+                            </div>
+                            <div className="input-group col-md-2 padding-bottom-busqueda">
+                              <button  type="submit" className="btn btn-outline-secondary color-boton-lupa-busqueda lupa-form-search" >
+                                <i className="fa fa-search"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+  
+                      </div>
+                      </Form>
+                    
+  
+  
+  
+  
+  
+  
+                  </div>
+  
+            {loading &&
+              <div className="d-flex justify-content-center loader-overlay">
+                <CircularProgress />
+              </div>
+            }
+            <div className="row row-eq-height text-center">
+              {items.map((n, index) => {
+  
+                return n.type === 'folder' ?
+  
+  
+  
+  
+  
+  
+  
+                  <div key={index} className="col-sm-2 col-md-1 col-lg-2">
+                    <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
+                      <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
+  
+                      <p>{n.name}</p>
+                    </ContextMenuTrigger>
+                    <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
+                      
+                      <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Compartir</span>
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                      </MenuItem>
+  
+                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Mover</span>
+                      </MenuItem>
+  
+                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Agregar a favoritos</span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <div className="line-click-derecho  padding-top-click-derecho"></div>
+  
+                      </MenuItem>
+                      {isAdmin && 
+                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                        <span className="padding-click-derecho">Eliminar</span>
+                      </MenuItem>
+                      }
+                    </ContextMenu>
+                  </div>
+  
+  
+                  : ''
+              })}
+            </div>
+            <div className="gallery-wrapper">
+              <div className="row row-eq-height text-center">
+                {imageVideos.map((n, index) => {
+  
+                  let ext = fileExtension(n.lowQualityURL)
+                  let title = null;
+  
+                  if (n.name.length > 20) {
+                    title = `${n.name.substr(0,20)}... .${ext}`
+                  }else{
+                    title = `${n.name}.${ext}`
+                  }
+  
+                  return n.type !== 'folder' ?
+  
+                    <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
+                      <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
+  
+                        {n.type === 'image' &&
+                          <GridListTile key={index}>
+                           <div className="heigth-div-objetos">
+                            <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            </div>
+                          </GridListTile>
+  
+                        }
+                        {n.type === 'video' &&
+                          <GridListTile key={index}>
+                            <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                              <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
+                                <BigPlayButton position="center" />
+                                <ControlBar disableDefaultControls={true} />
+                                <source src={n.originalURL} />
+                              </Player>
+  
+                            </div>
+  
+                          </GridListTile>
+  
+                        }
+                        {
+                          n.type === 'document' &&
+                            <GridListTile key={index}>
+                              <div className="heigth-div-objetos">
+                              <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                              </div>
+                            </GridListTile>
+                        }
+                        
+                        <p className="color-texto-carpetas-explorar">{title}</p>
+  
+  
+                      </ContextMenuTrigger>
+  
+                      <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                        <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
+                          <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Descargar </span>
+                        </MenuItem>
+                        <MenuItem   onClick={() => this.abrirCompartir(n)}  data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Compartir</span>
+                        </MenuItem>
+                        <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Editar</span>
+                        </MenuItem>
+  
+                        <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Mover</span>
+                        </MenuItem>
+  
+                        <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Agregar a favoritos</span>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                          <div className="line-click-derecho  padding-top-click-derecho"></div>
+  
+                        </MenuItem>
+                        {isAdmin && 
+                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                          <span className="padding-click-derecho">Eliminar</span>
+                        </MenuItem>
+                        }
+                      </ContextMenu>
+  
+                      {(posicion === index && !n.createRowCollapse) &&
+                        <div className={"paddin-center-trinagulo-rows"}>
+                          <div className="triangulo-equilatero-bottom"></div>
+                        </div>
+                      }
+                      {n.createRowCollapse &&
+  
+                        <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+                          style={{ marginLeft: n.marginLeft }}
+  
+                        >
+  
+                          {(posicion === index && n.createRowCollapse) &&
+                            <div className="padding-left-first-row-collapse-triangulo">
+                              <div className="triangulo-equilatero-bottom"></div>
+                            </div>
+  
+                          }
+  
+                          <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+  
+  
+                          >
+  
+                            <div className="col-sm-2 col-md-1 col-lg-2">
+                              <div className="volver-collap-video-image-left">
+                                <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+  
+                              </div>
+  
+                            </div>
+                            <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
+                              
+                                {tipoObject === 'image' &&
+  
+                                  <img className="image-colapse-max-width-height" src={urlVideo}></img>
+  
+                                }
+  
+  
+                                {tipoObject === 'video' && collapse === n.rowCollapse &&
+  
+                                  <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
+                                    <BigPlayButton position="center" />
+                                    <source src={urlVideo} />
+                                  </Player>
+                                }
+                                {
+                                  tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                  <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
+                                }
+                              
+                            </div>
+                            <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                            <div>
+                            <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                            <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+  
+                            </div>
+                              <div className="fondo-videos-padding-top-desc">
+                                <h3 className="text-white">{author}</h3>
+  
+                              </div>
+                              <div>
+                                <b className="text-white"></b>
+                                <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
+  
+                                <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                                <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                                <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              </div>
+  
+  
+  
+                              {selectObject !== '-1' &&
+                                <div>
+  
+  
+                                  <div>
+                                    {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
+                                      <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                    ))}
+                                  </div>
+                                  <div> 
+                                    {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
+                                      <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
+                                    ))}
+                                  </div>
+                                  <div>
+                                    {selectObject.metadata.copyRight === 'free' &&
+                                      <span className="text-white">Copy Right: Libre</span>
+                                    }
+  
+                                    {selectObject.metadata.copyRight === 'limited' &&
+                                      <span className="text-white">Copy Right: Limitado</span>
+                                    }
+                                    {selectObject.metadata.copyRight === 'own' &&
+                                      <span className="text-white">Copy Right: Propio</span>
+                                    }
+  
+                                  </div>
+                                  <div>
+                                    {selectObject.metadata.createdDate &&
+                                      <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                    }
+                                  </div>
+  
+                                  {selectObject.metadata.licenseFile &&
+                                    <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                      <a href="javascript:void(0)">
+                                        Copy Right: CopyRight.pdf  </a>
+                                    </div>
+                                  }
+  
+  
+                                </div>
+                              }
+  
+  
+                              <div className=" ">
+  
+  
+                              </div>
+  
+                            </div>
+  
+                          </div>
+  
+                        </Collapse>
+                      }
+  
+  
+                    </div>
+  
+                    : ''
+                })}
+  
+              </div>
+            </div>
+  
+          </RctCollapsibleCard>
+  
+  
+   <div className="text-center">
+    <Pagination
+        hideNavigation
+        activePage={pageActive}
+        itemsCountPerPage={limit}
+        totalItemsCount={totalCount}
+        onChange={this.handlePageChange}
+      />
+        </div>
+  
+  
+  
+          <Dialog
+            open={alertDialog}
+            onClose={this.handleClose}
+          >
+            <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Estas seguro de eliminarlo de forma permanente.
+                          </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="raised" onClick={this.handleClose} className="btn-danger text-white">
+                <IntlMessages id="button.cancel" />
+              </Button>
+              <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
+                <IntlMessages id="button.yes" />
+              </Button>
+            </DialogActions>
+          </Dialog>
+  
+          {editCustomerModal &&
+            <Modal
+              isOpen={editCustomerModal}
+              toggle={this.toggleEditCustomerModal}
+            >
+              <ModalHeader toggle={this.toggleEditCustomerModal}>
+                {addNewCustomerForm ? 'Crear Carpeta' : 'Cambiar Nombre'}
+              </ModalHeader>
+              <ModalBody>
+                {addNewCustomerForm ?
+                  <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
+                    <FormGroup>
+                      <Label for="name">Nombre</Label>
+                      <Input
+                        required="true"
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={addNewCustomerDetails.name}
+                        onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
+                      />
+                    </FormGroup>
+  
+  
+                  </Form>
+                  : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >
+                    <FormGroup>
+                      <Label for="name">Nombre</Label>
+                      <Input
+                        required="true"
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={editCustomer.name}
+                        onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
+                      />
+                    </FormGroup>
+  
+                  </Form>
+                }
+              </ModalBody>
+              <ModalFooter>
+                {addNewCustomerForm ?
+                  <div>
+                    <Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+                    <Button form="formAdd" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.add" /></Button>{' '}
+                  </div>
+                  : <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+                    <Button form="formEdit" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.update" /></Button>{' '}</div>
+                }
+  
+  
+              </ModalFooter>
+            </Modal>
+          }
+  
+          {archivoModal &&
+            <Modal
+              isOpen={archivoModal}
+              toggle={this.toggleArchivoModal}
+            >
+              <ModalHeader toggle={this.toggleArchivoModal}>
+                Subir Archivo
+              </ModalHeader>
+              <ModalBody>
+                <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
+  
+                  <FormGroup>
+                    <div>
+  
+  
+                      <ReactTags tags={tags}
+                        allowDragDrop={false}
+                        suggestions={suggestions}
+                        handleDelete={this.handleDelete}
+                        handleAddition={this.handleAddition}
+                        handleTagClick={this.handleTagClick}
+                        delimiters={delimiters}
+                        placeholder={'Agregar nuevo tag'}
+                      >
+  
+                      </ReactTags>
+                    </div>
+                  </FormGroup>
+  
+  
+                  <FormGroup>
+                    <Label for="copyRight:">Copy Right:</Label>
+                    <Input type="select"
+                      name="copyRight"
+                      id="copyRight"
+                      required="true"
+                      value={copyRight}
+                      onChange={(event) => this.setState({ copyRight: event.target.value })}
+                    >
+                      <option value="free">Libre</option>
+                      <option value="limited">Limitado</option>
+                      <option value="own">Propio</option>
+                    </Input>
+                  </FormGroup>
+  
+  
+                  {(copyRight === 'limited' || copyRight === 'own') &&
+                    <FormGroup>
+                      <Label for="pdfCopy">PDF Copy Right:</Label>
+                      <Input required="true" name="pdfCopy" className="fileInput"
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => this.handlePDFChange(e)} />
+                    </FormGroup>
+  
+                  }
+  
+                  <FormGroup>
+                    <Label for="startDate">Fecha de creación</Label>
+                    <Input
+                      required="true"
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      value={moment(new Date(startDate)).format('YYYY-MM-DD')}
+                      onChange={(event) => this.setState({ startDate: event.target.value })}
+                    />
+                  </FormGroup>
+  
+                  <section>
+                    <div className="dropzone">
+                      <Dropzone
+                        style={styleDragFile}
+                        onDrop={this.onDrop.bind(this)}
+                        onFileDialogCancel={this.onCancel.bind(this)}
+                      >
+                        <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
+                      </Dropzone>
+                    </div>
+                    <aside>
+                      <h2>Archivos seleccionados</h2>
+                      <ul className="padding-10-px">
+                        {
+                          this.state.files.map(f => <li key={f.name}>{f.name}</li>)
+                        }
+                      </ul>
+                    </aside>
+                  </section>
+                </Form>
+  
+  
+              </ModalBody>
+              <ModalFooter>
+  
+                <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
+                  <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
+  
+  
+  
+              </ModalFooter>
+            </Modal>
+  
+  
+          }
+  
+  
+  
+        {compartirModal &&
+          <Modal
+            isOpen={compartirModal}
+            toggle={this.toggleCompartirModal}
+          >
+            <ModalHeader toggle={this.toggleCompartirModal}>
+              Compartir
+        </ModalHeader>
+            <ModalBody>
+              <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
+  
+  <FormGroup>
+                    <Label for="name">Email</Label>
+                    <Input
+                      required="true"
+                      type="email"
+                      name="correoCompartir"
+                      id="correoCompartir"
+                      value={correoCompartir}
+                      onChange={(event) => this.setState({ correoCompartir: event.target.value })} 
+                    />
+                  </FormGroup>
+              
+           
+               
+              </Form>
+  
+  
+            </ModalBody>
+            <ModalFooter>
+  
+              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
+                <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
+  
+  
+  
+            </ModalFooter>
+          </Modal>
+  
+  
+        }
+  
+  
+  {editarObjetoSearchModal &&
+            <Editar key="editarSearch" objectoPending={objectoEdit} changeName={this.changeName}/>
+  
+      }
+  
+        </div>
+      )
+      
+    } else {
+      return (
+        <div>
         <div className="row row-eq-height">
         
         </div>
@@ -803,555 +1425,23 @@ class Busqueda extends Component {
               <CircularProgress />
             </div>
           }
+          <br></br>
           <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
-
-              return n.type === 'folder' ?
-
-
-
-
-
-
-
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                  <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
-                    <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-
-                    <p>{n.name}</p>
-                  </ContextMenuTrigger>
-                  <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                    
-                    <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Compartir</span>
-                    </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                    </MenuItem>
-                    {isAdmin && 
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
-                    </MenuItem>
-                    }
-                  </ContextMenu>
-                </div>
-
-
-                : ''
-            })}
-          </div>
-          <div className="gallery-wrapper">
-            <div className="row row-eq-height text-center">
-              {imageVideos.map((n, index) => {
-
-                let ext = fileExtension(n.lowQualityURL)
-                let title = null;
-
-                if (n.name.length > 20) {
-                  title = `${n.name.substr(0,20)}... .${ext}`
-                }else{
-                  title = `${n.name}.${ext}`
-                }
-
-                return n.type !== 'folder' ?
-
-                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
-                    <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-
-                      {n.type === 'image' &&
-                        <GridListTile key={index}>
-                         <div className="heigth-div-objetos">
-                          <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-                          </div>
-                        </GridListTile>
-
-                      }
-                      {n.type === 'video' &&
-                        <GridListTile key={index}>
-                          <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                            <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
-                              <BigPlayButton position="center" />
-                              <ControlBar disableDefaultControls={true} />
-                              <source src={n.originalURL} />
-                            </Player>
-
-                          </div>
-
-                        </GridListTile>
-
-                      }
-                      {
-                        n.type === 'document' &&
-                          <GridListTile key={index}>
-                            <div className="heigth-div-objetos">
-                            <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-                            </div>
-                          </GridListTile>
-                      }
-                      
-                      <p className="color-texto-carpetas-explorar">{title}</p>
-
-
-                    </ContextMenuTrigger>
-
-                    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
-                        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Descargar </span>
-                      </MenuItem>
-                      <MenuItem   onClick={() => this.abrirCompartir(n)}  data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Compartir</span>
-                      </MenuItem>
-                      <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Editar</span>
-                      </MenuItem>
-
-                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Mover</span>
-                      </MenuItem>
-
-                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Agregar a favoritos</span>
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                        <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                      </MenuItem>
-                      {isAdmin && 
-                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
-                      }
-                    </ContextMenu>
-
-                    {(posicion === index && !n.createRowCollapse) &&
-                      <div className={"paddin-center-trinagulo-rows"}>
-                        <div className="triangulo-equilatero-bottom"></div>
-                      </div>
-                    }
-                    {n.createRowCollapse &&
-
-                      <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
-                        style={{ marginLeft: n.marginLeft }}
-
-                      >
-
-                        {(posicion === index && n.createRowCollapse) &&
-                          <div className="padding-left-first-row-collapse-triangulo">
-                            <div className="triangulo-equilatero-bottom"></div>
-                          </div>
-
-                        }
-
-                        <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
-
-
-                        >
-
-                          <div className="col-sm-2 col-md-1 col-lg-2">
-                            <div className="volver-collap-video-image-left">
-                              <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
-
-                            </div>
-
-                          </div>
-                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
-                            
-                              {tipoObject === 'image' &&
-
-                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
-
-                              }
-
-
-                              {tipoObject === 'video' && collapse === n.rowCollapse &&
-
-                                <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
-                                  <BigPlayButton position="center" />
-                                  <source src={urlVideo} />
-                                </Player>
-                              }
-                              {
-                                tipoObject === 'document'  && collapse === n.rowCollapse &&
-                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
-                              }
-                            
-                          </div>
-                          <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
-                          <div>
-                          <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
-                          <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
-
-                          </div>
-                            <div className="fondo-videos-padding-top-desc">
-                              <h3 className="text-white">{author}</h3>
-
-                            </div>
-                            <div>
-                              <b className="text-white"></b>
-                              <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
-
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
-                              <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
-                            </div>
-
-
-
-                            {selectObject !== '-1' &&
-                              <div>
-
-
-                                <div>
-                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
-                                    <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
-                                  ))}
-                                </div>
-                                <div> 
-                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
-                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
-                                  ))}
-                                </div>
-                                <div>
-                                  {selectObject.metadata.copyRight === 'free' &&
-                                    <span className="text-white">Copy Right: Libre</span>
-                                  }
-
-                                  {selectObject.metadata.copyRight === 'limited' &&
-                                    <span className="text-white">Copy Right: Limitado</span>
-                                  }
-                                  {selectObject.metadata.copyRight === 'own' &&
-                                    <span className="text-white">Copy Right: Propio</span>
-                                  }
-
-                                </div>
-                                <div>
-                                  {selectObject.metadata.createdDate &&
-                                    <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
-                                  }
-                                </div>
-
-                                {selectObject.metadata.licenseFile &&
-                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
-                                    <a href="javascript:void(0)">
-                                      Copy Right: CopyRight.pdf  </a>
-                                  </div>
-                                }
-
-
-                              </div>
-                            }
-
-
-
-
-
-
-
-                            <div className=" ">
-
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                      </Collapse>
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  </div>
-
-                  : ''
-              })}
-
+            <div className="col-md-12 mt-4">
+              <h1>No hemos encontrado resultados</h1>
+              <h3>Por favor intente con otra palabra</h3>
+            </div>
+            <div className="col-md-12 mt-2">
+              <button className="btn btn-outline-success" onClick={this.goToHome}>
+                  <i className="fa fa-arrow-circle-left"></i> Volver
+              </button>
             </div>
           </div>
-
-        </RctCollapsibleCard>
-
-
- <div className="text-center">
-  <Pagination
-      hideNavigation
-      activePage={pageActive}
-      itemsCountPerPage={limit}
-      totalItemsCount={totalCount}
-      onChange={this.handlePageChange}
-    />
-      </div>
-
-
-
-        <Dialog
-          open={alertDialog}
-          onClose={this.handleClose}
-        >
-          <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Estas seguro de eliminarlo de forma permanente.
-                        </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button variant="raised" onClick={this.handleClose} className="btn-danger text-white">
-              <IntlMessages id="button.cancel" />
-            </Button>
-            <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
-              <IntlMessages id="button.yes" />
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {editCustomerModal &&
-          <Modal
-            isOpen={editCustomerModal}
-            toggle={this.toggleEditCustomerModal}
-          >
-            <ModalHeader toggle={this.toggleEditCustomerModal}>
-              {addNewCustomerForm ? 'Crear Carpeta' : 'Cambiar Nombre'}
-            </ModalHeader>
-            <ModalBody>
-              {addNewCustomerForm ?
-                <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
-                  <FormGroup>
-                    <Label for="name">Nombre</Label>
-                    <Input
-                      required="true"
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={addNewCustomerDetails.name}
-                      onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
-                    />
-                  </FormGroup>
-
-
-                </Form>
-                : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >
-                  <FormGroup>
-                    <Label for="name">Nombre</Label>
-                    <Input
-                      required="true"
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={editCustomer.name}
-                      onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
-                    />
-                  </FormGroup>
-
-                </Form>
-              }
-            </ModalBody>
-            <ModalFooter>
-              {addNewCustomerForm ?
-                <div>
-                  <Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
-                  <Button form="formAdd" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.add" /></Button>{' '}
-                </div>
-                : <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
-                  <Button form="formEdit" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.update" /></Button>{' '}</div>
-              }
-
-
-            </ModalFooter>
-          </Modal>
-        }
-
-        {archivoModal &&
-          <Modal
-            isOpen={archivoModal}
-            toggle={this.toggleArchivoModal}
-          >
-            <ModalHeader toggle={this.toggleArchivoModal}>
-              Subir Archivo
-            </ModalHeader>
-            <ModalBody>
-              <Form id="formSubir" onSubmit={this.handleSubmitSubir} >
-
-                <FormGroup>
-                  <div>
-
-
-                    <ReactTags tags={tags}
-                      allowDragDrop={false}
-                      suggestions={suggestions}
-                      handleDelete={this.handleDelete}
-                      handleAddition={this.handleAddition}
-                      handleTagClick={this.handleTagClick}
-                      delimiters={delimiters}
-                      placeholder={'Agregar nuevo tag'}
-                    >
-
-                    </ReactTags>
-                  </div>
-                </FormGroup>
-
-
-                <FormGroup>
-                  <Label for="copyRight:">Copy Right:</Label>
-                  <Input type="select"
-                    name="copyRight"
-                    id="copyRight"
-                    required="true"
-                    value={copyRight}
-                    onChange={(event) => this.setState({ copyRight: event.target.value })}
-                  >
-                    <option value="free">Libre</option>
-                    <option value="limited">Limitado</option>
-                    <option value="own">Propio</option>
-                  </Input>
-                </FormGroup>
-
-
-                {(copyRight === 'limited' || copyRight === 'own') &&
-                  <FormGroup>
-                    <Label for="pdfCopy">PDF Copy Right:</Label>
-                    <Input required="true" name="pdfCopy" className="fileInput"
-                      type="file"
-                      accept=".pdf"
-                      onChange={(e) => this.handlePDFChange(e)} />
-                  </FormGroup>
-
-                }
-
-                <FormGroup>
-                  <Label for="startDate">Fecha de creación</Label>
-                  <Input
-                    required="true"
-                    type="date"
-                    name="startDate"
-                    id="startDate"
-                    value={moment(new Date(startDate)).format('YYYY-MM-DD')}
-                    onChange={(event) => this.setState({ startDate: event.target.value })}
-                  />
-                </FormGroup>
-
-                <section>
-                  <div className="dropzone">
-                    <Dropzone
-                      style={styleDragFile}
-                      onDrop={this.onDrop.bind(this)}
-                      onFileDialogCancel={this.onCancel.bind(this)}
-                    >
-                      <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
-                    </Dropzone>
-                  </div>
-                  <aside>
-                    <h2>Archivos seleccionados</h2>
-                    <ul className="padding-10-px">
-                      {
-                        this.state.files.map(f => <li key={f.name}>{f.name}</li>)
-                      }
-                    </ul>
-                  </aside>
-                </section>
-              </Form>
-
-
-            </ModalBody>
-            <ModalFooter>
-
-              <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleArchivoModal}><IntlMessages id="button.cancel" /></Button>
-                <Button form="formSubir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Subir" /></Button>{' '}</div>
-
-
-
-            </ModalFooter>
-          </Modal>
-
-
-        }
-
-
-
-      {compartirModal &&
-        <Modal
-          isOpen={compartirModal}
-          toggle={this.toggleCompartirModal}
-        >
-          <ModalHeader toggle={this.toggleCompartirModal}>
-            Compartir
-      </ModalHeader>
-          <ModalBody>
-            <Form id="formCompartir" onSubmit={this.handleSubmitCompartir} >
-
-<FormGroup>
-                  <Label for="name">Email</Label>
-                  <Input
-                    required="true"
-                    type="email"
-                    name="correoCompartir"
-                    id="correoCompartir"
-                    value={correoCompartir}
-                    onChange={(event) => this.setState({ correoCompartir: event.target.value })} 
-                  />
-                </FormGroup>
-            
-         
-             
-            </Form>
-
-
-          </ModalBody>
-          <ModalFooter>
-
-            <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleCompartirModal}><IntlMessages id="button.cancel" /></Button>
-              <Button form="formCompartir" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="Compartir" /></Button>{' '}</div>
-
-
-
-          </ModalFooter>
-        </Modal>
-
-
-      }
-
-
-{editarObjetoSearchModal &&
-          <Editar key="editarSearch" objectoPending={objectoEdit} changeName={this.changeName}/>
-
+          </RctCollapsibleCard>
+          </div>
+      );
     }
 
-      </div>
-    )
   }
 }
 

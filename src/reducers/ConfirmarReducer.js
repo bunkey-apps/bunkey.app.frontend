@@ -26,12 +26,14 @@ export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
         case GET_PENDING_OBJECT:
+        console.log('GET_PENDING_OBJECT_FAILURE REDUCER');
             return { ...state, loading: true, items: [] };
 
         case GET_PENDING_OBJECT_FAILURE:
             return { ...state, loading: false };
         // get Contratos
         case GET_PENDING_OBJECT_SUCCES:
+        
             return { ...state, loading: false, items: action.payload, limit: action.limit, totalCount: action.totalCount, pageActive: action.pageActive };
 
         default: return { ...state };
