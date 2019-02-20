@@ -35,6 +35,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 
 import Dropzone from 'react-dropzone';
 import fileExtension from 'file-extension';
+import ModalTag from '../../../../components/ModalTag/ModalTag';
 
 // redux action
 import {
@@ -129,7 +130,8 @@ class Busqueda extends Component {
       suggestions: [],
       correoCompartir: '',
       idObjectCompartir: '',
-      isMoveObject: false
+      isMoveObject: false,
+      isOpenModalTag: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -711,6 +713,19 @@ class Busqueda extends Component {
   onChangeFiltroSearch(filtro){
     this.setState({filtroBusqeuda: filtro});
   }
+
+  onShowMore = () => {
+    this.setState({
+      isOpenModalTag: true
+    });
+  }
+
+  closeShowMore = () => {
+    this.setState({
+      isOpenModalTag:false
+    })
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoSearchModal,totalCount, limit,pageActive } = this.props;
     const { collapse } = this.state;
@@ -732,6 +747,35 @@ class Busqueda extends Component {
     const { objectoEdit } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
     moment.locale('es')
+
+    /** get Favorites of localStorage */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    /**Getting tag array */
+    let tag = [];
+    let truncateTag = [];
+
+    if (selectObject && selectObject.metadata) {
+      if (selectObject.metadata.descriptiveTags && selectObject.metadata.audiovisualTags) {
+
+        tag = selectObject.metadata.descriptiveTags.concat(selectObject.metadata.audiovisualTags)
+  
+      }else if(selectObject.metadata.descriptiveTags && !selectObject.metadata.audiovisualTags){
+  
+        tag = selectObject.metadata.descriptiveTags
+  
+      }else{
+  
+        tag = selectObject.metadata.audiovisualTags
+  
+      }
+    }
+
+    
+    if(tag.length > 5){
+      truncateTag = tag.slice(0,4);
+    }    
+
     if (items.length!=0 || imageVideos.length != 0) {
 
       return (
@@ -759,7 +803,7 @@ class Busqueda extends Component {
                     <Form onSubmit={this.handleSubmitSearch} className="navbar-fixed-top">
                       <div>
                         <div className="margen-busqueda text-white padding-top-busqueda">
-                          <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                          <h3><b className="text-white">Encuentra tu contenido de forma simple</b></h3>
                           <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
                         </div>
   
@@ -814,62 +858,54 @@ class Busqueda extends Component {
                 <CircularProgress />
               </div>
             }
-            <div className="row row-eq-height text-center">
-              {items.map((n, index) => {
-  
-                return n.type === 'folder' ?
-  
-  
-  
-  
-  
-  
-  
-                  <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                    <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
-                      <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-  
-                      <p>{n.name}</p>
-                    </ContextMenuTrigger>
-                    <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                      
-                      <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Compartir</span>
-                      </MenuItem>
-                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Cambiar Nombre</span>
-                      </MenuItem>
-  
-                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Mover</span>
-                      </MenuItem>
-  
-                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                        <span className="padding-click-derecho">Agregar a favoritos</span>
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                        <div className="line-click-derecho  padding-top-click-derecho"></div>
-  
-                      </MenuItem>
-                      {isAdmin && 
-                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
-                      }
-                    </ContextMenu>
-                  </div>
-  
-  
-                  : ''
-              })}
-            </div>
             <div className="gallery-wrapper">
               <div className="row row-eq-height text-center">
+                {items.map((n, index) => {
+                  return n.type === 'folder' ?
+
+                    <div key={index} className="col-sm-3 col-md-3 col-lg-3">
+                      <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
+                        <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
+
+                        <p>{n.name}</p>
+                      </ContextMenuTrigger>
+                      <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
+                        
+                        <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Compartir</span>
+                        </MenuItem>
+                        <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Cambiar Nombre</span>
+                        </MenuItem>
+
+                        <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Mover</span>
+                        </MenuItem>
+
+                        <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Agregar a favoritos</span>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                          <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+                        </MenuItem>
+                        {isAdmin && 
+                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                          <span className="padding-click-derecho">Eliminar</span>
+                        </MenuItem>
+                        }
+                      </ContextMenu>
+                    </div>
+
+
+                    : ''
+                })}
+
                 {imageVideos.map((n, index) => {
   
                   let ext = fileExtension(n.lowQualityURL)
@@ -879,6 +915,15 @@ class Busqueda extends Component {
                     title = `${n.name.substr(0,20)}... .${ext}`
                   }else{
                     title = `${n.name}.${ext}`
+                  }
+
+                  /**Cheking if object is in favorite */
+                  let sw;
+
+                  if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
+                    sw = 'text-yellow'
+                  }else{
+                    sw='text-white'
                   }
   
                   return n.type !== 'folder' ?
@@ -1024,7 +1069,7 @@ class Busqueda extends Component {
                                 <b className="text-white"></b>
                                 <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
   
-                                <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                                <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
                                 <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                                 <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                               </div>
@@ -1033,18 +1078,25 @@ class Busqueda extends Component {
   
                               {selectObject !== '-1' &&
                                 <div>
-  
-  
-                                  <div>
-                                    {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
+                                <div>
+                                  {
+                                    truncateTag.length > 0 && 
+                                    <Fragment>
+                                     {
+                                        truncateTag.map((tags, numTag) => (
+                                          <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                        ))
+                                        
+                                      }
+                                      <button type="button" onClick={this.onShowMore} class="btn btn-sm btn-outline-light">Ver más</button>
+                                    </Fragment>
+                                  }
+                                  {
+                                    truncateTag.length === 0 && tag.length > 0 && tag.map((tags, numTag) => (
                                       <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
-                                    ))}
-                                  </div>
-                                  <div> 
-                                    {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
-                                      <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
-                                    ))}
-                                  </div>
+                                    ))
+                                  }
+                                </div>
                                   <div>
                                     {selectObject.metadata.copyRight === 'free' &&
                                       <span className="text-white">Copy Right: Libre</span>
@@ -1342,6 +1394,14 @@ class Busqueda extends Component {
             <Editar key="editarSearch" objectoPending={objectoEdit} changeName={this.changeName}/>
   
       }
+
+      
+          <ModalTag
+            isOpen={this.state.isOpenModalTag}
+            toggle={this.closeShowMore}
+            Tags={tag}
+          >
+          </ModalTag>
   
         </div>
       )
@@ -1362,15 +1422,12 @@ class Busqueda extends Component {
                   style={{ backgroundImage: `url(${background})` }}
 
 
-                >
-
-
-
-                  
+          >
+              
                   <Form onSubmit={this.handleSubmitSearch}>
                     <div>
                       <div className="margen-busqueda text-white padding-top-busqueda">
-                        <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                        <h3><b className="text-white">Encuentra tu contenido de forma simple</b></h3>
                         <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
                       </div>
 

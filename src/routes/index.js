@@ -129,7 +129,7 @@ class MainApp extends Component {
                   <Form onSubmit={this.handleSubmitSearch}>
                     <div>
                       <div className="margen-busqueda text-white padding-top-busqueda">
-                        <h3><b classNmae="text-white">Encuentra tu contenido de forma simple</b></h3>
+                        <h3><b className="text-white">Encuentra tu contenido de forma simple</b></h3>
                         <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
                       </div>
 

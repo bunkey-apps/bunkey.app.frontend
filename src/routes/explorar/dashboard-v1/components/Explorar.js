@@ -36,6 +36,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 
 import Dropzone from 'react-dropzone';
 import fileExtension from 'file-extension';
+import ModalTag from '../../../../components/ModalTag/ModalTag';
 
 
 // redux action
@@ -129,7 +130,8 @@ class Explorar extends Component {
       suggestions: [],
       correoCompartir: '',
       idObjectCompartir: '',
-      isMoveObject: false
+      isMoveObject: false,
+      isOpenModalTag: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -766,6 +768,18 @@ class Explorar extends Component {
         
     });
 }
+  onShowMore = () => {
+    this.setState({
+      isOpenModalTag: true
+    });
+  }
+
+  closeShowMore = () => {
+    this.setState({
+      isOpenModalTag:false
+    })
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoModal } = this.props;
     const { collapse } = this.state;
@@ -783,11 +797,43 @@ class Explorar extends Component {
     const { selectObject } = this.state;
     const { isMoveObject } = this.state;
     const { objectoEdit } = this.state;
-
     
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
+        
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    /**Getting tag array */
+    let tag = [];
+    let truncateTag = [];
+
+    if (selectObject && selectObject.metadata) {
+      if (selectObject.metadata.descriptiveTags && selectObject.metadata.audiovisualTags) {
+
+        tag = selectObject.metadata.descriptiveTags.concat(selectObject.metadata.audiovisualTags)
+  
+      }else if(selectObject.metadata.descriptiveTags && !selectObject.metadata.audiovisualTags){
+  
+        tag = selectObject.metadata.descriptiveTags
+  
+      }else{
+  
+        tag = selectObject.metadata.audiovisualTags
+  
+      }
+    }
+
     
+    if(tag.length > 5){
+      truncateTag = tag.slice(0,4);
+    }
+
+    console.log('truncateTag',truncateTag);
+    console.log('tag', tag);
+    
+    
+  
     return (
 
 
@@ -858,10 +904,6 @@ class Explorar extends Component {
 
 
 
-
-
-
-
                 <div key={index} className="col-sm-2 col-md-1 col-lg-2">
                   <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
                     <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
@@ -909,6 +951,7 @@ class Explorar extends Component {
             <div className="row row-eq-height text-center">
               {imageVideos.map((n, index) => {
 
+                /**Cheking extension file and truncate text*/
                 let ext = fileExtension(n.lowQualityURL)
                 let title = null;
 
@@ -917,6 +960,17 @@ class Explorar extends Component {
                 }else{
                   title = `${n.name}.${ext}`
                 }
+
+                /**Cheking if object is in favorite */
+                let sw;
+                
+                if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
+                  sw = 'text-yellow'
+                }else{
+                  sw='text-white'
+                }
+
+                
                 
                 return n.type !== 'folder' ?
 
@@ -982,6 +1036,7 @@ class Explorar extends Component {
                         <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Agregar a favoritos</span>
                       </MenuItem>
+
                       <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                         <div className="line-click-derecho  padding-top-click-derecho"></div>
 
@@ -1033,17 +1088,12 @@ class Explorar extends Component {
 
                               }
 
-
                               {tipoObject === 'video' && collapse === n.rowCollapse &&
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
                                   <source src={selectObject.mediaQualityURL} />
                                 </Player>
-
-
-
-
                               }
                               {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
@@ -1059,13 +1109,12 @@ class Explorar extends Component {
                           </div>
                             <div className="fondo-videos-padding-top-desc">
                               <h3 className="text-white">{author}</h3>
-
                             </div>
                             <div>
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
 
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -1074,17 +1123,23 @@ class Explorar extends Component {
 
                             {selectObject !== '-1' &&
                               <div>
-
-
                                 <div>
-                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
-                                    <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
-                                  ))}
-                                </div>
-                                <div> 
-                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
-                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
-                                  ))}
+                                  {
+                                    truncateTag.length > 0 && 
+                                    <Fragment>
+                                     {
+                                        truncateTag.map((tags, numTag) => (
+                                          <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                        ))
+                                      }
+                                      <button type="button" onClick={this.onShowMore} class="btn btn-sm btn-outline-light">Ver más</button>
+                                    </Fragment>
+                                  }
+                                  {
+                                    truncateTag.length === 0 && tag.length > 0 && tag.map((tags, numTag) => (
+                                      <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                    ))
+                                  }
                                 </div>
                                 <div>
                                   {selectObject.metadata.copyRight === 'free' &&
@@ -1384,7 +1439,12 @@ class Explorar extends Component {
 
       }
 
-
+    <ModalTag
+      isOpen={this.state.isOpenModalTag}
+      toggle={this.closeShowMore}
+      Tags={tag}
+    >
+    </ModalTag>
 
       </div>
     )

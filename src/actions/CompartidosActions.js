@@ -94,31 +94,32 @@ export const getObjectsCompartidos = (accessToken, idCliente, idObject) => (disp
                     if(response.data.children[i].type !== 'folder'){
                         console.log('response.data.children[i]',response.data.children[i]);
                         
-                        if(cont === 4){
-                            cont = 0;
-                            collapseRows ++;
-                        }
+                        // if(cont === 4){
+                        //     cont = 0;
+                        //     collapseRows ++;
+                        // }
 
 
-                        if(cont === 0){
-                            response.data.children[i].marginLeft = '0%';
-                            response.data.children[i].paddingLeft = '10%';
-                            response.data.children[i].createRowCollapse = true;
+                        // if(cont === 0){
+                        //     response.data.children[i].marginLeft = '0%';
+                        //     response.data.children[i].paddingLeft = '10%';
+                        //     response.data.children[i].createRowCollapse = true;
                             
-                        }
-                        if(cont === 1){
-                            response.data.children[i].marginLeft = '-110%';
-                            response.data.children[i].paddingLeft = '36%';
-                        }
-                        if(cont === 2){
-                            response.data.children[i].marginLeft = '-220%';
-                            response.data.children[i].paddingLeft = '62%';
-                        }
-                        if(cont === 3){
-                            response.data.children[i].marginLeft = '-330%';
-                            response.data.children[i].paddingLeft = '87%';
-                        }
+                        // }
+                        // if(cont === 1){
+                        //     response.data.children[i].marginLeft = '-110%';
+                        //     response.data.children[i].paddingLeft = '36%';
+                        // }
+                        // if(cont === 2){
+                        //     response.data.children[i].marginLeft = '-220%';
+                        //     response.data.children[i].paddingLeft = '62%';
+                        // }
+                        // if(cont === 3){
+                        //     response.data.children[i].marginLeft = '-330%';
+                        //     response.data.children[i].paddingLeft = '87%';
+                        // }
                         response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+                        collapseRows ++;
 
                         arrImageVideo.push(response.data.children[i]);
                         cont++;

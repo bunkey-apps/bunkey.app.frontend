@@ -34,6 +34,7 @@ import AppConfig from '../../../../constants/AppConfig';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
 import { WithContext as ReactTags } from 'react-tag-input';
+import ModalTag from '../../../../components/ModalTag/ModalTag';
 // redux action
 import {
   getUserDetails,
@@ -127,7 +128,8 @@ class Folders extends Component {
       suggestions: [],
       correoCompartir: '',
       idObjectCompartir: '',
-      isMoveObject: false
+      isMoveObject: false,
+      isOpenModalTag: false
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -700,7 +702,20 @@ class Folders extends Component {
     this.setState({
       startDate: date
     });
-}
+  }
+
+  onShowMore = () => {
+    this.setState({
+      isOpenModalTag: true
+    });
+  }
+
+  closeShowMore = () => {
+    this.setState({
+      isOpenModalTag:false
+    })
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoFolderModal } = this.props;
     const { collapse } = this.state;
@@ -722,6 +737,34 @@ class Folders extends Component {
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
     moment.locale('es');
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+    /**Getting tag array */
+    let tag = [];
+    let truncateTag = [];
+
+    if (selectObject && selectObject.metadata) {
+      if (selectObject.metadata.descriptiveTags && selectObject.metadata.audiovisualTags) {
+
+        tag = selectObject.metadata.descriptiveTags.concat(selectObject.metadata.audiovisualTags)
+  
+      }else if(selectObject.metadata.descriptiveTags && !selectObject.metadata.audiovisualTags){
+  
+        tag = selectObject.metadata.descriptiveTags
+  
+      }else{
+  
+        tag = selectObject.metadata.audiovisualTags
+  
+      }
+    }
+
+    
+    if(tag.length > 5){
+      truncateTag = tag.slice(0,4);
+    }
+    
+    
 
     return (
 
@@ -774,18 +817,15 @@ class Folders extends Component {
               <CircularProgress />
             </div>
           }
-          <div className="row row-eq-height text-center">
+
+          <div className="gallery-wrapper">
+            <div className="row row-eq-height text-center">
             {items.map((n, index) => {
 
               return n.type === 'folder' ?
 
 
-
-
-
-
-
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
+                <div key={index} className="col-sm-3 col-md-3 col-lg-3">
                   <ContextMenuTrigger id={index + 'folder-home'} holdToDisplay={1000}>
                     <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
 
@@ -828,10 +868,7 @@ class Folders extends Component {
 
 
                 : ''
-            })}
-          </div>
-          <div className="gallery-wrapper">
-            <div className="row row-eq-height text-center">
+              })}
               {imageVideos.map((n, index) => {
 
                 
@@ -844,9 +881,23 @@ class Folders extends Component {
                     title = `${n.name}.${ext}`
                   }
 
+                /**Cheking if object is in favorite */
+                let sw;
+                
+                if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
+                  sw = 'text-yellow'
+                  console.log('text-yellow', n.name);
+                  
+                }else{
+                  sw='text-white'
+                  console.log('text-white', n.name);
+                }
+
+                
+
                 return n.type !== 'folder' ?
 
-                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
+                  <div key={index} className="col-sm-3 col-md-3 col-lg-3 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + 'imagevideo-home'} holdToDisplay={1000}>
 
                       {n.type === 'image' &&
@@ -882,11 +933,6 @@ class Folders extends Component {
                       }
                       
                       <p className="color-texto-carpetas-explorar">{title}</p>
-
-
-
-
-
 
                     </ContextMenuTrigger>
 
@@ -930,6 +976,7 @@ class Folders extends Component {
                         <div className="triangulo-equilatero-bottom"></div>
                       </div>
                     }
+
                     {n.createRowCollapse &&
 
                       <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
@@ -972,9 +1019,6 @@ class Folders extends Component {
                                   <source src={selectObject.mediaQualityURL} />
                                 </Player>
 
-
-
-
                               }
                               {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
@@ -997,7 +1041,7 @@ class Folders extends Component {
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
 
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className="zmdi zmdi-star-outline text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -1009,17 +1053,26 @@ class Folders extends Component {
 
 
                                 <div>
-                                 
-                                  {selectObject.metadata.descriptiveTags.map((tags, numTag) => (
-                                    <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
-                                  ))}
+                                  {
+                                    truncateTag.length > 0 && 
+                                    <Fragment>
+                                     {
+                                        truncateTag.map((tags, numTag) => (
+                                          <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                        ))
+                                        
+                                      }
+                                      <button type="button" onClick={this.onShowMore} class="btn btn-sm btn-outline-light">Ver más</button>
+                                    </Fragment>
+                                  }
+                                  {
+                                    truncateTag.length === 0 && tag.length > 0 && tag.map((tags, numTag) => (
+                                      <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                    ))
+                                  }
                                 </div>
 
-                                 <div> 
-                                  {selectObject.metadata.audiovisualTags.map((audiovisualTags, numAudioTag) => (
-                                    <span key={'tagsAudio-' + numAudioTag} className="text-white tags-collapse-border"> {audiovisualTags}</span>
-                                  ))}
-                                </div>
+
                                 <div>
                                   {selectObject.metadata.copyRight === 'free' &&
                                     <span className="text-white">Copy Right: Libre</span>
@@ -1324,6 +1377,13 @@ class Folders extends Component {
           <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName}/>
 
     }
+
+    <ModalTag
+      isOpen={this.state.isOpenModalTag}
+      toggle={this.closeShowMore}
+      Tags={tag}
+    >
+    </ModalTag>
 
       </div>
     )

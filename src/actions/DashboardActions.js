@@ -383,31 +383,32 @@ export const getFavoritos = () => (dispatch) => {
                      if(response.data.children[i].type !== 'folder'){
                          console.log('response.data.children[i]',response.data.children[i]);
                          
-                         if(cont === 4){
-                             cont = 0;
-                             collapseRows ++;
-                         }
+                        //  if(cont === 4){
+                        //      cont = 0;
+                        //      collapseRows ++;
+                        //  }
  
  
-                         if(cont === 0){
-                             response.data.children[i].marginLeft = '0%';
-                             response.data.children[i].paddingLeft = '10%';
-                             response.data.children[i].createRowCollapse = true;
+                        //  if(cont === 0){
+                        //      response.data.children[i].marginLeft = '0%';
+                        //      response.data.children[i].paddingLeft = '10%';
+                        //      response.data.children[i].createRowCollapse = true;
                              
-                         }
-                         if(cont === 1){
-                             response.data.children[i].marginLeft = '-110%';
-                             response.data.children[i].paddingLeft = '36%';
-                         }
-                         if(cont === 2){
-                             response.data.children[i].marginLeft = '-220%';
-                             response.data.children[i].paddingLeft = '62%';
-                         }
-                         if(cont === 3){
-                             response.data.children[i].marginLeft = '-330%';
-                             response.data.children[i].paddingLeft = '87%';
-                         }
+                        //  }
+                        //  if(cont === 1){
+                        //      response.data.children[i].marginLeft = '-110%';
+                        //      response.data.children[i].paddingLeft = '36%';
+                        //  }
+                        //  if(cont === 2){
+                        //      response.data.children[i].marginLeft = '-220%';
+                        //      response.data.children[i].paddingLeft = '62%';
+                        //  }
+                        //  if(cont === 3){
+                        //      response.data.children[i].marginLeft = '-330%';
+                        //      response.data.children[i].paddingLeft = '87%';
+                        //  }
                          response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+                         collapseRows ++;
  
                          arrImageVideo.push(response.data.children[i]);
                          cont++;
@@ -774,7 +775,7 @@ export const addFile = (urlImage, file, futureFileURL, tipo, guid, position, fil
 
     var instance = axios.create();
 
-    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type , 'Content-Disposition':'attachment'} })
         .then(function (result) {
             console.log(result);
             dispatch(updateFile(futureFileURL, tipo, guid, file, position, files, objetoDesc))
@@ -899,7 +900,7 @@ export const addObject = (urlImage, file, futureFileURL, detalle, tipo, guid) =>
 
     var instance = axios.create();
 
-    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type} })
         .then(function (result) {
             console.log(result);
             dispatch(updateObjeto(futureFileURL, detalle, tipo, guid));
@@ -974,13 +975,7 @@ export const getRecientes = () => (dispatch) => {
                 for(var i=0;i<response.data.length;i++){
                     if(response.data[i].type === 'video' || response.data[i].type === 'image'){
                         console.log('response.data[i]',response.data[i]);
-                        
-                        
-                           
-                     
 
-
-                        
                         response.data[i].rowCollapse = 'collapse' + collapseRows;
 
                         arrImageVideo.push(response.data[i]);
