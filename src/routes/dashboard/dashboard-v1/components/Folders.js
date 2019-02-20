@@ -344,10 +344,13 @@ class Folders extends Component {
 
 
   handleClickFavoritos(folder) {
+    console.log('here');
+    
+    var element = document.getElementById("folderFavoriteIcon");
+    element.classList.remove("text-white");
     console.log('handleClickFavoritos', folder);
     
     this.props.addFavoritos(folder);
-
 
   }
   deleteCustomer() {
@@ -882,16 +885,15 @@ class Folders extends Component {
                   }
 
                 /**Cheking if object is in favorite */
-                let sw;
+                let classFavorite;
                 
-                if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
-                  sw = 'text-yellow'
-                  console.log('text-yellow', n.name);
-                  
+                if((n && favorites) &&(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id)))){
+                  classFavorite = 'text-yellow'
                 }else{
-                  sw='text-white'
-                  console.log('text-white', n.name);
+                  classFavorite='text-white'
                 }
+
+                
 
                 
 
@@ -983,6 +985,9 @@ class Folders extends Component {
                         style={{ marginLeft: n.marginLeft }}
 
                       >
+                                                    {
+                                console.log('classFavorite',classFavorite)
+                              }
 
                         {(posicion === index && n.createRowCollapse) &&
                           <div className="padding-left-first-row-collapse-triangulo">
@@ -1040,10 +1045,9 @@ class Folders extends Component {
                             <div>
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
-
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="folderFavoriteIcon" className={`zmdi zmdi-star-outline ${classFavorite}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
 
 

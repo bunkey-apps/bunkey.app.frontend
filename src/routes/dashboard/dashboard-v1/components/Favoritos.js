@@ -605,7 +605,11 @@ this.setState({ alertDialog: false });
                                 </MenuItem>
                                 <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                                   <div className="line-click-derecho  padding-top-click-derecho"></div>
-                                </MenuItem>           
+                                </MenuItem>
+                                <MenuItem onClick={() => this.handleClickDeleteFavoritos(o)} data={{ item: 'item 2' }}>
+                                  <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                                  <span className="padding-click-derecho">Quitar de favoritos</span>
+                                </MenuItem>         
                               </ContextMenu>   
                             </div>
 

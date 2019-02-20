@@ -268,7 +268,7 @@ class Recientes extends Component {
       let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
       let sw = false;
 
-      if (selectObject._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == selectObject._id))) {
+      if ((selectObject && selectObject!==-1 && favorites) && (selectObject._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == selectObject._id)))) {
         sw = true;
       }
 
