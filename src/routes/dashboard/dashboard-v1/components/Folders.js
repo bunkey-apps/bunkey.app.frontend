@@ -889,7 +889,9 @@ class Folders extends Component {
 
                     </ContextMenuTrigger>
 
-                    <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                    {
+                      (n.type !== 'folder') ? 
+                      <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
                       <MenuItem onClick={() => { window.open(n.originalURL, '_blank') }} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
@@ -923,6 +925,41 @@ class Folders extends Component {
                         </MenuItem>
                       }
                     </ContextMenu>
+                    :
+                    <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
+
+                      <MenuItem onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Compartir</span>
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Cambiar Nombre</span>
+                      </MenuItem>
+
+                      <MenuItem  onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Mover</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Agregar a favoritos</span>
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+                      </MenuItem>
+                      {isAdmin &&
+
+                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                          <span className="padding-click-derecho">Eliminar</span>
+                        </MenuItem>
+                      }
+
+                    </ContextMenu>
+                    }
 
                     {(posicion === index && !n.createRowCollapse) &&
                       <div className={"paddin-center-trinagulo-rows"}>

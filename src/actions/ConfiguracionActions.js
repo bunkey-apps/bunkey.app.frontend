@@ -80,7 +80,7 @@ export const addImage = (urlImage,file,tipo,futureFileURL) => (dispatch) => {
     
       var instance = axios.create();
 
-      instance.put(urlImage, file, {headers: {'Content-Type': file.type}})
+      instance.put(urlImage, file, {headers: {'Content-Type': file.type, 'Content-Disposition':'attachment'}})
           .then(function (result) {
               console.log(result);
               dispatch(updateAcountSetting(tipo,futureFileURL));
