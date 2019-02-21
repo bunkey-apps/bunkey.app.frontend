@@ -620,22 +620,22 @@ class Explorar extends Component {
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
     let element = document.getElementById("explorarFavoriteIcon");
     console.log('click favorite', element);
-    // element.classList.remove("text-yellow");
-    // element.classList.remove("text-white");
+    element.classList.remove("text-yellow");
+    element.classList.remove("text-white");
 
-    // if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
-    //   console.log('in if');
+    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+      console.log('in if');
       
-    //   element.classList.remove("text-yellow");
-    //   element.classList.add("text-white");
-    //   this.props.daleteFavoritosExplorar(folder);
-    // }else{
-    //   console.log('in else');
+      element.classList.remove("text-yellow");
+      element.classList.add("text-white");
+      this.props.daleteFavoritosExplorar(folder);
+    }else{
+      console.log('in else');
       
-    //   element.classList.remove("text-white");
-    //   element.classList.add("text-yellow");
-    //   this.props.agregarFavoritos(folder);
-    // }
+      element.classList.remove("text-white");
+      element.classList.add("text-yellow");
+      this.props.agregarFavoritos(folder);
+    }
 
   }
 
