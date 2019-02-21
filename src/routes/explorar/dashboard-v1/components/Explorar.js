@@ -956,7 +956,7 @@ class Explorar extends Component {
                 /**Cheking if object is in favorite */
                 let sw;
                 
-                if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
+                if((favorites)&&(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id)))){
                   sw = 'text-yellow'
                 }else{
                   sw='text-white'

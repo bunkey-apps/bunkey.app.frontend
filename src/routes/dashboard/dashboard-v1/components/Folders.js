@@ -351,7 +351,7 @@ class Folders extends Component {
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
     let element = document.getElementById("folderFavoriteIcon");
 
-    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+    if((favorites)&&(folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
       
       element.classList.remove("text-yellow");
       element.classList.add("text-white");
