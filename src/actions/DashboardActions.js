@@ -319,7 +319,7 @@ export const addFavoritos = (caperta) => (dispatch) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
     });
 
-    instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + caperta._id, {
+    instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
         'object': caperta._id
     })
         .then((response) => {
