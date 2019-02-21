@@ -890,7 +890,7 @@ class Folders extends Component {
                     </ContextMenuTrigger>
 
                     <ContextMenu id={index + 'imagevideo-home'} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                      <MenuItem onClick={() => { window.open(n.originalURL, '_blank', 'download=true') }} data={{ item: { index } }}>
+                      <MenuItem onClick={() => { window.open(n.originalURL, '_blank') }} data={{ item: { index } }}>
                         <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                         <span className="padding-click-derecho">Descargar </span>
                       </MenuItem>
@@ -1048,7 +1048,7 @@ class Folders extends Component {
                                 </div>
 
                                 {selectObject.metadata.licenseFile &&
-                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank') }}>
                                     <a href="javascript:void(0)">
                                       Copy Right: CopyRight.pdf  </a>
                                   </div>

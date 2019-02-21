@@ -454,7 +454,7 @@ class Editar extends Component {
 
 
 
-              <div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank', 'download=true') }}>
+              <div onClick={() => { window.open(this.state.objeto.metadata.licenseFile, '_blank') }}>
                 <a href="javascript:void(0)">
                   {this.state.objeto.metadata.licenseFile}</a>
               </div>

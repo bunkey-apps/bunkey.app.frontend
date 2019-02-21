@@ -971,7 +971,7 @@ class Compartidos extends Component {
                                 </div>
 
                                 {selectObject.metadata.licenseFile &&
-                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank') }}>
                                     <a href="javascript:void(0)">
                                       Copy Right: CopyRight.pdf  </a>
                                   </div>

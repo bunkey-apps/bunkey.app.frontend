@@ -371,7 +371,7 @@ class Recientes extends Component {
 return (o.type === 'image' || o.type === 'video') ?
     <div key={'contex' + num} >
         <ContextMenu id={num + 'imagevideo-recientes'} className="click-derecho-bunkey">
-            <MenuItem onClick={() => { window.open(o.originalURL, '_blank', 'download=true') }} data={{ item: { num } }}>
+            <MenuItem onClick={() => { window.open(o.originalURL, '_blank') }} data={{ item: { num } }}>
                 <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                 <span className="padding-click-derecho">Descargar </span>
             </MenuItem>
@@ -458,7 +458,7 @@ return (o.type === 'image' || o.type === 'video') ?
           } 
           </IconButton>
           <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
-          <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
+          <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
         </div>
         {selectObject !== '-1' &&
           <div>

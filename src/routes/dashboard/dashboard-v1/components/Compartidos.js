@@ -679,7 +679,7 @@ class Compartidos extends Component {
                             <div>
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
                             {selectObject !== '-1' &&
                               <div>
@@ -720,7 +720,7 @@ class Compartidos extends Component {
                                   }
                                 </div>
                                 {selectObject.metadata.licenseFile &&
-                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank') }}>
                                     <a href="javascript:void(0)">
                                       Copy Right: CopyRight.pdf  </a>
                                   </div>
