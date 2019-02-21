@@ -45,6 +45,7 @@ import {
   daleteObject,
   subirArchivo,
   addFavoritos,
+  daleteFavoritos,
   getFavoritos,
   uploadMultipleFile,
   getObjectsByHideID,
@@ -344,15 +345,26 @@ class Folders extends Component {
 
 
   handleClickFavoritos(folder) {
-    console.log('here');
-    
-    var element = document.getElementById("folderFavoriteIcon");
-    element.classList.remove("text-white");
-    console.log('handleClickFavoritos', folder);
-    
-    this.props.addFavoritos(folder);
+
+    console.log('click favorite');
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+    let element = document.getElementById("folderFavoriteIcon");
+
+    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+      
+      element.classList.remove("text-yellow");
+      element.classList.add("text-white");
+      this.props.daleteFavoritos(folder);
+    }else{
+      element.classList.remove("text-white");
+      element.classList.add("text-yellow");
+      this.props.addFavoritos(folder);
+    }
 
   }
+
+
   deleteCustomer() {
     this.setState({ alertDialog: false });
 
@@ -441,9 +453,6 @@ class Folders extends Component {
       // this.state.files = [];
     }
 
-
-
-
   }
 
 
@@ -472,7 +481,6 @@ class Folders extends Component {
       compartirModal: !this.state.compartirModal
     });
   }
-
 
 
   onChangeCustomerDetails(key, value) {
@@ -542,12 +550,7 @@ class Folders extends Component {
     this.refs['player' + id].pause();
   }
 
-  handleClickFavoritos(folder) {
-    console.log('handleClickFavoritos', folder);
-    this.props.addFavoritos(folder);
 
-
-  }
 
   onCollapse(objecto, index) {
     console.log('objecto1', objecto);
@@ -575,13 +578,6 @@ class Folders extends Component {
         this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
       }
-
-
-
-
-
-
-
 
 
 
@@ -823,55 +819,6 @@ class Folders extends Component {
 
           <div className="gallery-wrapper">
             <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
-
-              return n.type === 'folder' ?
-
-
-                <div key={index} className="col-sm-3 col-md-3 col-lg-3">
-                  <ContextMenuTrigger id={index + 'folder-home'} holdToDisplay={1000}>
-                    <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-
-                    <p>{n.name}</p>
-                  </ContextMenuTrigger>
-                  <ContextMenu id={index + 'folder-home'} className="click-derecho-bunkey">
-
-                    <MenuItem onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Compartir</span>
-                    </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
-
-                    <MenuItem  onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                    </MenuItem>
-                    {isAdmin &&
-
-                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                        <span className="padding-click-derecho">Eliminar</span>
-                      </MenuItem>
-                    }
-
-                  </ContextMenu>
-                </div>
-
-
-                : ''
-              })}
               {imageVideos.map((n, index) => {
 
                 
@@ -893,11 +840,7 @@ class Folders extends Component {
                   classFavorite='text-white'
                 }
 
-                
-
-                
-
-                return n.type !== 'folder' ?
+                return n.type ?
 
                   <div key={index} className="col-sm-3 col-md-3 col-lg-3 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + 'imagevideo-home'} holdToDisplay={1000}>
@@ -910,6 +853,14 @@ class Folders extends Component {
                           </div>
                         </GridListTile>
 
+                      }
+                      {
+                        n.type === 'folder' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                              <img onClick={() => this.goToImagenes(n)} className="image-colapse-max-width-height" src={require('../../../../assets/img/folder2.jpg')}/>
+                            </div>
+                          </GridListTile>
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
@@ -1400,5 +1351,20 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, uploadMultipleFile, getObjectsByHideID, uploadMultipleFileDescription, compartirDashboard, moveDashboard, editObjectFolder
+  getUserDetails, 
+  getUserById, 
+  getFolders, 
+  createFolder, 
+  cambiarNombreObject, 
+  daleteObject, 
+  daleteFavoritos, 
+  subirArchivo, 
+  addFavoritos, 
+  getFavoritos, 
+  uploadMultipleFile, 
+  getObjectsByHideID, 
+  uploadMultipleFileDescription, 
+  compartirDashboard, 
+  moveDashboard, 
+  editObjectFolder
 })(Folders));

@@ -21,6 +21,7 @@ import registroReducer from './RegistroReducer';
 import confirmarReducer from './ConfirmarReducer';
 import compartidosReducer from './CompartidosReducer';
 import recuperarReducer from './RecuperarReducer';
+import objectReducer from './ObjectReducer';
 
 
 
@@ -45,9 +46,8 @@ const reducers = combineReducers({
   registro: registroReducer,
   confirmar: confirmarReducer,
   compartidos: compartidosReducer,
-  recuperar: recuperarReducer
-
-
+  recuperar: recuperarReducer,
+  objects: objectReducer,
 });
 
 export default reducers;

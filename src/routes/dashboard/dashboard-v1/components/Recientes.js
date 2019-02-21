@@ -34,7 +34,7 @@ import fileExtension from 'file-extension';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
 // redux action
 import {
-    getRecientes, addFavoritos, compartirDashboard
+    getRecientes, addFavoritos, compartirDashboard, daleteFavoritos
 } from '../../../../actions';
 
 
@@ -195,11 +195,24 @@ class Recientes extends Component {
         }
     
       }
-
       handleClickFavoritos(folder) {
-        console.log('handleClickFavoritos', folder);
-        this.props.addFavoritos(folder);
 
+        console.log('click favorite');
+        /** checking if the object exists in favorites */
+        let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+        let element = document.getElementById("recientesFavoriteIcon");
+    
+        if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+          
+          element.classList.remove("text-yellow");
+          element.classList.add("text-white");
+          this.props.daleteFavoritos(folder);
+        }else{
+          element.classList.remove("text-white");
+          element.classList.add("text-yellow");
+          this.props.addFavoritos(folder);
+        }
+    
       }
 
       handleSubmitCompartir(event) {
@@ -352,7 +365,7 @@ class Recientes extends Component {
                             })}
                         </GridList>
 
-<div>
+              <div>
 {recientes.map((o, num) => {
 
 return (o.type === 'image' || o.type === 'video') ?
@@ -436,12 +449,12 @@ return (o.type === 'image' || o.type === 'video') ?
           <b className="text-white"></b>
           <IconButton onClick={() => this.handleClickFavoritos(selectObject)}>{
             sw &&
-            <i className="zmdi zmdi-star-outline text-yellow"></i>
+            <i id="recientesFavoriteIcon" className="zmdi zmdi-star-outline text-yellow"></i>
       
           }
           {
             !sw &&
-              <i className="zmdi zmdi-star-outline text-white"></i> 
+              <i id="recientesFavoriteIcon" className="zmdi zmdi-star-outline text-white"></i> 
           } 
           </IconButton>
           <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
@@ -486,7 +499,7 @@ return (o.type === 'image' || o.type === 'video') ?
               }
             </div>
             {selectObject.metadata.licenseFile &&
-              <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+              <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank') }}>
                 <a href="javascript:void(0)">
                   Copy Right: CopyRight.pdf  </a>
               </div>
@@ -548,5 +561,8 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default connect(mapStateToProps, {
-    getRecientes, addFavoritos, compartirDashboard
+    getRecientes, 
+    addFavoritos, 
+    compartirDashboard, 
+    daleteFavoritos,
 })(Recientes);

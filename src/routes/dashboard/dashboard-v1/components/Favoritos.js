@@ -110,6 +110,7 @@ class Favoritos extends Component {
   
   componentWillMount() {
     this.props.getFavoritos();
+    
   //  this.props.getFolders();
     //this.props.getUserDetails();
 
@@ -905,5 +906,16 @@ const mapStateToProps = ({ dashboard }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getUserDetails, getUserById, getFolders, createFolder, cambiarNombreObject, daleteObject, subirArchivo, addFavoritos, getFavoritos, daleteFavoritos, getObjectsByHideID,compartirDashboard
+  getUserDetails, 
+  getUserById, 
+  getFolders, 
+  createFolder, 
+  cambiarNombreObject, 
+  daleteObject, 
+  subirArchivo, 
+  addFavoritos, 
+  getFavoritos, 
+  daleteFavoritos, 
+  getObjectsByHideID,
+  compartirDashboard,
 })(Favoritos));

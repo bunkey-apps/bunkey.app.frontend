@@ -20,6 +20,7 @@ export * from './RegistroActions';
 export * from './ConfirmarActions';
 export * from './CompartidosActions';
 export * from './RecuperarActions';
+export * from './ObjectActions';
 
 
 

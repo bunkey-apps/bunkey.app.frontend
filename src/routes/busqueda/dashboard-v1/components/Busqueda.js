@@ -20,6 +20,7 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 import Editar from '../../../../components/editar/Editar';
 import Pagination from "react-js-pagination";
+import _ from 'lodash';
 
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -726,6 +727,20 @@ class Busqueda extends Component {
     })
   }
 
+  orderByType = (array, type) => {
+    let arrayByType = [];
+    let arrayOthers = [];
+    array.map((element)=>{
+      if(element.type == type){
+        arrayByType.push(element)
+      }else{
+        arrayOthers.push(element);
+      }
+    });
+
+    return arrayByType.concat(arrayOthers);
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoSearchModal,totalCount, limit,pageActive } = this.props;
     const { collapse } = this.state;
@@ -776,6 +791,12 @@ class Busqueda extends Component {
       truncateTag = tag.slice(0,4);
     }    
 
+  /**
+   * Solucion Rápida para el problema de collapse descuadrado
+   * Mejorar anes de segunda entrega
+   */
+
+   let objects = this.orderByType(imageVideos, 'folder');
     if (items.length!=0 || imageVideos.length != 0) {
 
       return (
@@ -796,10 +817,7 @@ class Busqueda extends Component {
   
   
                   >
-  
-  
-  
-                    
+
                     <Form onSubmit={this.handleSubmitSearch} className="navbar-fixed-top">
                       <div>
                         <div className="margen-busqueda text-white padding-top-busqueda">
@@ -844,13 +862,7 @@ class Busqueda extends Component {
   
                       </div>
                       </Form>
-                    
-  
-  
-  
-  
-  
-  
+
                   </div>
   
             {loading &&
@@ -859,234 +871,192 @@ class Busqueda extends Component {
               </div>
             }
             <div className="gallery-wrapper">
-              <div className="row row-eq-height text-center">
-                {items.map((n, index) => {
-                  return n.type === 'folder' ?
+            <div className="row row-eq-height text-center">
+            {objects.map((n, index) => {
+                /**Cheking extension file and truncate text*/
+                let ext = fileExtension(n.lowQualityURL)
+                let title = null;
 
-                    <div key={index} className="col-sm-3 col-md-3 col-lg-3">
-                      <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
-                        <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
+                if (n.name.length > 20) {
+                  title = `${n.name.substr(0,20)}... .${ext}`
+                }else{
+                  title = `${n.name}.${ext}`
+                }
 
-                        <p>{n.name}</p>
-                      </ContextMenuTrigger>
-                      <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                        
-                        <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Compartir</span>
-                        </MenuItem>
-                        <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Cambiar Nombre</span>
-                        </MenuItem>
+                /**Cheking if object is in favorite */
+                let sw;
 
-                        <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Mover</span>
-                        </MenuItem>
+                if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
+                  sw = 'text-yellow'
+                }else{
+                  sw='text-white'
+                }
 
-                        <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Agregar a favoritos</span>
-                        </MenuItem>
-                        <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                          <div className="line-click-derecho  padding-top-click-derecho"></div>
+                return n.type ?
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
+                    <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
 
-                        </MenuItem>
-                        {isAdmin && 
-                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                          <span className="padding-click-derecho">Eliminar</span>
-                        </MenuItem>
-                        }
-                      </ContextMenu>
-                    </div>
+                      {n.type === 'image' &&
+                        <GridListTile key={index}>
+                        <div className="heigth-div-objetos">
+                          <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                          </div>
+                        </GridListTile>
 
-
-                    : ''
-                })}
-
-                {imageVideos.map((n, index) => {
-  
-                  let ext = fileExtension(n.lowQualityURL)
-                  let title = null;
-  
-                  if (n.name.length > 20) {
-                    title = `${n.name.substr(0,20)}... .${ext}`
-                  }else{
-                    title = `${n.name}.${ext}`
-                  }
-
-                  /**Cheking if object is in favorite */
-                  let sw;
-
-                  if(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id))){
-                    sw = 'text-yellow'
-                  }else{
-                    sw='text-white'
-                  }
-  
-                  return n.type !== 'folder' ?
-  
-                    <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
-                      <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
-  
-                        {n.type === 'image' &&
-                          <GridListTile key={index}>
-                           <div className="heigth-div-objetos">
-                            <img className="image-colapse-max-width-height" src={n.originalURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-                            </div>
-                          </GridListTile>
-  
-                        }
-                        {n.type === 'video' &&
-                          <GridListTile key={index}>
-                            <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
-                              <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
-                                <BigPlayButton position="center" />
-                                <ControlBar disableDefaultControls={true} />
-                                <source src={n.originalURL} />
-                              </Player>
-  
-                            </div>
-  
-                          </GridListTile>
-  
-                        }
-                        {
-                          n.type === 'document' &&
-                            <GridListTile key={index}>
-                              <div className="heigth-div-objetos">
-                              <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
-                              </div>
-                            </GridListTile>
-                        }
-                        
-                        <p className="color-texto-carpetas-explorar">{title}</p>
-  
-  
-                      </ContextMenuTrigger>
-  
-                      <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
-                        <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
-                          <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Descargar </span>
-                        </MenuItem>
-                        <MenuItem   onClick={() => this.abrirCompartir(n)}  data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Compartir</span>
-                        </MenuItem>
-                        <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Editar</span>
-                        </MenuItem>
-  
-                        <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Mover</span>
-                        </MenuItem>
-  
-                        <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                          <span className="padding-click-derecho">Agregar a favoritos</span>
-                        </MenuItem>
-                        <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                          <div className="line-click-derecho  padding-top-click-derecho"></div>
-  
-                        </MenuItem>
-                        {isAdmin && 
-                        <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                          <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                          <span className="padding-click-derecho">Eliminar</span>
-                        </MenuItem>
-                        }
-                      </ContextMenu>
-  
-                      {(posicion === index && !n.createRowCollapse) &&
-                        <div className={"paddin-center-trinagulo-rows"}>
-                          <div className="triangulo-equilatero-bottom"></div>
-                        </div>
                       }
-                      {n.createRowCollapse &&
-  
-                        <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
-                          style={{ marginLeft: n.marginLeft }}
-  
+                      {
+                        n.type === 'folder' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                              <img onClick={() => this.goToImagenes(n)} className="image-colapse-max-width-height" src={require('../../../../assets/img/folder2.jpg')}/>
+                            </div>
+                          </GridListTile>
+                      }
+                      {n.type === 'video' &&
+                        <GridListTile key={index}>
+                          <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                            <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
+                              <BigPlayButton position="center" />
+                              <ControlBar disableDefaultControls={true} />
+                              <source src={n.lowQualityURL} />
+                            </Player>
+
+                          </div>
+
+                        </GridListTile>
+
+                      }
+                      {
+                        n.type === 'document' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                            <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            </div>
+                          </GridListTile>
+                      }
+                      
+                      <p className="color-texto-carpetas-explorar">{title}</p>
+
+
+                    </ContextMenuTrigger>
+
+                    <ContextMenu id={index + ''} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                      <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
+                        <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Descargar </span>
+                      </MenuItem>
+                      <MenuItem   onClick={() => this.abrirCompartir(n)}  data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Compartir</span>
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleClickEditObject(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Editar</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Mover</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                        <span className="padding-click-derecho">Agregar a favoritos</span>
+                      </MenuItem>
+
+                      <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                        <div className="line-click-derecho  padding-top-click-derecho"></div>
+
+                      </MenuItem>
+                      {isAdmin && 
+                      <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
+                        <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                        <span className="padding-click-derecho">Eliminar</span>
+                      </MenuItem>
+                      }
+                    </ContextMenu>
+
+                    {(posicion === index && !n.createRowCollapse) &&
+                      <div className={"paddin-center-trinagulo-rows"}>
+                        <div className="triangulo-equilatero-bottom"></div>
+                      </div>
+                    }
+                    {n.createRowCollapse &&
+
+                      <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+                        style={{ marginLeft: n.marginLeft }}
+
+                      >
+
+                        {(posicion === index && n.createRowCollapse) &&
+                          <div className="padding-left-first-row-collapse-triangulo">
+                            <div className="triangulo-equilatero-bottom"></div>
+                          </div>
+
+                        }
+
+                        <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+
+
                         >
-  
-                          {(posicion === index && n.createRowCollapse) &&
-                            <div className="padding-left-first-row-collapse-triangulo">
-                              <div className="triangulo-equilatero-bottom"></div>
+
+                          <div className="col-sm-2 col-md-1 col-lg-2">
+                            <div className="volver-collap-video-image-left">
+                              <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+
                             </div>
-  
-                          }
-  
-                          <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
-  
-  
-                          >
-  
-                            <div className="col-sm-2 col-md-1 col-lg-2">
-                              <div className="volver-collap-video-image-left">
-                                <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
-  
-                              </div>
-  
+
+                          </div>
+                          <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
+                            
+                              {tipoObject === 'image' && collapse === n.rowCollapse &&
+
+                                <img className="image-colapse-max-width-height" src={selectObject.mediaQualityURL}></img>
+
+                              }
+
+                              {tipoObject === 'video' && collapse === n.rowCollapse &&
+
+                                <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
+                                  <BigPlayButton position="center" />
+                                  <source src={selectObject.mediaQualityURL} />
+                                </Player>
+                              }
+                              {
+                                tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
+                              }
+                          </div>
+                          <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                          <div>
+                          <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                          <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+
+                          </div>
+                            <div className="fondo-videos-padding-top-desc">
+                              <h3 className="text-white">{author}</h3>
                             </div>
-                            <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
-                              
-                                {tipoObject === 'image' &&
-  
-                                  <img className="image-colapse-max-width-height" src={urlVideo}></img>
-  
-                                }
-  
-  
-                                {tipoObject === 'video' && collapse === n.rowCollapse &&
-  
-                                  <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
-                                    <BigPlayButton position="center" />
-                                    <source src={urlVideo} />
-                                  </Player>
-                                }
-                                {
-                                  tipoObject === 'document'  && collapse === n.rowCollapse &&
-                                  <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
-                                }
-                              
-                            </div>
-                            <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
                             <div>
-                            <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
-                            <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
-  
+                              <b className="text-white"></b>
+                              <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
+
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
+                              <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
-                              <div className="fondo-videos-padding-top-desc">
-                                <h3 className="text-white">{author}</h3>
-  
-                              </div>
+
+
+
+                            {selectObject !== '-1' &&
                               <div>
-                                <b className="text-white"></b>
-                                <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
-  
-                                <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
-                                <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
-                                <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
-                              </div>
-  
-  
-  
-                              {selectObject !== '-1' &&
-                                <div>
                                 <div>
                                   {
                                     truncateTag.length > 0 && 
                                     <Fragment>
-                                     {
+                                    {
                                         truncateTag.map((tags, numTag) => (
                                           <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
                                         ))
-                                        
                                       }
                                       <button type="button" onClick={this.onShowMore} class="btn btn-sm btn-outline-light">Ver más</button>
                                     </Fragment>
@@ -1097,54 +1067,58 @@ class Busqueda extends Component {
                                     ))
                                   }
                                 </div>
-                                  <div>
-                                    {selectObject.metadata.copyRight === 'free' &&
-                                      <span className="text-white">Copy Right: Libre</span>
-                                    }
-  
-                                    {selectObject.metadata.copyRight === 'limited' &&
-                                      <span className="text-white">Copy Right: Limitado</span>
-                                    }
-                                    {selectObject.metadata.copyRight === 'own' &&
-                                      <span className="text-white">Copy Right: Propio</span>
-                                    }
-  
-                                  </div>
-                                  <div>
-                                    {selectObject.metadata.createdDate &&
-                                      <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
-                                    }
-                                  </div>
-  
-                                  {selectObject.metadata.licenseFile &&
-                                    <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
-                                      <a href="javascript:void(0)">
-                                        Copy Right: CopyRight.pdf  </a>
-                                    </div>
+                                <div>
+                                  {selectObject.metadata.copyRight === 'free' &&
+                                    <span className="text-white">Copy Right: Libre</span>
                                   }
-  
-  
+
+                                  {selectObject.metadata.copyRight === 'limited' &&
+                                    <span className="text-white">Copy Right: Limitado</span>
+                                  }
+                                  {selectObject.metadata.copyRight === 'own' &&
+                                    <span className="text-white">Copy Right: Propio</span>
+                                  }
+
                                 </div>
-                              }
-  
-  
-                              <div className=" ">
-  
-  
+                                <div>
+                                  {selectObject.metadata.createdDate &&
+                                    <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                  }
+                                </div>
+
+                                {selectObject.metadata.licenseFile &&
+                                  <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank', 'download=true') }}>
+                                    <a href="javascript:void(0)">
+                                      Copy Right: CopyRight.pdf  </a>
+                                  </div>
+                                }
+
+
                               </div>
-  
+                            }
+
+                            <div className=" ">
+
+
                             </div>
-  
+
                           </div>
-  
-                        </Collapse>
-                      }
-  
-  
-                    </div>
-  
-                    : ''
+
+                        </div>
+
+                      </Collapse>
+                    }
+
+
+                  </div>
+
+                  : ''
+
                 })}
+
+            </div>
+              <div className="row row-eq-height text-center">
+ 
   
               </div>
             </div>
@@ -1423,18 +1397,13 @@ class Busqueda extends Component {
 
 
           >
-              
                   <Form onSubmit={this.handleSubmitSearch}>
                     <div>
                       <div className="margen-busqueda text-white padding-top-busqueda">
                         <h3><b className="text-white">Encuentra tu contenido de forma simple</b></h3>
                         <p className="text-white">Busca por palabra, frase o palabras compuestas</p>
                       </div>
-
-
                       <div>
-
-
                         <div className="row">
                           <div className="input-group col-md-6 padding-bottom-busqueda padding-left-input-search">
 
@@ -1468,13 +1437,6 @@ class Busqueda extends Component {
 
                     </div>
                     </Form>
-                  
-
-
-
-
-
-
                 </div>
 
           {loading &&

@@ -53,7 +53,8 @@ import {
   uploadExplorarMultipleFileDescription,
   compartirExplorar,
   moveExplorar,
-  editObjectExplorar
+  editObjectExplorar,
+  daleteFavoritosExplorar,
 } from '../../../../actions';
 
 moment.locale('es');
@@ -614,14 +615,33 @@ class Explorar extends Component {
   }
 
   handleClickFavoritos(folder) {
-    console.log('handleClickFavoritos', folder);
-    this.props.agregarFavoritos(folder);
 
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+    let element = document.getElementById("explorarFavoriteIcon");
+    console.log('click favorite', element);
+    // element.classList.remove("text-yellow");
+    // element.classList.remove("text-white");
+
+    // if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+    //   console.log('in if');
+      
+    //   element.classList.remove("text-yellow");
+    //   element.classList.add("text-white");
+    //   this.props.daleteFavoritosExplorar(folder);
+    // }else{
+    //   console.log('in else');
+      
+    //   element.classList.remove("text-white");
+    //   element.classList.add("text-yellow");
+    //   this.props.agregarFavoritos(folder);
+    // }
 
   }
 
   onCollapse(objecto, index) {
-    console.log('objecto', objecto);
+    console.log('object_id', objecto);
+    console.log('object_index', index);
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
@@ -780,6 +800,20 @@ class Explorar extends Component {
     })
   }
 
+  orderByType = (array, type) => {
+    let arrayByType = [];
+    let arrayOthers = [];
+    array.map((element)=>{
+      if(element.type == type){
+        arrayByType.push(element)
+      }else{
+        arrayOthers.push(element);
+      }
+    });
+
+    return arrayByType.concat(arrayOthers);
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoModal } = this.props;
     const { collapse } = this.state;
@@ -832,6 +866,13 @@ class Explorar extends Component {
     console.log('truncateTag',truncateTag);
     console.log('tag', tag);
     
+  /**
+   * Solucion Rápida para el problema de collapse descuadrado
+   * Mejorar anes de segunda entrega
+   */
+
+  let objects = imageVideos;
+  
     
   
     return (
@@ -897,59 +938,10 @@ class Explorar extends Component {
               <CircularProgress />
             </div>
           }
-          <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
 
-              return n.type === 'folder' ?
-
-
-
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                  <ContextMenuTrigger id={index + 'folder'} holdToDisplay={1000}>
-                    <img onClick={() => this.goToImagenes(n)} src={require('../../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-
-                    <p>{n.name}</p>
-                  </ContextMenuTrigger>
-                  <ContextMenu id={index + 'folder'} className="click-derecho-bunkey">
-                    
-                    <MenuItem  onClick={() => this.abrirCompartir(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Compartir</span>
-                    </MenuItem>
-                    <MenuItem onClick={() => this.handleClickChangeName(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Cambiar Nombre</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickMove(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Mover</span>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => this.handleClickFavoritos(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                      <span className="padding-click-derecho">Agregar a favoritos</span>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                      <div className="line-click-derecho  padding-top-click-derecho"></div>
-
-                    </MenuItem>
-                    {isAdmin && 
-                    <MenuItem onClick={() => this.handleClickDelete(n)} data={{ item: 'item 2' }}>
-                      <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                      <span className="padding-click-derecho">Eliminar</span>
-                    </MenuItem>
-                    }
-                  </ContextMenu>
-                </div>
-
-
-                : ''
-            })}
-          </div>
           <div className="gallery-wrapper">
             <div className="row row-eq-height text-center">
-              {imageVideos.map((n, index) => {
+              {objects.map((n, index) => {
 
                 /**Cheking extension file and truncate text*/
                 let ext = fileExtension(n.lowQualityURL)
@@ -970,10 +962,7 @@ class Explorar extends Component {
                   sw='text-white'
                 }
 
-                
-                
-                return n.type !== 'folder' ?
-
+                return n.type ?
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
 
@@ -984,6 +973,14 @@ class Explorar extends Component {
                           </div>
                         </GridListTile>
 
+                      }
+                      {
+                        n.type === 'folder' &&
+                          <GridListTile key={index}>
+                            <div className="heigth-div-objetos">
+                              <img onClick={() => this.goToImagenes(n)} className="image-colapse-max-width-height" src={require('../../../../assets/img/folder2.jpg')}/>
+                            </div>
+                          </GridListTile>
                       }
                       {n.type === 'video' &&
                         <GridListTile key={index}>
@@ -1099,7 +1096,6 @@ class Explorar extends Component {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
                                 <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
-                            
                           </div>
                           <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
                           <div>
@@ -1114,7 +1110,7 @@ class Explorar extends Component {
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
 
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank', 'download=true') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -1184,22 +1180,10 @@ class Explorar extends Component {
                     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                   </div>
 
                   : ''
+
               })}
 
             </div>
@@ -1457,5 +1441,18 @@ const mapStateToProps = ({ explorar }) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar, editObjectExplorar
+  getObjects, 
+  createObject, 
+  cambiarObject, 
+  removeObject, 
+  uploadArchivo, 
+  getObjectsByID, 
+  agregarFavoritos, 
+  uploadExplorarMultipleFile, 
+  getObjectsByHideID, 
+  uploadExplorarMultipleFileDescription, 
+  compartirExplorar, 
+  moveExplorar, 
+  editObjectExplorar,
+  daleteFavoritosExplorar
 })(Explorar));

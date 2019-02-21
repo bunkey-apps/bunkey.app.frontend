@@ -17,7 +17,19 @@ import {
 // app config
 import AppConfig from '../constants/AppConfig';
 
+const orderByType = (array, type) => {
+    let arrayByType = [];
+    let arrayOthers = [];
+    array.map((element)=>{
+      if(element.type == type){
+        arrayByType.push(element)
+      }else{
+        arrayOthers.push(element);
+      }
+    });
 
+    return arrayByType.concat(arrayOthers);
+  }
 
 export const getSearch = (page) => (dispatch) => {
     dispatch({ type: GET_SEARCH });
@@ -61,8 +73,9 @@ export const getSearch = (page) => (dispatch) => {
             var cont = 0;
             var collapseRows = 0;
             if(response.data){
+                response.data = orderByType(response.data,'folder')
                 for(var i=0;i<response.data.length;i++){
-                    if(response.data[i].type !== 'folder'){
+                    if(response.data[i].type){
                         
                         if(cont === 4){
                             cont = 0;

@@ -43,7 +43,19 @@ import AppConfig from '../constants/AppConfig';
 
 
 
+const orderByType = (array, type) => {
+    let arrayByType = [];
+    let arrayOthers = [];
+    array.map((element)=>{
+      if(element.type == type){
+        arrayByType.push(element)
+      }else{
+        arrayOthers.push(element);
+      }
+    });
 
+    return arrayByType.concat(arrayOthers);
+}
 
 /**
  * Redux Action To Get Contratos
@@ -323,6 +335,7 @@ export const addFavoritos = (caperta) => (dispatch) => {
 
 export const daleteFavoritos = (caperta) => (dispatch) => {
     dispatch({ type: ADD_FAVORITOS });
+    NotificationManager.success('Eliminando en favoritos...');
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -344,6 +357,7 @@ export const daleteFavoritos = (caperta) => (dispatch) => {
     })
         .then((response) => {
             console.log('response daleteFavoritos', response);
+            NotificationManager.success('Eliminado de favoritos');
             dispatch(getFavoritos());
         })
         .catch(error => {
@@ -387,8 +401,7 @@ export const getFavoritos = () => (dispatch) => {
                         //      cont = 0;
                         //      collapseRows ++;
                         //  }
- 
- 
+
                         //  if(cont === 0){
                         //      response.data.children[i].marginLeft = '0%';
                         //      response.data.children[i].paddingLeft = '10%';
@@ -455,15 +468,15 @@ export const getFolders = () => (dispatch) => {
             var cont = 0;
             var collapseRows = 0;
             var tipoArr = [];
-            if(response.data.children){
-                for(var i=0;i<response.data.children.length;i++){
-                    if(response.data.children[i].type !== 'folder'){
-                        console.log('response.data.children[i]',response.data.children[i]);
-                        
+            let data = orderByType(response.data.children,'folder');
+            if(data){
+                for(var i=0;i<data.length;i++){
 
-                         tipoArr = response.data.children[i].originalURL.split('.');
-                         console.log('tipoArr',tipoArr);
-                         response.data.children[i].extentionObject = response.data.children[i].name + '.' +  tipoArr[tipoArr.length -1];
+                        if(data[i].type !== 'folder'){
+                            tipoArr = data[i].originalURL.split('.');
+                            data[i].extentionObject = data[i].name + '.' +  tipoArr[tipoArr.length -1];
+                        }
+
                         if(cont === 4){
                             cont = 0;
                             collapseRows ++;
@@ -471,29 +484,28 @@ export const getFolders = () => (dispatch) => {
 
 
                         if(cont === 0){
-                            response.data.children[i].marginLeft = '0%';
-                            response.data.children[i].paddingLeft = '10%';
-                            response.data.children[i].createRowCollapse = true;
+                            data[i].marginLeft = '0%';
+                            data[i].paddingLeft = '10%';
+                            data[i].createRowCollapse = true;
                             
                         }
                         if(cont === 1){
-                            response.data.children[i].marginLeft = '-110%';
-                            response.data.children[i].paddingLeft = '36%';
+                            data[i].marginLeft = '-110%';
+                            data[i].paddingLeft = '36%';
                         }
                         if(cont === 2){
-                            response.data.children[i].marginLeft = '-220%';
-                            response.data.children[i].paddingLeft = '62%';
+                            data[i].marginLeft = '-220%';
+                            data[i].paddingLeft = '62%';
                         }
                         if(cont === 3){
-                            response.data.children[i].marginLeft = '-330%';
-                            response.data.children[i].paddingLeft = '87%';
+                            data[i].marginLeft = '-330%';
+                            data[i].paddingLeft = '87%';
                         }
-                        response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+                        data[i].rowCollapse = 'collapse' + collapseRows;
 
-                        arrImageVideo.push(response.data.children[i]);
+                        arrImageVideo.push(data[i]);
                         cont++;
                     }
-                }
                 
             }
             console.log('arrImageVideo333',arrImageVideo);

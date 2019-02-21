@@ -49,9 +49,6 @@ export const getObjectsByHideID = (idUrl) => (dispatch) => {
         }
     }
 
-   
-
-
     var instance2 = axios.create({
         baseURL: AppConfig.baseURL,
         timeout: AppConfig.timeout,
@@ -69,6 +66,20 @@ export const getObjectsByHideID = (idUrl) => (dispatch) => {
            
         })
 }
+
+const orderByType = (array, type) => {
+    let arrayByType = [];
+    let arrayOthers = [];
+    array.map((element)=>{
+      if(element.type == type){
+        arrayByType.push(element)
+      }else{
+        arrayOthers.push(element);
+      }
+    });
+
+    return arrayByType.concat(arrayOthers);
+  }
 
 
 export const getObjectsByID = (idUrl) => (dispatch) => {
@@ -107,8 +118,9 @@ export const getObjectsByID = (idUrl) => (dispatch) => {
             var cont = 0;
             var collapseRows = 0;
             if(response.data.children){
+                response.data.children = orderByType(response.data.children, 'folder');
                 for(var i=0;i<response.data.children.length;i++){
-                    if(response.data.children[i].type !== 'folder'){
+                    if(response.data.children[i].type){
                         console.log('response.data.children[i]',response.data.children[i]);
                         
                         if(cont === 4){
@@ -189,8 +201,9 @@ export const getObjects = () => (dispatch) => {
             var cont = 0;
             var collapseRows = 0;
             if(response.data.children){
+                response.data.children = orderByType(response.data.children,'folder');
                 for(var i=0;i<response.data.children.length;i++){
-                    if(response.data.children[i].type !== 'folder'){
+                    if(true){//response.data.children[i].type
                         console.log('response.data.children[i]',response.data.children[i]);
                         
                         if(cont === 4){
@@ -218,6 +231,7 @@ export const getObjects = () => (dispatch) => {
                             response.data.children[i].paddingLeft = '87%';
                         }
                         response.data.children[i].rowCollapse = 'collapse' + collapseRows;
+
 
                         arrImageVideo.push(response.data.children[i]);
                         cont++;
@@ -526,6 +540,7 @@ export const obtenerFavoritos = () => (dispatch) => {
     instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites')
         .then((response) => {
             console.log('response getFavoritos', response);
+            localStorage.setItem("objectFavorites", JSON.stringify(response.data));
             cargarMenuFavoritosExplorar(response.data.children);
             dispatch({ type: AGREGAR_FAVORITOS_SUCCES});
         })
@@ -533,6 +548,10 @@ export const obtenerFavoritos = () => (dispatch) => {
             dispatch({ type: AGREGAR_FAVORITOS_FAILURE });
         })
 }
+
+
+
+
 
 export const agregarFavoritos = (caperta) => (dispatch) => {
     dispatch({ type: AGREGAR_FAVORITOS });
@@ -567,7 +586,37 @@ export const agregarFavoritos = (caperta) => (dispatch) => {
         })
 }
 
+export const daleteFavoritosExplorar = (caperta) => (dispatch) => {
+    dispatch({ type: AGREGAR_FAVORITOS });
+    NotificationManager.success('Eliminando en favoritos...');
+    const token = localStorage.getItem('user_id');
 
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    console.log('daleteFavoritos',caperta);
+
+    instance2.delete('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        data: {'target': caperta._id}
+    })
+        .then((response) => {
+            console.log('response daleteFavoritos', response);
+            NotificationManager.success('Eliminado de favoritos');
+            dispatch(obtenerFavoritos());
+        })
+        .catch(error => {
+            dispatch({ type: AGREGAR_FAVORITOS_FAILURE});
+        })
+}
 
 
 
@@ -754,7 +803,7 @@ export const addExplorarFile = (urlImage, file, futureFileURL, tipo, guid, posit
 
     var instance = axios.create();
 
-    instance.put(urlImage, file, { headers: { 'Content-Type': file.type } })
+    instance.put(urlImage, file, { headers: { 'Content-Type': file.type, 'Content-Disposition':'attachment'} })
         .then(function (result) {
             console.log(result);
             dispatch(updateExplorarFile(futureFileURL, tipo, guid, file, position, files, objetoDesc, folder, client))
