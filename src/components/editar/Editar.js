@@ -56,8 +56,7 @@ class Editar extends Component {
 
   constructor(props) {
     super(props)
-
-    console.log('props', props.objectoPending);
+    console.log('ConstructorProps',props.objectoPending);
     var arrTag = [];
     var aux = {};
     for (var i = 0; i < props.objectoPending.metadata.descriptiveTags.length; i++) {
@@ -301,6 +300,7 @@ class Editar extends Component {
     this.props.closeObjectExplorar();
     this.props.closeObjectFolder();
     this.props.closeObjectSearch();
+    this.props.closeObjectRecent();
 
 
 

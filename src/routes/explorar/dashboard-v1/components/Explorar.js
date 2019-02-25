@@ -1105,7 +1105,7 @@ class Explorar extends Component {
                     {n.createRowCollapse &&
 
                       <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
-                        style={{ marginLeft: n.marginLeft }}
+                        style={{ marginLeft: n.marginLeft }} tabIndex={-1} onBlur={this.closeCollapse}
 
                       >
 
@@ -1472,7 +1472,7 @@ class Explorar extends Component {
       }
 
       {editarObjetoModal &&
-            <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName} />
+        <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName} />
 
       }
 

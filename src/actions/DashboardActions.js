@@ -565,6 +565,7 @@ export const cambiarNombreObject = (caperta) => (dispatch) => {
         .then((response) => {
             console.log('response GET_FOLDERS_SUCCES', response);
             dispatch(getFolders());
+            dispatch(getRecientes());
         })
         .catch(error => {
             // error handling
@@ -591,6 +592,7 @@ export const daleteObject = (caperta) => (dispatch) => {
         .then((response) => {
             console.log('response DELETE_FOLDERS_SUCCES', response);
             dispatch(getFolders());
+            dispatch(getRecientes());
         })
         .catch(error => {
             // error handling

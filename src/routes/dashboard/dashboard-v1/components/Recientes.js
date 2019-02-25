@@ -17,6 +17,7 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { Collapse } from 'reactstrap';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import Editar from '../../../../components/editar/Editar';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -34,7 +35,13 @@ import fileExtension from 'file-extension';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
 // redux action
 import {
-    getRecientes, addFavoritos, compartirDashboard, daleteFavoritos, getPendingObjectDashboard
+    getRecientes, 
+    addFavoritos, 
+    compartirDashboard, 
+    daleteFavoritos, 
+    getPendingObjectDashboard,
+    daleteObject,
+    editObjectFolder,
 } from '../../../../actions';
 
 
@@ -58,8 +65,10 @@ class Recientes extends Component {
     constructor() {
         super()
         this.state = {
+            editarObjetoFolderModal: false,
             isAdmin: false,
             collapse: '-1',
+            compartirModal:false,
             posicion: -1,
             tipoObject: '',
             urlVideo: '',
@@ -69,7 +78,13 @@ class Recientes extends Component {
             correoCompartir: '',
             idObjectCompartir: '',
             isOpenModalTag: false,
-            isFavorite:'text-white'
+            isFavorite:'text-white',
+            isMoveObject: false,
+            selectedDeletedCustomer:null,
+            alertDialog: false,
+            editCustomerModal: false,
+            editCustomer:null,
+            addNewCustomerForm:false,
 
         }
 
@@ -99,7 +114,7 @@ class Recientes extends Component {
         this.refs['playerRecientes' + id].pause();
     }
 
-  
+
     onCollapse(objecto, index) {
 
       let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
@@ -228,6 +243,20 @@ class Recientes extends Component {
     
       }
 
+      handleClickDelete(customer) {
+        console.log('delete');
+        
+        this.setState({ alertDialog: true, selectedDeletedCustomer: customer });
+      }
+
+      async deleteCustomer() {
+        this.setState({ alertDialog: false });
+    
+        console.log('this.state.selectedDeletedCustomer', this.state.selectedDeletedCustomer);
+        await this.props.daleteObject(this.state.selectedDeletedCustomer);
+
+      }
+
       handleSubmitCompartir(event) {
         event.preventDefault();
         this.onSubmitCompartirForm();
@@ -246,9 +275,8 @@ class Recientes extends Component {
           correoCompartir: '',
           idObjectCompartir: n._id
         });
-    
-       
       }
+
       onSubmitCompartirForm() {
         
         console.log('idObjectCompartir',this.state.idObjectCompartir);
@@ -276,6 +304,36 @@ class Recientes extends Component {
         isOpenModalTag:false
       })
     }
+
+    toggleEditCustomerModal = () => {
+      this.setState({
+        editCustomerModal: !this.state.editCustomerModal
+      });
+    }
+
+    handleClickEditObjectRecents(object){
+      object.from = "folders";
+      console.log('objectEditErnesto',object);
+      
+      
+      this.setState({ objectoEditRecent: object, editarObjetoFolderModal: true });
+    }
+
+    closeObjectRecent = ()=>{
+      this.setState({ editarObjetoFolderModal: false });
+    }
+
+    
+  handleClickChangeName(folder) {
+    console.log('handleClickChangeName', folder);
+    this.onEditCustomer(folder);
+    // this.props.cambiarNombreObject(folder, 'test');
+
+  }
+
+  onEditCustomer(customer) {
+    this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
+  }
 
     truncateTitle = (name,src,type) => {
 
@@ -314,6 +372,16 @@ class Recientes extends Component {
         const { selectObject } = this.state;
         const { compartirModal } = this.state;
         const { correoCompartir } = this.state;
+        const { alertDialog } = this.state;
+        const {editCustomerModal} = this.state;
+        const {addNewCustomerForm} = this.state;
+        const {editCustomer} = this.state;
+        const { objectoEditRecent } = this.state;
+
+        console.log('Ernesto2',objectoEditRecent);
+        
+
+
 
       /** checking if the object exists in favorites */
       let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
@@ -400,49 +468,48 @@ class Recientes extends Component {
                         </GridList>
 
               <div>
-{recientes.map((o, num) => {
+              {recientes.map((o, num) => {
 
-return (o.type === 'image' || o.type === 'video') ?
-    <div key={'contex' + num} >
-        <ContextMenu id={num + 'imagevideo-recientes'} className="click-derecho-bunkey">
-            <MenuItem onClick={() => { window.open(o.originalURL, '_blank') }} data={{ item: { num } }}>
-                <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                <span className="padding-click-derecho">Descargar </span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                <span className="padding-click-derecho">Compartir</span>
-            </MenuItem>
-            <MenuItem onClick={() => this.handleClickChangeName(o)} data={{ item: 'item 2' }}>
-                <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                <span className="padding-click-derecho">Cambiar Nombre</span>
-            </MenuItem>
+              return (o.type === 'image' || o.type === 'video') ?
+                  <div key={'contex' + num} >
+                      <ContextMenu id={num + 'imagevideo-recientes'} className="click-derecho-bunkey">
+                          <MenuItem onClick={() => { window.open(o.originalURL, '_blank') }} data={{ item: { num } }}>
+                              <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                              <span className="padding-click-derecho">Descargar </span>
+                          </MenuItem>
+                          <MenuItem onClick={() => this.abrirCompartir(o)} data={{ item: 'item 2' }}>
+                              <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                              <span className="padding-click-derecho">Compartir</span>
+                          </MenuItem>
+                          <MenuItem onClick={() => this.handleClickEditObjectRecents(o)} data={{ item: 'item 2' }}>
+                              <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                              <span className="padding-click-derecho">Editar</span>
+                          </MenuItem>
+                          <MenuItem onClick={() => this.handleClickChangeName(o)} data={{ item: 'item 2' }}>
+                              <i className="zmdi zmdi-edit color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                              <span className="padding-click-derecho">Cambiar Nombre</span>
+                          </MenuItem>
+                          <MenuItem onClick={() => this.handleClickFavoritos(o)} data={{ item: 'item 2' }}>
+                              <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                              <span className="padding-click-derecho">Agregar a favoritos</span>
+                          </MenuItem>
+                          <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
+                              <div className="line-click-derecho  padding-top-click-derecho"></div>
 
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                <i className="zmdi zmdi-long-arrow-tab color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                <span className="padding-click-derecho">Mover</span>
-            </MenuItem>
-            <MenuItem onClick={() => this.handleClickFavoritos(o)} data={{ item: 'item 2' }}>
-                <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
-                <span className="padding-click-derecho">Agregar a favoritos</span>
-            </MenuItem>
-            <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
-                <div className="line-click-derecho  padding-top-click-derecho"></div>
+                          </MenuItem>
+                          {isAdmin &&
+                              <MenuItem onClick={() => this.handleClickDelete(o)} data={{ item: 'item 2' }}>
+                                  <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
+                                  <span className="padding-click-derecho">Eliminar</span>
+                              </MenuItem>
+                          }
+                      </ContextMenu>      
+                  </div>
 
-            </MenuItem>
-            {isAdmin &&
-                <MenuItem onClick={() => this.handleClickDelete(o)} data={{ item: 'item 2' }}>
-                    <i className="zmdi ti-trash color-header-bunkey padding-click-derecho padding-top-click-derecho padding-bottom-click-derecho"></i>
-                    <span className="padding-click-derecho">Eliminar</span>
-                </MenuItem>
-            }
-        </ContextMenu>      
-    </div>
+                  : ''
 
-    : ''
-
-})}
-</div>
+              })}
+              </div>
 
   <Collapse isOpen={collapse === rowCollapseNum} className="anchoCollapseRecientes padding-top-triangulo-collapse">
     <div ref={selectObject.rowCollapse}  className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
@@ -481,6 +548,7 @@ return (o.type === 'image' || o.type === 'video') ?
         </div>
         <div>
           <b className="text-white"></b>
+          <IconButton onClick={() => this.handleClickEditObjectRecents(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
           <IconButton onClick={() => this.handleClickFavoritos(selectObject)}>
             <i id="recientesFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isFavorite}`}></i>
           </IconButton>
@@ -538,8 +606,89 @@ return (o.type === 'image' || o.type === 'video') ?
       </div>
     </div>
   </Collapse>                  
-                    </div>                    
-                </RctCollapsibleCard>
+  </div>                    
+</RctCollapsibleCard>
+
+        <Dialog
+          open={alertDialog}
+          onClose={this.handleClose}
+        >
+          <DialogTitle>{"Estas seguro de eliminarlo?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Estas seguro de eliminarlo de forma permanente.
+                        </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="raised"  className="btn-danger text-white">
+              <IntlMessages id="button.cancel" />
+            </Button>
+            <Button variant="raised" onClick={() => this.deleteCustomer()} className="btn-primary text-white" autoFocus>
+              <IntlMessages id="button.yes" />
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {editCustomerModal &&
+          <Modal
+            isOpen={editCustomerModal}
+            toggle={this.toggleEditCustomerModal}
+          >
+            <ModalHeader toggle={this.toggleEditCustomerModal}>
+              {addNewCustomerForm ? 'Crear Carpeta' : 'Cambiar Nombre'}
+            </ModalHeader>
+            <ModalBody>
+              {addNewCustomerForm ?
+                <Form id="formAdd" onSubmit={this.handleSubmitAdd}>
+                  <FormGroup>
+                    <Label for="name">Nombre</Label>
+                    <Input
+                      autofocus="true"
+                      required="true"
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={addNewCustomerDetails.name}
+                      onChange={(e) => this.onChangeCustomerAddNewForm('name', e.target.value)}
+                    />
+                  </FormGroup>
+
+
+                </Form>
+                : <Form id="formEdit" onSubmit={this.handleSubmitEdit} >
+                  <FormGroup>
+                    <Label for="name">Nombre</Label>
+                    <Input
+                    autofocus="true"
+                      required="true"
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={editCustomer.name}
+                      onChange={(e) => this.onChangeCustomerDetails('name', e.target.value)}
+                    />
+                  </FormGroup>
+
+                </Form>
+              }
+            </ModalBody>
+            <ModalFooter>
+              {addNewCustomerForm ?
+                <div>
+                  <Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+                  <Button form="formAdd" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.add" /></Button>{' '}
+                </div>
+                : <div><Button variant="raised" className="btn-danger text-white alert-botton-cancel-margin" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+                  <Button form="formEdit" type="submit" variant="raised" className="btn-primary text-white"><IntlMessages id="button.update" /></Button>{' '}</div>
+              }
+
+
+            </ModalFooter>
+          </Modal>
+        }
+
+
+
 
           {compartirModal &&
           <Modal
@@ -570,6 +719,10 @@ return (o.type === 'image' || o.type === 'video') ?
             </ModalFooter>
           </Modal>
         }
+
+      {this.state.editarObjetoFolderModal &&
+        <Editar key="editarRecientes" closeObjectRecent={this.closeObjectRecent} objectoPending={objectoEditRecent} changeName={this.changeName}/>
+      }
         
     <ModalTag
       isOpen={this.state.isOpenModalTag}
@@ -577,6 +730,8 @@ return (o.type === 'image' || o.type === 'video') ?
       Tags={tag}
     >
     </ModalTag>
+
+
             </div>
         )
     }
@@ -593,4 +748,6 @@ export default connect(mapStateToProps, {
     compartirDashboard, 
     daleteFavoritos,
     getPendingObjectDashboard,
+    daleteObject,
+    editObjectFolder,
 })(Recientes);
