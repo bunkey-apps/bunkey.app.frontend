@@ -85,6 +85,11 @@ const KeyCodes = {
   enter: 13,
 };
 
+const style = {
+  marginTop: '-12rem'
+};
+
+
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 class Folders extends Component {
@@ -130,7 +135,9 @@ class Folders extends Component {
       correoCompartir: '',
       idObjectCompartir: '',
       isMoveObject: false,
-      isOpenModalTag: false
+      isOpenModalTag: false,
+      isOpenCollapse : true,
+      isfavorite:'text-white'
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -349,17 +356,13 @@ class Folders extends Component {
     console.log('click favorite');
     /** checking if the object exists in favorites */
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
-    let element = document.getElementById("folderFavoriteIcon");
 
     if((favorites)&&(folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
-      
-      element.classList.remove("text-yellow");
-      element.classList.add("text-white");
       this.props.daleteFavoritos(folder);
+      this.setState({isfavorite:'text-white'})
     }else{
-      element.classList.remove("text-white");
-      element.classList.add("text-yellow");
       this.props.addFavoritos(folder);
+      this.setState({isfavorite:'text-yellow'})
     }
 
   }
@@ -553,13 +556,20 @@ class Folders extends Component {
 
 
   onCollapse(objecto, index) {
-    console.log('objecto1', objecto);
+
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
+      this.setState({isfavorite:'text-yellow'})
+    }else{
+      this.setState({isfavorite:'text-white'})
+    }
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
         this.refs.playerCollapse.pause();
       }
-      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false });
     } else {
 
       this.props.getObjectsByHideID(objecto._id);
@@ -570,12 +580,12 @@ class Folders extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto, isOpenCollapse: true });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto, isOpenCollapse: true });
 
       }
 
@@ -590,18 +600,20 @@ class Folders extends Component {
 
 
     }
-
+    this.setState({isOpenCollapse: false})
   }
 
   closeCollapse() {
 
-    if (this.state.tipoObject === 'video') {
-      this.refs.playerCollapse.pause();
+    if(this.state.isOpenCollapse !== true ){
+
+      if (this.state.tipoObject === 'video') {
+        this.refs.playerCollapse.pause();
+      }
+  
+      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false, isfavorite:'text-white' });
+
     }
-
-
-    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
-
   }
 
   onBack() {
@@ -687,6 +699,7 @@ class Folders extends Component {
       files
     });
   }
+
 
   onCancel() {
     console.log('onCancel');
@@ -831,14 +844,6 @@ class Folders extends Component {
                     title = `${n.name}.${ext}`
                   }
 
-                /**Cheking if object is in favorite */
-                let classFavorite;
-                
-                if((n && favorites) &&(n._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == n._id)))){
-                  classFavorite = 'text-yellow'
-                }else{
-                  classFavorite='text-white'
-                }
 
                 return n.type ?
 
@@ -847,24 +852,24 @@ class Folders extends Component {
 
                       {n.type === 'image' &&
 
-                        <GridListTile key={index}>
+                        <GridListTile key={index} onClick={() => this.onCollapse(n, index)}>
                           <div className="heigth-div-objetos">
-                            <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                            <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} />
                           </div>
                         </GridListTile>
 
                       }
                       {
                         n.type === 'folder' &&
-                          <GridListTile key={index}>
+                          <GridListTile key={index} onClick={() => this.goToImagenes(n)}>
                             <div className="heigth-div-objetos">
-                              <img onClick={() => this.goToImagenes(n)} className="image-colapse-max-width-height" src={require('../../../../assets/img/folder2.jpg')}/>
+                              <img className="image-colapse-max-width-height" src={require('../../../../assets/img/folder2.jpg')}/>
                             </div>
                           </GridListTile>
                       }
                       {n.type === 'video' &&
-                        <GridListTile key={index}>
-                          <div className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                        <GridListTile key={index} onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                          <div className="heigth-div-objetos" >
                             <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                               <BigPlayButton position="center" />
                               <ControlBar disableDefaultControls={true} />
@@ -969,14 +974,10 @@ class Folders extends Component {
 
                     {n.createRowCollapse &&
 
-                      <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+                      <Collapse tabIndex={0} onBlur={this.closeCollapse}  style={{display: this.state.isOpenCollape}} isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
                         style={{ marginLeft: n.marginLeft }}
 
                       >
-                                                    {
-                                console.log('classFavorite',classFavorite)
-                              }
-
                         {(posicion === index && n.createRowCollapse) &&
                           <div className="padding-left-first-row-collapse-triangulo">
                             <div className="triangulo-equilatero-bottom"></div>
@@ -1033,7 +1034,7 @@ class Folders extends Component {
                             <div>
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="folderFavoriteIcon" className={`zmdi zmdi-star-outline ${classFavorite}`}></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="folderFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isfavorite}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -1096,11 +1097,6 @@ class Folders extends Component {
                             }
 
 
-
-
-
-
-
                             <div className=" ">
 
 
@@ -1109,23 +1105,8 @@ class Folders extends Component {
                           </div>
 
                         </div>
-
                       </Collapse>
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                   </div>
 
@@ -1223,6 +1204,7 @@ class Folders extends Component {
           <Modal
             isOpen={archivoModal}
             toggle={this.toggleArchivoModal}
+            style={{marginTop:'-10%'}}
           >
             <ModalHeader toggle={this.toggleArchivoModal}>
               Subir Archivo

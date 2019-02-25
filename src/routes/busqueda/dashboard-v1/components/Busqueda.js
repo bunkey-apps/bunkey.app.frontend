@@ -46,7 +46,8 @@ import {
   removeObject,
   uploadArchivo,
   getObjectsByID,
-  agregarFavoritos,
+  agregarFavoritosBusqueda,
+  daleteFavoritosBusqueda,
   uploadExplorarMultipleFile,
   getObjectsByHideID,
   uploadExplorarMultipleFileDescription,
@@ -132,7 +133,8 @@ class Busqueda extends Component {
       correoCompartir: '',
       idObjectCompartir: '',
       isMoveObject: false,
-      isOpenModalTag: false
+      isOpenModalTag: false,
+      isFavorite:'text-white'
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -149,8 +151,6 @@ class Busqueda extends Component {
 
   handlePageChange(pageNumber) {
     this.props.getSearch(pageNumber);
-   
-   
   }
   handleClickEditObject(object){
     object.from = "search";
@@ -568,14 +568,35 @@ class Busqueda extends Component {
   }
 
   handleClickFavoritos(folder) {
-    console.log('handleClickFavoritos', folder);
-    this.props.agregarFavoritos(folder);
+    // console.log('handleClickFavoritos', folder);
+    // this.props.agregarFavoritos(folder);
+
+    console.log('click favorite');
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+      
+      this.props.daleteFavoritosBusqueda(folder);
+      this.setState({isFavorite:'text-white'})
+    }else{
+
+      this.props.agregarFavoritosBusqueda(folder);
+      this.setState({isFavorite:'text-yellow'})
+    }
 
 
   }
 
   onCollapse(objecto, index) {
-    console.log('objecto', objecto);
+
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
+      this.setState({isFavorite:'text-yellow'})
+    }else{
+      this.setState({isFavorite:'text-white'})
+    }
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
@@ -619,7 +640,7 @@ class Busqueda extends Component {
     }
 
 
-    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isFavorite:'text-white' });
 
   }
 
@@ -765,7 +786,6 @@ class Busqueda extends Component {
 
     /** get Favorites of localStorage */
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
-
     /**Getting tag array */
     let tag = [];
     let truncateTag = [];
@@ -795,6 +815,7 @@ class Busqueda extends Component {
    * Solucion Rápida para el problema de collapse descuadrado
    * Mejorar anes de segunda entrega
    */
+   
 
    let objects = this.orderByType(imageVideos, 'folder');
     if (items.length!=0 || imageVideos.length != 0) {
@@ -896,10 +917,18 @@ class Busqueda extends Component {
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
                     <ContextMenuTrigger id={index + ''} holdToDisplay={1000}>
 
-                      {n.type === 'image' &&
+                      {n.type === 'image' && !this.props.loadingImg &&
                         <GridListTile key={index}>
                         <div className="heigth-div-objetos">
                           <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                          </div>
+                        </GridListTile>
+
+                      }
+                      {n.type === 'image' && this.props.loadingImg &&
+                        <GridListTile key={index}>
+                        <div className="heigth-div-objetos">
+                          <img className="image-colapse-max-width-height" src={require('../../../../assets/img/loading.gif')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                           </div>
                         </GridListTile>
 
@@ -912,6 +941,7 @@ class Busqueda extends Component {
                             </div>
                           </GridListTile>
                       }
+
                       {n.type === 'video' &&
                         <GridListTile key={index}>
                           <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
@@ -1079,7 +1109,7 @@ class Busqueda extends Component {
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
 
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isFavorite}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -1504,10 +1534,26 @@ class Busqueda extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ busqueda }) => {
+const mapStateToProps = ({ busqueda}) => {
   return busqueda;
 }
 
 export default withRouter(connect(mapStateToProps, {
-  getObjects, createObject, cambiarObject, removeObject, uploadArchivo, getObjectsByID, agregarFavoritos, uploadExplorarMultipleFile, getObjectsByHideID, uploadExplorarMultipleFileDescription, compartirExplorar, moveExplorar, getSearch, removeObjectSearch, cambiarObjectSearch, editObjectSearch
+  getObjects, 
+  createObject, 
+  cambiarObject, 
+  removeObject, 
+  uploadArchivo, 
+  getObjectsByID, 
+  uploadExplorarMultipleFile, 
+  getObjectsByHideID, 
+  uploadExplorarMultipleFileDescription, 
+  compartirExplorar, 
+  moveExplorar, 
+  getSearch, 
+  removeObjectSearch, 
+  cambiarObjectSearch, 
+  editObjectSearch,
+  agregarFavoritosBusqueda,
+  daleteFavoritosBusqueda,
 })(Busqueda));

@@ -795,24 +795,6 @@ class Compartidos extends Component {
               <CircularProgress />
             </div>
           }
-          <div className="row row-eq-height text-center">
-            {items.map((n, index) => {
-
-              return n.type === 'folder' ?
-
-
-                <div key={index} className="col-sm-2 col-md-1 col-lg-2">
-                 
-                    <img onClick={() => this.goToImagenes(n)} src={require('../../../assets/img/folder2.jpg')} className="margin-top-folder" />
-
-                    <p>{n.name}</p>
-                
-                </div>
-
-
-                : ''
-            })}
-          </div>
           <div className="gallery-wrapper">
             <div className="row row-eq-height text-center">
               {imageVideos.map((n, index) => {
@@ -826,10 +808,10 @@ class Compartidos extends Component {
                   title = `${n.name}.${ext}`
                 }
 
-                return n.type !== 'folder' ?
+                return n.type ?
 
                   <div key={index} className="col-sm-6 col-md-4 col-lg-4 col-xl-3 text-white" >
-                   
+                   <ContextMenuTrigger id={index + 'compartidos'}>
 
                       {n.type === 'image' &&
                         <GridListTile key={index}>
@@ -875,7 +857,7 @@ class Compartidos extends Component {
                     {n.createRowCollapse &&
 
                       <Collapse isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
-                        style={{ marginLeft: n.marginLeft }}
+                        style={{ marginLeft: n.marginLeft}} 
 
                       >
 
@@ -886,7 +868,7 @@ class Compartidos extends Component {
 
                         }
 
-                        <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+                        <div ref={n.rowCollapse} style={{ width: '96%'}} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
 
 
                         >
@@ -995,7 +977,19 @@ class Compartidos extends Component {
                       </Collapse>
                     }
 
+                    </ContextMenuTrigger>
 
+                  {
+                    n.type !== 'folder' &&
+                      <div key={'contex' + index} >
+                      <ContextMenu id={index + 'compartidos'} className="click-derecho-bunkey color-texto-carpetas-explorar">
+                        <MenuItem onClick={() => {window.open(n.originalURL,'_blank')}} data={{ item: { index } }}>
+                          <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                          <span className="padding-click-derecho">Descargar </span>
+                        </MenuItem>       
+                      </ContextMenu>   
+                    </div>
+                  }
                   </div>
 
                   : ''

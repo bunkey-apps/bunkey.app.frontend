@@ -132,7 +132,8 @@ class Explorar extends Component {
       correoCompartir: '',
       idObjectCompartir: '',
       isMoveObject: false,
-      isOpenModalTag: false
+      isOpenModalTag: false,
+      isFavorite:'text-white'
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -618,30 +619,26 @@ class Explorar extends Component {
 
     /** checking if the object exists in favorites */
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
-    let element = document.getElementById("explorarFavoriteIcon");
-    console.log('click favorite', element);
-    element.classList.remove("text-yellow");
-    element.classList.remove("text-white");
 
-    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
-      console.log('in if');
-      
-      element.classList.remove("text-yellow");
-      element.classList.add("text-white");
+    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){ 
       this.props.daleteFavoritosExplorar(folder);
+      this.setState({isFavorite:'text-white'})
     }else{
-      console.log('in else');
-      
-      element.classList.remove("text-white");
-      element.classList.add("text-yellow");
       this.props.agregarFavoritos(folder);
+      this.setState({isFavorite:'text-yellow'})
     }
 
   }
 
   onCollapse(objecto, index) {
-    console.log('object_id', objecto);
-    console.log('object_index', index);
+
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
+      this.setState({isFavorite:'text-yellow'})
+    }else{
+      this.setState({isFavorite:'text-white'})
+    }
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
@@ -685,7 +682,7 @@ class Explorar extends Component {
     }
 
 
-    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+    this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isFavorite:'text-white' });
 
   }
 
@@ -1145,7 +1142,7 @@ class Explorar extends Component {
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
 
-                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${sw}`}></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="explorarFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isFavorite}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>

@@ -34,7 +34,7 @@ import fileExtension from 'file-extension';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
 // redux action
 import {
-    getRecientes, addFavoritos, compartirDashboard, daleteFavoritos
+    getRecientes, addFavoritos, compartirDashboard, daleteFavoritos, getPendingObjectDashboard
 } from '../../../../actions';
 
 
@@ -68,7 +68,8 @@ class Recientes extends Component {
             selectObject: '-1',
             correoCompartir: '',
             idObjectCompartir: '',
-            isOpenModalTag: false
+            isOpenModalTag: false,
+            isFavorite:'text-white'
 
         }
 
@@ -76,9 +77,10 @@ class Recientes extends Component {
 
     }
 
-    componentWillMount() {
+    async componentWillMount() {
 
-        this.props.getRecientes();
+       await this.props.getRecientes();
+       await this.props.getPendingObjectDashboard();
         var tipoUsuario = localStorage.getItem('tipoUsuario');
         var isAdmin = false;
         if(tipoUsuario === 'admin'){
@@ -99,9 +101,15 @@ class Recientes extends Component {
 
   
     onCollapse(objecto, index) {
-        console.log('objecto', objecto);
-    
-        console.log('index', index);
+
+      let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+      if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
+        this.setState({isFavorite:'text-yellow'})
+      }else{
+        this.setState({isFavorite:'text-white'})
+      }
+  
         this.setState({ rowCollapseNum: objecto.rowCollapse });
         if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
           if (this.state.tipoObject === 'video') {
@@ -124,6 +132,13 @@ class Recientes extends Component {
             this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
     
           }
+
+          setTimeout(() => {
+       
+            console.log('toScroll->',this.refs[objecto.rowCollapse]);
+            this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+    
+          }, 500);
     
     
         }
@@ -137,7 +152,7 @@ class Recientes extends Component {
         }
     
     
-        this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', rowCollapseNum: '-2' });
+        this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', rowCollapseNum: '-2', isFavorite:'text-white'});
     
       }
 
@@ -200,17 +215,15 @@ class Recientes extends Component {
         console.log('click favorite');
         /** checking if the object exists in favorites */
         let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
-        let element = document.getElementById("recientesFavoriteIcon");
     
         if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
           
-          element.classList.remove("text-yellow");
-          element.classList.add("text-white");
           this.props.daleteFavoritos(folder);
+          this.setState({isFavorite:'text-white'})
         }else{
-          element.classList.remove("text-white");
-          element.classList.add("text-yellow");
+
           this.props.addFavoritos(folder);
+          this.setState({isFavorite:'text-yellow'})
         }
     
       }
@@ -411,7 +424,7 @@ return (o.type === 'image' || o.type === 'video') ?
 </div>
 
   <Collapse isOpen={collapse === rowCollapseNum} className="anchoCollapseRecientes padding-top-triangulo-collapse">
-    <div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
+    <div ref={selectObject.rowCollapse}  className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
       <div className="col-sm-2 col-md-1 col-lg-2">
         <div className="volver-collap-video-image-left">
           <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
@@ -447,15 +460,8 @@ return (o.type === 'image' || o.type === 'video') ?
         </div>
         <div>
           <b className="text-white"></b>
-          <IconButton onClick={() => this.handleClickFavoritos(selectObject)}>{
-            sw &&
-            <i id="recientesFavoriteIcon" className="zmdi zmdi-star-outline text-yellow"></i>
-      
-          }
-          {
-            !sw &&
-              <i id="recientesFavoriteIcon" className="zmdi zmdi-star-outline text-white"></i> 
-          } 
+          <IconButton onClick={() => this.handleClickFavoritos(selectObject)}>
+            <i id="recientesFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isFavorite}`}></i>
           </IconButton>
           <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
           <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
@@ -565,4 +571,5 @@ export default connect(mapStateToProps, {
     addFavoritos, 
     compartirDashboard, 
     daleteFavoritos,
+    getPendingObjectDashboard,
 })(Recientes);

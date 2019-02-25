@@ -46,8 +46,6 @@ export const getPendingObject = (page) => (dispatch) => {
 
     instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending&page=' + pageAux)
         .then((response) => {
-            console.log('response GET_PENDING_OBJECT_SUCCES', response);
-            let countPending = response.headers['x-pagination-total-count'];
             try{
                 localStorage.setItem("countPending",response.headers['x-pagination-total-count']);
                 dispatch({ type: GET_COUNT_PENDING });

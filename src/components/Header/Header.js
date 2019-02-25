@@ -318,9 +318,8 @@ class Header extends Component {
                   <a href="javascript:void(0)" className="header-icon icon-header-fontsize-change text-secondary border-secondary border-none-home-heder">
                     <i className="zmdi icon-check color-header-bunkey notificaciones-header-icon-span ">
                     {countPending && countPending !== '0' && countPending !== 0 && countPending !=='NaN' &&
-                                      <span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span>
-
-                  }
+                      <span className="circulo-numero-pending notificaciones-header-span-margin">{countPending}</span>
+                    }
                   </i>
                   </a>
                 </Link>

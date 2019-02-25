@@ -25,7 +25,8 @@ const INIT_STATE = {
     editarObjetoSearchModal: false,
     limit: 10,
     totalCount: 1,
-    pageActive: 1
+    pageActive: 1,
+    loadingImg: false
    
 };
 
@@ -39,7 +40,7 @@ export default (state = INIT_STATE, action) => {
         return { ...state, editarObjetoSearchModal: false };
 
         case GET_SEARCH:
-            return { ...state, loading: true, editarObjetoSearchModal: false };
+            return { ...state, loading: true, editarObjetoSearchModal: false, loadingImg:action.loadingImg};
 
         case GET_SEARCH_FAILURE:
             return { ...state, loading: false };
@@ -50,7 +51,8 @@ export default (state = INIT_STATE, action) => {
                 loading: false,
                 parents: action.parents,
                 imageVideos: action.imageVideos,
-                limit: action.limit, totalCount: action.totalCount, pageActive: action.pageActive
+                limit: action.limit, totalCount: action.totalCount, pageActive: action.pageActive,
+                loadingImg: action.loadingImg,
             };
         
         default: return { ...state };

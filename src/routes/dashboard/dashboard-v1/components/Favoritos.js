@@ -379,6 +379,13 @@ this.setState({ alertDialog: false });
           this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
   
         }
+
+        setTimeout(() => {
+       
+          console.log('objecto[index].rowCollapse', objecto.rowCollapse);
+          this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  
+        }, 500);
   
   
       }
@@ -647,7 +654,7 @@ this.setState({ alertDialog: false });
                         </div>
 
                         <Collapse isOpen={collapse === rowCollapseNum} className="anchoCollapseRecientes padding-top-triangulo-collapse">
-                        <div className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
+                        <div ref={selectObject.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample">
                           <div className="col-sm-2 col-md-1 col-lg-2">
                             <div className="volver-collap-video-image-left">
                               <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>

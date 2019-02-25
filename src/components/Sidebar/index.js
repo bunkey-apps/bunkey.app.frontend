@@ -116,19 +116,18 @@ class Sidebar extends Component {
 				variant={windowWidth <= 1199 ? 'temporary' : 'persistent'}
 				onClose={() => this.closeDrawer()}
 				anchor={rtlLayout ? 'right' : 'left'}
+
 			>
 			<div
 			className={classNames('rct-sidebar')}
 			style={{ background: '#18232A' }}
 		>
-				<Scrollbars autoHeight autoHeightMin={100} autoHeightMax={windowHeight} autoHide autoHideDuration={100}>
 					
 						<div className={`rct-sidebar-wrap`}>
 							<UserBlock name={name} imagen = {imagen} nameCliente={nameCliente} imagenCliente={imagenCliente} showChangeCliente={showChangeCliente}/>
 							<SidebarContent />
 						</div>
 					
-				</Scrollbars>
 				</div>
 			</Drawer>
 		);

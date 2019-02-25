@@ -34,8 +34,9 @@ import {
     GET_COMPARTIDOS_SUCCES,
     EDIT_OBJECT_FOLDER,
     CLOSE_OBJECT_FOLDER,
-    GET_COUNT_PENDING
-
+    GET_COUNT_PENDING,
+    GET_PENDING_OBJECT_SUCCES,
+    GET_PENDING_OBJECT_FAILURE,
 } from './types';
 
 // app config
@@ -800,6 +801,57 @@ export const addFile = (urlImage, file, futureFileURL, tipo, guid, position, fil
            
 
         });
+}
+
+export const getPendingObjectDashboard = (page) => (dispatch) => {
+    dispatch({ type: GET_PENDING_OBJECT });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    if (!clienteSelectJson) {
+        clienteSelectJson = {
+            _id: '1'
+        }
+    }
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    var pageAux = 1;
+    if(page){
+        pageAux = page;
+    }
+
+    instance2.get('/v1/clients/' + clienteSelectJson._id + '/objects?status=pending&page=' + pageAux)
+        .then((response) => {
+            try{
+                localStorage.setItem("countPending",response.headers['x-pagination-total-count']);
+                dispatch({ type: GET_COUNT_PENDING });
+            }catch(e){
+                console.log('e',e);
+            }
+
+            var limit= response.headers['x-pagination-limit'];
+            var totalCount= response.headers['x-pagination-total-count'];
+
+            var totalCountAux = parseInt(totalCount);
+            var limitAux = parseInt(limit);
+            console.log('totalCountAux',totalCountAux);
+            console.log('limitAux',limitAux);
+
+            dispatch({ type: GET_PENDING_OBJECT_SUCCES, payload: response.data, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux  });
+            
+                     
+
+        })
+        .catch(error => {
+            dispatch({ type: GET_PENDING_OBJECT_FAILURE });
+        })
 }
 
 

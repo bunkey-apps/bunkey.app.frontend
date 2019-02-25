@@ -10,7 +10,10 @@ import {
     GET_SEARCH_FAILURE,
     GET_SEARCH_SUCCES,
     EDIT_OBJECT_SEARCH,
-    CLOSE_OBJECT_SEARCH
+    CLOSE_OBJECT_SEARCH,
+    AGREGAR_FAVORITOS,
+    AGREGAR_FAVORITOS_FAILURE,
+    AGREGAR_FAVORITOS_SUCCES,
     
 } from './types';
 
@@ -31,8 +34,107 @@ const orderByType = (array, type) => {
     return arrayByType.concat(arrayOthers);
   }
 
+ const obtenerFavoritos = () => (dispatch) => {
+    dispatch({ type: AGREGAR_FAVORITOS });
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    if (!clienteSelectJson) {
+        clienteSelectJson = {
+            _id: '1'
+        }
+    }
+    console.log('clienteSelectJson getFavoritos', clienteSelectJson);
+    var instance2 = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.get('/v1/users/me/clients/' +  clienteSelectJson._id + '/favorites')
+        .then((response) => {
+            console.log('response getFavoritos', response);
+            localStorage.setItem("objectFavorites", JSON.stringify(response.data));
+            cargarMenuFavoritosExplorar(response.data.children);
+            dispatch({ type: AGREGAR_FAVORITOS_SUCCES});
+        })
+        .catch(error => {
+            dispatch({ type: AGREGAR_FAVORITOS_FAILURE });
+        })
+}
+
+
+export const agregarFavoritosBusqueda = (caperta) => (dispatch) => {
+    dispatch({ type: AGREGAR_FAVORITOS });
+    NotificationManager.success('Guardando en favoritos...');
+
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    var clienteSelectJson = JSON.parse(clienteSelect);
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
+    console.log('clienteSelectJson._id', clienteSelectJson._id);
+    var instance2 = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    instance2.post('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        
+        'object': caperta._id
+    })
+        .then((response) => {
+            console.log('response ADD_FAVORITOS', response);
+            dispatch(obtenerFavoritos());
+            NotificationManager.success('Guardado en favoritos');
+        })
+        .catch(error => {
+            dispatch({ type: AGREGAR_FAVORITOS_FAILURE});
+        })
+}
+
+export const daleteFavoritosBusqueda = (caperta) => (dispatch) => {
+    dispatch({ type: AGREGAR_FAVORITOS });
+    NotificationManager.success('Eliminando en favoritos...');
+    const token = localStorage.getItem('user_id');
+
+    const tokenJson = JSON.parse(token);
+    const clienteSelect = localStorage.getItem('clienteSelect');
+    const clienteSelectJson = JSON.parse(clienteSelect);
+    const objectFavorites = localStorage.getItem('objectFavorites');
+    var cobjectFavoritesJson = JSON.parse(objectFavorites);
+    console.log('tokenJson4', tokenJson.accessToken);
+    var instance2 = axios.create({
+        baseURL: AppConfig.baseURL,
+        timeout: AppConfig.timeout,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokenJson.accessToken }
+    });
+
+    console.log('daleteFavoritos',caperta);
+
+    instance2.delete('/v1/users/me/clients/' + clienteSelectJson._id + '/favorites/' + cobjectFavoritesJson._id, {
+        data: {'target': caperta._id}
+    })
+        .then((response) => {
+            console.log('response daleteFavoritos', response);
+            NotificationManager.success('Eliminado de favoritos');
+            dispatch(obtenerFavoritos());
+        })
+        .catch(error => {
+            dispatch({ type: AGREGAR_FAVORITOS_FAILURE});
+        })
+}
+
+
+
 export const getSearch = (page) => (dispatch) => {
-    dispatch({ type: GET_SEARCH });
+    dispatch({ type: GET_SEARCH , loadingImg:true});
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);
@@ -115,7 +217,7 @@ export const getSearch = (page) => (dispatch) => {
 
             var totalCountAux = parseInt(totalCount);
             var limitAux = parseInt(limit);
-            dispatch({ type: GET_SEARCH_SUCCES, payload: response.data, parents: response.data.parents, imageVideos: arrImageVideo, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux  });
+            dispatch({ type: GET_SEARCH_SUCCES, payload: response.data, parents: response.data.parents, imageVideos: arrImageVideo, limit: limitAux,totalCount: totalCountAux, pageActive: pageAux, loadingImg:false  });
             
         })
         .catch(error => {
