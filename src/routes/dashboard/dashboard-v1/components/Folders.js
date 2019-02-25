@@ -989,7 +989,7 @@ class Folders extends Component {
 
                     {n.createRowCollapse &&
 
-                      <Collapse tabIndex={0} onBlur={this.closeCollapse}  style={{display: this.state.isOpenCollape}} isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
+                      <Collapse  style={{display: this.state.isOpenCollape}} isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
                         style={{ marginLeft: n.marginLeft }}
 
                       >
@@ -1001,8 +1001,6 @@ class Folders extends Component {
                         }
 
                         <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
-
-
                         >
 
                           <div className="col-sm-2 col-md-1 col-lg-2">
@@ -1016,7 +1014,7 @@ class Folders extends Component {
                             
                               {tipoObject === 'image' && collapse === n.rowCollapse &&
 
-                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
+                                <img onBlur={this.closeCollapse} className="image-colapse-max-width-height" src={urlVideo}></img>
 
                               }
 
@@ -1025,13 +1023,13 @@ class Folders extends Component {
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
-                                  <source src={selectObject.mediaQualityURL} />
+                                  <source onBlur={this.closeCollapse} src={selectObject.mediaQualityURL} />
                                 </Player>
 
                               }
                               {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
-                                <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
+                                <img onBlur={this.closeCollapse} className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
                             
                           </div>

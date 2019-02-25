@@ -636,12 +636,12 @@ class Busqueda extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name,objecto.lowQualityURL,objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name,objecto.lowQualityURL,objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
       }
 
@@ -1119,7 +1119,7 @@ class Busqueda extends Component {
 
                           </div>
                             <div className="fondo-videos-padding-top-desc">
-                              <h3 className="text-white">{this.truncateTitle(n.name,n.lowQualityURL, n.type)}</h3>
+                              <h3 className="text-white">{author}</h3>
                             </div>
                             <div>
                               <b className="text-white"></b>
