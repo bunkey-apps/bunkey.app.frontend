@@ -915,6 +915,7 @@ class Compartidos extends Component {
                             </div>
                             <div>
                               <b className="text-white"></b>
+                              <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
 
 

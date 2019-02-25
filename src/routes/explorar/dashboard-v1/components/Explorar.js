@@ -75,7 +75,7 @@ const data = [
 const styleDragFile = {
   'position': 'relative',
   'width': '100%',
-  'height': '200px',
+  'height': '80px',
   'border-width': '2px',
   'border-color': 'rgb(102, 102, 102)',
   'border-style': 'dashed',
@@ -811,6 +811,31 @@ class Explorar extends Component {
     return arrayByType.concat(arrayOthers);
   }
 
+  truncateTitle = (name,src,type) => {
+
+    let ext = fileExtension(src)
+    let title = null;
+
+    if(type!=='folder'){
+
+      if (name.length > 20) {
+        title = `${name.substr(0,20)}... .${ext}`
+      }else{
+        title = `${name}.${ext}`
+      }
+      
+    }else{
+      if (name.length > 20) {
+        title = `${name.substr(0,20)}..`
+      }else{
+        title = `${name}`
+      }
+    }
+
+    return title;
+
+  }
+
   render() {
     const { items, loading, userById, parents, imageVideos, editarObjetoModal } = this.props;
     const { collapse } = this.state;
@@ -940,15 +965,7 @@ class Explorar extends Component {
             <div className="row row-eq-height text-center">
               {objects.map((n, index) => {
 
-                /**Cheking extension file and truncate text*/
-                let ext = fileExtension(n.lowQualityURL)
-                let title = null;
-
-                if (n.name.length > 20) {
-                  title = `${n.name.substr(0,20)}... .${ext}`
-                }else{
-                  title = `${n.name}.${ext}`
-                }
+                let title = this.truncateTitle(n.name,n.lowQualityURL,n.type);
 
                 /**Cheking if object is in favorite */
                 let sw;
@@ -1136,7 +1153,7 @@ class Explorar extends Component {
 
                           </div>
                             <div className="fondo-videos-padding-top-desc">
-                              <h3 className="text-white">{author}</h3>
+                              <h3 className="text-white">{this.truncateTitle(n.name,n.lowQualityURL,n.type)}</h3>
                             </div>
                             <div>
                               <b className="text-white"></b>
@@ -1309,6 +1326,7 @@ class Explorar extends Component {
           <Modal
             isOpen={archivoModal}
             toggle={this.toggleArchivoModal}
+            style={{marginTop:'-10%'}}
           >
             <ModalHeader toggle={this.toggleArchivoModal}>
               Subir Archivo
@@ -1375,6 +1393,7 @@ class Explorar extends Component {
                       style={styleDragFile}
                       onDrop={this.onDrop.bind(this)}
                       onFileDialogCancel={this.onCancel.bind(this)}
+
                     >
                       <p className="padding-10-px">Intente arrastrar algunos archivos aquí o haga click para seleccionar los archivos que desea cargar.</p>
                     </Dropzone>

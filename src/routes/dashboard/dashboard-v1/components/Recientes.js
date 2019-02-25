@@ -346,7 +346,7 @@ class Recientes extends Component {
                               }
 
                                 return (n.type === 'image' || n.type === 'video') ?
-                                    <GridListTile key={index} className="mr-4">
+                                    <GridListTile key={index} style={{paddingLeft:'15px', paddingRight:'15px'}}>
                                       <ContextMenuTrigger id={index + 'imagevideo-recientes'}>
                                           
                                             {n.type === 'image' &&

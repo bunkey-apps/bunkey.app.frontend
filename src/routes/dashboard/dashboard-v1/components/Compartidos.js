@@ -572,7 +572,7 @@ class Compartidos extends Component {
                               }
 
                                 return (n.type === 'image' || n.type === 'video') ?
-                                    <GridListTile key={index} className="mr-4">
+                                    <GridListTile key={index} style={{paddingLeft:'15px', paddingRight:'15px'}}>
                                       <ContextMenuTrigger id={index + 'imagevideo-compartidos'}>
                                           
                                             {n.type === 'image' &&
@@ -581,7 +581,7 @@ class Compartidos extends Component {
                                                 </div>
                                             }
                                             {n.type === 'video' &&
-                                                <div className="eigth-div-objetos-recientes" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                                                <div className="heigth-div-objetos-recientes" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
 
                                                     <Player ref={'playerRecientes' + index} fluid={false} width={'100%'} height={180} muted={true}>
                                                         <BigPlayButton position="center" />

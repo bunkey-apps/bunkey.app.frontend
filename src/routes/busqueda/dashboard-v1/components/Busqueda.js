@@ -76,7 +76,7 @@ const data = [
 const styleDragFile = {
   'position': 'relative',
   'width': '100%',
-  'height': '200px',
+  'height': '80px',
   'border-width': '2px',
   'border-color': 'rgb(102, 102, 102)',
   'border-style': 'dashed',
@@ -278,6 +278,31 @@ class Busqueda extends Component {
       }
     }
     return query_string;
+  }
+
+  truncateTitle = (name,src,type) => {
+
+    let ext = fileExtension(src)
+    let title = null;
+
+    if(type!=='folder'){
+
+      if (name.length > 20) {
+        title = `${name.substr(0,20)}... .${ext}`
+      }else{
+        title = `${name}.${ext}`
+      }
+      
+    }else{
+      if (name.length > 20) {
+        title = `${name.substr(0,20)}..`
+      }else{
+        title = `${name}`
+      }
+    }
+
+    return title;
+
   }
   
  async componentWillMount() {
@@ -892,15 +917,8 @@ class Busqueda extends Component {
             <div className="gallery-wrapper">
             <div className="row row-eq-height text-center">
             {objects.map((n, index) => {
-                /**Cheking extension file and truncate text*/
-                let ext = fileExtension(n.lowQualityURL)
-                let title = null;
 
-                if (n.name.length > 20) {
-                  title = `${n.name.substr(0,20)}... .${ext}`
-                }else{
-                  title = `${n.name}.${ext}`
-                }
+              let title = this.truncateTitle(n.name,n.lowQualityURL,n.type)
 
                 /**Cheking if object is in favorite */
                 let sw;
@@ -1101,7 +1119,7 @@ class Busqueda extends Component {
 
                           </div>
                             <div className="fondo-videos-padding-top-desc">
-                              <h3 className="text-white">{author}</h3>
+                              <h3 className="text-white">{this.truncateTitle(n.name,n.lowQualityURL, n.type)}</h3>
                             </div>
                             <div>
                               <b className="text-white"></b>
@@ -1285,6 +1303,7 @@ class Busqueda extends Component {
             <Modal
               isOpen={archivoModal}
               toggle={this.toggleArchivoModal}
+              style={{marginTop:'-10%'}}
             >
               <ModalHeader toggle={this.toggleArchivoModal}>
                 Subir Archivo

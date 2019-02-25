@@ -564,7 +564,7 @@ this.setState({ alertDialog: false });
                               }
 
                                 return (n.type === 'image' || n.type === 'video') ?
-                                    <GridListTile key={index} className="mr-4">
+                                    <GridListTile key={index} style={{paddingLeft:'15px', paddingRight:'15px'}}>
                                       <ContextMenuTrigger id={index + 'imagevideo-favoritos'}>
                                       {n.type === 'image' &&
                                         <div className="heigth-div-objetos-recientes">
@@ -573,7 +573,7 @@ this.setState({ alertDialog: false });
                                       }
                                         {n.type === 'video' &&
                                           <GridListTile key={index}>
-                                            <div  className="heigth-div-objetos" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                                            <div  className="heigth-div-objetos-recientes" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
                                               <Player className="border-object-div" ref={'player' + index} fluid={false} width={'100%'} height={184} muted={true}>
                                                 <BigPlayButton position="center" />
                                                 <ControlBar disableDefaultControls={true} />
