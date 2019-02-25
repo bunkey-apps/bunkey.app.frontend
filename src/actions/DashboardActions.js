@@ -804,7 +804,7 @@ export const addFile = (urlImage, file, futureFileURL, tipo, guid, position, fil
 }
 
 export const getPendingObjectDashboard = (page) => (dispatch) => {
-    dispatch({ type: GET_PENDING_OBJECT });
+    dispatch({ type: GET_COUNT_PENDING });
     const token = localStorage.getItem('user_id');
 
     const tokenJson = JSON.parse(token);

@@ -280,7 +280,7 @@ class Busqueda extends Component {
     return query_string;
   }
   
-  componentWillMount() {
+ async componentWillMount() {
     const clienteSelect = localStorage.getItem('clienteSelect');
     const clienteSelectJson = JSON.parse(clienteSelect);
     var tipoUsuario = localStorage.getItem('tipoUsuario');
@@ -295,9 +295,7 @@ class Busqueda extends Component {
       this.setState({ background: 'http://www.fondos12.com/data/media/2/big/azul-difuminado-29047-1920x1080__wallpaper_480x300.jpg', busqueda: '', isAdmin: isAdmin });
     }
 
-    this.props.getSearch();
-
-
+   await this.props.getSearch();
 
   }
 
