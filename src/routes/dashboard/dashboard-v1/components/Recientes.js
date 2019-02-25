@@ -331,6 +331,10 @@ class Recientes extends Component {
 
   }
 
+  changeName = (name) => {
+    this.setState({ author:name });
+  }
+
   onEditCustomer(customer) {
     this.setState({ editCustomerModal: true, editCustomer: customer, addNewCustomerForm: false });
   }
