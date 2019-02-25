@@ -369,11 +369,11 @@ class Compartidos extends Component {
           console.log('entra video');
   
           setTimeout(() => {    
-            this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });   
+            this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name, objecto.lowQualityURL, objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });   
           }, 100);
         } else {
           console.log('entra imagen');
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name, objecto.lowQualityURL, objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto  });
   
         }
 
@@ -484,6 +484,31 @@ class Compartidos extends Component {
       })
     }
 
+    truncateTitle = (name,src,type) => {
+
+      let ext = fileExtension(src)
+      let title = null;
+  
+      if(type!=='folder'){
+  
+        if (name.length > 20) {
+          title = `${name.substr(0,20)}... .${ext}`
+        }else{
+          title = `${name}.${ext}`
+        }
+        
+      }else{
+        if (name.length > 20) {
+          title = `${name.substr(0,20)}..`
+        }else{
+          title = `${name}`
+        }
+      }
+  
+      return title;
+  
+    }
+
     render() {
     const { compartidos, loadingCompartidos, userById, parentsCompartidos, imageVideosCompartidos } = this.props;
     console.log('compartidos component', compartidos);
@@ -545,7 +570,7 @@ class Compartidos extends Component {
                     </div>
 
                     <div>
-                        <GridList className="grid-list-videos" cols={4.5}>
+                        <GridList className="grid-list-videos text-center" cols={4.5}>
 
                         {compartidos.map((n, index) => {
                             return n.object.type === 'folder' ?
@@ -562,26 +587,22 @@ class Compartidos extends Component {
                             })}                       
                             
                             {imageVideosCompartidos.map((n, index) => {
-                              let ext = fileExtension(n.lowQualityURL)
-                              let title = null;
+
+                              let title = this.truncateTitle(n.name, n.lowQualityURL, n.type);
               
-                              if (n.name.length > 20) {
-                                title = `${n.name.substr(0,20)}... .${ext}`
-                              }else{
-                                title = `${n.name}.${ext}`
-                              }
+  
 
                                 return (n.type === 'image' || n.type === 'video') ?
-                                    <GridListTile key={index} style={{paddingLeft:'15px', paddingRight:'15px'}}>
+                                    <GridListTile key={index} style={{paddingLeft:'15px', paddingRight:'15px', width:'24.7%', height:'210px'}}>
                                       <ContextMenuTrigger id={index + 'imagevideo-compartidos'}>
                                           
                                             {n.type === 'image' &&
-                                            <div className="heigth-div-objetos-recientes">
-                                                <img className="image-colapse-max-width-height" src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
+                                            <div className="heigth-div-objetos">
+                                                <img className="image-colapse-max-width-height" style={{boxShadow:'none'}} src={n.lowQualityURL} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                                                 </div>
                                             }
                                             {n.type === 'video' &&
-                                                <div className="heigth-div-objetos-recientes" onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
+                                                <div className="heigth-div-objetos" style={{boxShadow:'none'}} onClick={() => this.onCollapse(n, index)} onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}>
 
                                                     <Player ref={'playerRecientes' + index} fluid={false} width={'100%'} height={180} muted={true}>
                                                         <BigPlayButton position="center" />
@@ -592,11 +613,12 @@ class Compartidos extends Component {
                                             }
                                             {
                                               n.type === 'document' &&
-                                                <div className="heigth-div-objetos">
+                                                <div className="heigth-div-objetos" style={{boxShadow:'none'}}>
                                                 <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')} alt={n.name} onClick={() => this.onCollapse(n, index)} />
                                                 </div>
                                             }
                                       </ContextMenuTrigger>
+                                      <p className="color-texto-carpetas-explorar">{title}</p>
                                     </GridListTile>
 
                                     : ''

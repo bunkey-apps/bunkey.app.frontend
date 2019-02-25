@@ -1362,8 +1362,8 @@ class Folders extends Component {
 
         }
 
-        {editarObjetoFolderModal &&
-          <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName}/>
+    {editarObjetoFolderModal &&
+      <Editar key="editarExplorar" objectoPending={objectoEdit} changeName={this.changeName}/>
 
     }
 
