@@ -17,6 +17,7 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { Collapse } from 'reactstrap';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import Editar from '../../../../components/editar/Editar';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -99,7 +100,10 @@ class Compartidos extends Component {
       },
       correoCompartir: '',
       idObjectCompartir: '',
-      isOpenModalTag: false
+      isOpenModalTag: false,
+      objetoEditShared:null,
+      editarObjetoSharedModal:null,
+
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -142,6 +146,11 @@ class Compartidos extends Component {
 
    
   }
+
+  changeName = (name) => {
+    this.setState({ author:name });
+  }
+
   onSubmitCompartirForm() {
     
     console.log('idObjectCompartir',this.state.idObjectCompartir);
@@ -171,7 +180,7 @@ class Compartidos extends Component {
         workspace: '',
         clietntOwner: '',
         passwordRepeat: '',
-        passInvalid: false
+        passInvalid: false,
       }
 
     });
@@ -399,6 +408,16 @@ class Compartidos extends Component {
       this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
   
     }
+
+    handleClickEditObjectShared = (object)=>{
+      object.from = "folders";
+      this.setState({ objetoEditShared: object, editarObjetoSharedModal: true });
+    }
+
+    closeObjectShared = ()=>{
+      this.setState({ editarObjetoSharedModal: false });
+    }
+
   
     onBack() {
       const { imageVideosCompartidos } = this.props;
@@ -523,6 +542,7 @@ class Compartidos extends Component {
     const { compartirModal } = this.state;
     const { correoCompartir } = this.state;
     const { selectObject } = this.state;
+    const {objetoEditShared} = this.state;
 
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
@@ -707,6 +727,7 @@ class Compartidos extends Component {
                             </div>
                             <div>
                               <b className="text-white"></b>
+                              <IconButton onClick={() => this.handleClickEditObjectShared(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -912,6 +933,11 @@ class Compartidos extends Component {
             </ModalFooter>
           </Modal>
         }
+
+      {this.state.editarObjetoSharedModal &&
+      
+        <Editar key="editarCompartidos" closeObjectRecent={this.closeObjectShared} objectoPending={objetoEditShared} changeName={this.changeName}/>
+      }
 
         <ModalTag
           isOpen={this.state.isOpenModalTag}

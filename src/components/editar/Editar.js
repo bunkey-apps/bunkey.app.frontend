@@ -301,10 +301,10 @@ class Editar extends Component {
     this.props.closeObjectFolder();
     this.props.closeObjectSearch();
     this.props.closeObjectRecent();
-
-
-
+    this.props.closeObjectShared();
+    this.props.closeObjectFavorite();
   }
+
   handleChangeDate = (date) => {
    
     this.setState({

@@ -35,6 +35,7 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Dropzone from 'react-dropzone';
 import { WithContext as ReactTags } from 'react-tag-input';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
+import DivFocus from '../../../components/utils/DivFocus';
 // redux action
 import {
   getUserDetails,
@@ -604,16 +605,18 @@ class Folders extends Component {
   }
 
   closeCollapse() {
+    console.log('close');
+    
 
-    if(this.state.isOpenCollapse !== true ){
+    // if(this.state.isOpenCollapse !== true ){
 
-      if (this.state.tipoObject === 'video') {
-        this.refs.playerCollapse.pause();
-      }
+    //   if (this.state.tipoObject === 'video') {
+    //     this.refs.playerCollapse.pause();
+    //   }
   
-      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false, isfavorite:'text-white' });
+    //   this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false, isfavorite:'text-white' });
 
-    }
+    // }
   }
 
   onBack() {
@@ -988,7 +991,7 @@ class Folders extends Component {
                     }
 
                     {n.createRowCollapse &&
-
+                    <div>
                       <Collapse  style={{display: this.state.isOpenCollape}} isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse"
                         style={{ marginLeft: n.marginLeft }}
 
@@ -1014,7 +1017,7 @@ class Folders extends Component {
                             
                               {tipoObject === 'image' && collapse === n.rowCollapse &&
 
-                                <img onBlur={this.closeCollapse} className="image-colapse-max-width-height" src={urlVideo}></img>
+                                <img className="image-colapse-max-width-height" src={urlVideo}></img>
 
                               }
 
@@ -1023,13 +1026,13 @@ class Folders extends Component {
 
                                 <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
                                   <BigPlayButton position="center" />
-                                  <source onBlur={this.closeCollapse} src={selectObject.mediaQualityURL} />
+                                  <source  src={selectObject.mediaQualityURL} />
                                 </Player>
 
                               }
                               {
                                 tipoObject === 'document'  && collapse === n.rowCollapse &&
-                                <img onBlur={this.closeCollapse} className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
+                                <img  className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
                               }
                             
                           </div>
@@ -1119,6 +1122,7 @@ class Folders extends Component {
 
                         </div>
                       </Collapse>
+                      </div>
                     }
 
                   </div>
@@ -1130,9 +1134,6 @@ class Folders extends Component {
           </div>
 
         </RctCollapsibleCard>
-
-
-
 
 
         <Dialog

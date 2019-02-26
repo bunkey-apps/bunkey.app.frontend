@@ -17,6 +17,7 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { Collapse } from 'reactstrap';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import Editar from '../../../../components/editar/Editar';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 
@@ -98,13 +99,28 @@ class Favoritos extends Component {
       },
       correoCompartir: '',
       idObjectCompartir: '',
-      isOpenModalTag: false
+      isOpenModalTag: false,
+      editarObjetoFavoriteModal:false,
+      objectoEditFavorite:null
     }
+
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmitSubir = this.handleSubmitSubir.bind(this);
     this.handleSubmitCompartir = this.handleSubmitCompartir.bind(this);
 
+  }
+
+  handleClickEditObjectFavorite(object){
+    object.from = "folders";
+    console.log('objectEditErnesto',object);
+    
+    
+    this.setState({ objectoEditFavorite: object, editarObjetoFavoriteModal: true });
+  }
+
+  closeObjectFavorite = ()=>{
+    this.setState({ editarObjetoFavoriteModal: false });
   }
 
   
@@ -198,6 +214,10 @@ class Favoritos extends Component {
     });
 
     // this.props.changePassword();
+  }
+
+  changeName = (name) => {
+    this.setState({ author:name });
   }
 
   handleSubmitEdit(event) {
@@ -523,6 +543,7 @@ this.setState({ alertDialog: false });
       const { compartirModal } = this.state;
       const { correoCompartir } = this.state;
       const { selectObject } = this.state;
+      const {objectoEditFavorite} = this.state;
   
       
       const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
@@ -710,6 +731,7 @@ this.setState({ alertDialog: false });
                             </div>
                             <div>
                               <b className="text-white"></b>
+                              <IconButton onClick={() => this.handleClickEditObjectFavorite(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
@@ -916,6 +938,10 @@ this.setState({ alertDialog: false });
             </ModalFooter>
           </Modal>
         }
+        
+      {this.state.editarObjetoFavoriteModal &&
+        <Editar key="editarRecientes" closeObjectRecent={this.closeObjectFavorite} objectoPending={objectoEditFavorite} changeName={this.changeName}/>
+      }
             <ModalTag
               isOpen={this.state.isOpenModalTag}
               toggle={this.closeShowMore}
