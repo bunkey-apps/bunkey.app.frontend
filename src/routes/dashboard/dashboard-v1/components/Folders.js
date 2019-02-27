@@ -558,15 +558,16 @@ class Folders extends Component {
 
   onCollapse = (objecto, index) => {
 
-
-    console.log('collapse', objecto.name);
     
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
 
     if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
-      this.setState({isFavorite:'text-yellow'})
+      this.setState({isfavorite:'text-yellow'})
+      console.log('in if favorite');
+      
     }else{
-      this.setState({isFavorite:'text-white'})
+      this.setState({isfavorite:'text-white'})
+      console.log('in else favorite');
     }
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
