@@ -345,6 +345,14 @@ class Editar extends Component {
 
 }
 
+{this.state.objeto.type === 'document' &&
+
+<div className="heigth-div-objetos-confirmar">
+ <img className="imagenes-tam-confirm" src={require('../../assets/img/file.png')} alt={this.state.objeto.name} />
+</div>
+
+}
+
 {this.state.objeto.type === 'video' &&
 
 <div className="heigth-div-objetos-confirmar" onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>

@@ -536,7 +536,7 @@ class Recientes extends Component {
             </Player>
           }
           {
-            tipoObject === 'document'  && collapse === n.rowCollapse &&
+            tipoObject === 'document' &&
             <img className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
           }
         
