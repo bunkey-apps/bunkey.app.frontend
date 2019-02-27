@@ -103,6 +103,7 @@ class Compartidos extends Component {
       isOpenModalTag: false,
       objetoEditShared:null,
       editarObjetoSharedModal:null,
+      isFavorite:'text-white'
 
     }
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
@@ -209,6 +210,24 @@ class Compartidos extends Component {
     // this.props.changePassword();
   }
 
+  handleClickFavoritos = (folder) => {
+
+    console.log('click favorite');
+    /** checking if the object exists in favorites */
+    let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+    if((folder._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == folder._id)))){
+      
+      this.props.daleteFavoritos(folder);
+      this.setState({isFavorite:'text-white'})
+    }else{
+
+      this.props.addFavoritos(folder);
+      this.setState({isFavorite:'text-yellow'})
+    }
+
+  }
+
   handleSubmitEdit(event) {
     event.preventDefault();
     this.onSubmitCustomerEditDetailForm();
@@ -233,11 +252,6 @@ class Compartidos extends Component {
 
   }
 
-  handleClickFavoritos(folder) {
-    console.log('handleClickFavoritos', folder);
-    this.props.addFavoritos(folder);
-    
-  }
 
   deleteCustomer() {
     this.setState({ alertDialog: false});
@@ -361,6 +375,14 @@ class Compartidos extends Component {
   
     onCollapse(objecto, index) {
       console.log('objecto', objecto);
+
+      let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
+
+      if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
+        this.setState({isFavorite:'text-yellow'})
+      }else{
+        this.setState({isFavorite:'text-white'})
+      }
     
       console.log('index', index);
       this.setState({ rowCollapseNum: objecto.rowCollapse });
@@ -405,7 +427,7 @@ class Compartidos extends Component {
       }
   
   
-      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
+      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isFavorite:'text-white' });
   
     }
 
@@ -656,6 +678,10 @@ class Compartidos extends Component {
                                   <i className="zmdi zmdi-download color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                                   <span className="padding-click-derecho">Descargar </span>
                                 </MenuItem>
+                                <MenuItem onClick={() => this.handleClickFavoritos(o)} data={{ item: 'item 2' }}>
+                                    <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                                    <span className="padding-click-derecho">Agregar a favoritos</span>
+                                </MenuItem>
                                 <MenuItem onClick={() => this.abrirCompartir(o)}>
                                   <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                                   <span className="padding-click-derecho">Compartir</span>
@@ -679,7 +705,11 @@ class Compartidos extends Component {
                                     <i className="zmdi zmdi-share color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
                                     <span className="padding-click-derecho">Compartir</span>
                                   </MenuItem>
-                                                                   
+                                  <MenuItem onClick={() => this.handleClickFavoritos(o)} data={{ item: 'item 2' }}>
+                                      <i className="zmdi zmdi-star-outline color-header-bunkey padding-click-derecho padding-top-click-derecho"></i>
+                                      <span className="padding-click-derecho">Agregar a favoritos</span>
+                                  </MenuItem>
+                                                                 
                                   <MenuItem onClick={this.handleClick} data={{ item: 'item 2' }}>
                                     <div className="line-click-derecho  padding-top-click-derecho"></div>
                                   </MenuItem>                                  
@@ -728,6 +758,7 @@ class Compartidos extends Component {
                             <div>
                               <b className="text-white"></b>
                               <IconButton onClick={() => this.handleClickEditObjectShared(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
+                              <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i className={`zmdi zmdi-star-outline ${this.state.isFavorite}`}></i></IconButton>
                               <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
                               <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
                             </div>
