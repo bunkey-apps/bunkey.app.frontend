@@ -559,22 +559,24 @@ class Folders extends Component {
   onCollapse = (objecto, index) => {
 
 
+    console.log('collapse', objecto.name);
+    
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
 
     if((favorites)&&(objecto._id == favorites._id || (favorites.children && favorites.children.find(x => x._id == objecto._id)))){
-      this.setState({isfavorite:'text-yellow'})
+      this.setState({isFavorite:'text-yellow'})
     }else{
-      this.setState({isfavorite:'text-white'})
+      this.setState({isFavorite:'text-white'})
     }
 
     if (this.state.collapse === objecto.rowCollapse && this.state.posicion === index) {
       if (this.state.tipoObject === 'video') {
         this.refs.playerCollapse.pause();
       }
-      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false });
+      this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none' });
     } else {
-
       this.props.getObjectsByHideID(objecto._id);
+
       if (objecto.type === 'video') {
 
         this.setState({ tipoObject: 'image' });
@@ -582,19 +584,16 @@ class Folders extends Component {
 
         setTimeout(() => {
 
-          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto, isOpenCollapse: true });
+          this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name,objecto.lowQualityURL,objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
 
         }, 100);
       } else {
-        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: objecto.name, marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto, isOpenCollapse: true });
+        this.setState({ collapse: objecto.rowCollapse, urlVideo: objecto.originalURL, author: this.truncateTitle(objecto.name,objecto.lowQualityURL,objecto.type), marginLeftCollap: objecto.marginLeft, posicion: index, tipoObject: objecto.type, selectObject: objecto });
 
       }
 
-
-
       setTimeout(() => {
-       
         console.log('objecto[index].rowCollapse', objecto.rowCollapse);
         this.refs[objecto.rowCollapse].scrollIntoView({ block: 'center', behavior: 'smooth' });
 
@@ -609,15 +608,12 @@ class Folders extends Component {
     console.log('close');
     
 
-    if(this.state.isOpenCollapse !== true ){
-
       if (this.state.tipoObject === 'video') {
         this.refs.playerCollapse.pause();
       }
   
       this.setState({ collapse: '-1', posicion: -1, tipoObject: 'none', isOpenCollapse: false, isfavorite:'text-white' });
 
-    }
   }
 
   onBack = () => {
@@ -731,8 +727,9 @@ class Folders extends Component {
     })
   }
 
-  truncateTitle = (name,ext,type) => {
+  truncateTitle = (name,src,type) => {
 
+    let ext = fileExtension(src)
     let title = null;
 
     if(type!=='folder'){
@@ -861,8 +858,8 @@ class Folders extends Component {
             <div className="row row-eq-height text-center">
               {imageVideos.map((n, index) => {
 
-                let ext = fileExtension(n.lowQualityURL)
-                let title = this.truncateTitle(n.name,ext,n.type);
+                let title = this.truncateTitle(n.name,n.lowQualityURL,n.type);
+
                 return n.type ?
 
                   <div key={index} className="col-sm-3 col-md-3 col-lg-3 col-xl-3 text-white" >
@@ -1070,7 +1067,7 @@ class Folders extends Component {
 
                             </div>
                               <div className="fondo-videos-padding-top-desc">
-                                <h3 className="text-white">{this.truncateTitle(author,ext,n.type)}</h3>
+                                <h3 className="text-white">{author}</h3>
 
                               </div>
                           
