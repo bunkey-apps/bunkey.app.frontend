@@ -19,7 +19,6 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 import Editar from '../../../../components/editar/Editar';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -37,6 +36,9 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import Dropzone from 'react-dropzone';
 import fileExtension from 'file-extension';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
+import DatePicker, {registerLocale} from 'react-datepicker';
+import esCl from 'date-fns/locale/es';
+registerLocale('es', esCl);
 
 
 // redux action

@@ -20,7 +20,7 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // page title bar
 import PageTitleBar from '../../../../components/PageTitleBar/PageTitleBar';
 import Editar from '../../../../components/editar/Editar';
-import DatePicker from 'react-datepicker';
+import DatePicker, {registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 // intl messages
 import IntlMessages from '../../../../util/IntlMessages';
@@ -37,6 +37,10 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import ModalTag from '../../../../components/ModalTag/ModalTag';
 import Wrapper from '../../../components/utils/Wrapper';
 import DivFocus from '../../../components/utils/DivFocus';
+import esCl from 'date-fns/locale/es';
+registerLocale('es', esCl);
+
+
 // redux action
 import {
   getUserDetails,
@@ -773,7 +777,6 @@ class Folders extends Component {
     const { marginLeftCollap } = this.state;
     const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails, archivoModal } = this.state;
 
-    moment.locale('es');
     /** checking if the object exists in favorites */
     let favorites = JSON.parse(localStorage.getItem('objectFavorites'));
     /**Getting tag array */
@@ -1299,7 +1302,7 @@ class Folders extends Component {
 
                 <FormGroup>
                   <Label for="startDate">Fecha de creación</Label>
-                  <DatePicker  required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+                  <DatePicker  required="true" name="startDate" locale="es" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
 
                  
                 </FormGroup>

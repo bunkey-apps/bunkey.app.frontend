@@ -13,8 +13,11 @@ import Snackbar from 'material-ui/Snackbar';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
 import { Player, BigPlayButton, ControlBar } from 'video-react';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker, {registerLocale} from 'react-datepicker';
+import esCl from 'date-fns/locale/es';
+registerLocale('es', esCl);
+
 // page title bar
 
 // intl messages
@@ -437,7 +440,7 @@ class Editar extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="startDate">Fecha de creación</Label>
-                <DatePicker required="true" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
+                <DatePicker required="true" locale="es" name="startDate" className="input-field date form-control" placeholderText="Fecha de creación"  selected={moment(startDate).format('YYYY-MM-DD')} onChange={this.handleChangeDate}   />
 
               </FormGroup>
               <FormGroup>
