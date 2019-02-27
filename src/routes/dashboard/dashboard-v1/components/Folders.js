@@ -990,7 +990,7 @@ class Folders extends Component {
                       </div>
                     }
 
-                    {n.createRowCollapse &&
+                    {/* {n.createRowCollapse &&
                       <DivFocus name={`${n._id}`}
                         current={n}
                       >
@@ -1018,6 +1018,137 @@ class Folders extends Component {
                         </Wrapper>
                       </DivFocus>
  
+                    } */}
+
+                    {
+                      n.createRowCollapse &&
+                      <Collapse style={{display: this.state.isOpenCollape, marginLeft: n.marginLeft}} isOpen={collapse === n.rowCollapse} className="anchoCollapseExplorar padding-top-triangulo-collapse">
+                          {(posicion === index && n.createRowCollapse) &&
+                            <div className="padding-left-first-row-collapse-triangulo">
+                              <div className="triangulo-equilatero-bottom"></div>
+                            </div>
+
+                          }
+
+                          <div ref={n.rowCollapse} className="row row-eq-height text-center fondo-videos-seleccionado collapse " id="collapseExample"
+                          >
+
+                            <div className="col-sm-2 col-md-1 col-lg-2">
+                              <div className="volver-collap-video-image-left">
+                                <i onClick={() => this.onBack()} className="zmdi ti-angle-left text-white"></i>
+
+                              </div>
+
+                            </div>
+                            <div className="col-sm-6 col-md-5 col-lg-6 zindex-collapse-next-close height-image-colapse-div-col" >
+                              
+                                {tipoObject === 'image' && collapse === n.rowCollapse &&
+
+                                  <img className="image-colapse-max-width-height" src={urlVideo}></img>
+
+                                }
+
+
+                                {tipoObject === 'video' && collapse === n.rowCollapse &&
+
+                                  <Player ref="playerCollapse" autoPlay fluid={false} width={'100%'} height={351} >
+                                    <BigPlayButton position="center" />
+                                    <source  src={selectObject.mediaQualityURL} />
+                                  </Player>
+
+                                }
+                                {
+                                  tipoObject === 'document'  && collapse === n.rowCollapse &&
+                                  <img  className="image-colapse-max-width-height" src={require('../../../../assets/img/file.png')}></img>
+                                }
+                              
+                            </div>
+                            <div className="col-sm-4 col-md-3 col-lg-4 zindex-collapse-next-close">
+                            <div>
+                            <i onClick={() => this.closeCollapse()} className="zmdi   ti-close text-white volver-collap-video-image-right-close-aux"></i>
+                            <i onClick={() => this.onNext()} className="zmdi   ti-angle-right text-white volver-collap-video-image-right-aux"></i>
+
+                            </div>
+                              <div className="fondo-videos-padding-top-desc">
+                                <h3 className="text-white">{this.truncateTitle(author,ext,n.type)}</h3>
+
+                              </div>
+                          
+                              <div>
+                                <b className="text-white"></b>
+                                <IconButton onClick={() => this.handleClickEditObject(selectObject)}> <i className="zmdi zmdi-edit text-white"></i></IconButton>
+                                <IconButton onClick={() => this.handleClickFavoritos(selectObject)}> <i id="folderFavoriteIcon" className={`zmdi zmdi-star-outline ${this.state.isfavorite}`}></i></IconButton>
+                                <IconButton onClick={() => this.abrirCompartir(selectObject)}> <i className="zmdi zmdi-share text-white"></i></IconButton>
+                                <IconButton onClick={() => { window.open(selectObject.originalURL, '_blank') }}> <i className="zmdi zmdi-download text-white"></i></IconButton>
+                              </div>
+
+
+
+                              {selectObject !== '-1' &&
+                                <div>
+
+
+                                  <div>
+                                    {
+                                      truncateTag.length > 0 && 
+                                      <Fragment>
+                                      {
+                                          truncateTag.map((tags, numTag) => (
+                                            <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                          ))
+                                          
+                                        }
+                                        <button type="button" onClick={this.onShowMore} class="btn btn-sm btn-outline-light">Ver más</button>
+                                      </Fragment>
+                                    }
+                                    {
+                                      truncateTag.length === 0 && tag.length > 0 && tag.map((tags, numTag) => (
+                                        <span key={'tags-' + numTag} className="text-white tags-collapse-border"> {tags}</span>
+                                      ))
+                                    }
+                                  </div>
+
+
+                                  <div>
+                                    {selectObject.metadata.copyRight === 'free' &&
+                                      <span className="text-white">Copy Right: Libre</span>
+                                    }
+
+                                    {selectObject.metadata.copyRight === 'limited' &&
+                                      <span className="text-white">Copy Right: Limitado</span>
+                                    }
+                                    {selectObject.metadata.copyRight === 'own' &&
+                                      <span className="text-white">Copy Right: Propio</span>
+                                    }
+
+                                  </div>
+                                  <div>
+                                    {selectObject.metadata.createdDate &&
+                                      <span className="text-white">Fecha de creación: {moment(new Date(selectObject.metadata.createdDate)).format('YYYY-MM-DD')} </span>
+                                    }
+                                  </div>
+
+                                  {selectObject.metadata.licenseFile &&
+                                    <div onClick={() => { window.open(selectObject.metadata.licenseFile, '_blank') }}>
+                                      <a href="javascript:void(0)">
+                                        Copy Right: CopyRight.pdf  </a>
+                                    </div>
+                                  }
+
+
+                                </div>
+                              }
+
+
+                              <div className=" ">
+
+
+                              </div>
+
+                            </div>
+
+                          </div>
+                          </Collapse>
                     }
 
                   </div>
