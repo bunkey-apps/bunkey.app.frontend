@@ -277,12 +277,14 @@ handlePageChange = (pageNumber) => {
                   </Fragment>
                 </TableBody>
               </Table>
-                <Pagination
+              <div className="d-flex justify-content-center mt-4">
+              <Pagination
                     activePage={activePage}
                     itemsCountPerPage={limit}
                     totalItemsCount={count}
                     onChange={this.handlePageChange}
                 />
+              </div>
             </div>
           </RctCollapsibleCard>
           <Dialog
