@@ -39,10 +39,15 @@ export default (state = INIT_STATE, action) => {
 
         // get Client
         case GET_CLIENTES_SUCCES:
+        console.log('client reducer', action.payload);
+        
             return {
                 ...state,
-                items: action.payload,
-                loading: false
+                items: action.payload.data,
+                loading: false,
+                count: action.payload.count,
+                limit:action.payload.limit,
+                activePage: action.payload.activePage
             };
             case GET_CLIENTES_BY_ID_SUCCES:
             return {

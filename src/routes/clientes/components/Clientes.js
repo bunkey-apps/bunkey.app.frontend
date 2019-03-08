@@ -24,6 +24,8 @@ import RctCollapsibleCard from '../../../components/RctCollapsibleCard/RctCollap
 
 // app config
 import AppConfig from '../../../constants/AppConfig';
+//Pagination
+import Pagination from "react-js-pagination";
 
   // redux action
   import {
@@ -68,7 +70,7 @@ class Clientes extends Component {
                 email: '',
                 phone: '',
                 id: ''
-            }
+            },
       }
       this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
       this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -218,19 +220,22 @@ toggleEditCustomerModal = () => {
     this.setState({
         editCustomerModal: !this.state.editCustomerModal
     });
+    
+}
+
+handlePageChange = (pageNumber) => {
+    console.log(`active page is ${pageNumber}`);
+
+    this.props.getClientes(pageNumber);
 }
 
       render() {
-        const { items, loading } = this.props;
+        const { items, loading, count, limit, activePage } = this.props;
         const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
-
+        console.log('items',items);
+        
         return (       
-          
-          
         <div>
-
-
-          
             <RctCollapsibleCard>
                 <div className={'rct-block-title'}>
                     <h4><b>Lista Clientes</b></h4>
@@ -266,14 +271,18 @@ toggleEditCustomerModal = () => {
                           <TableCell  onClick={() => this.getContratos(n)}>{n.dni}</TableCell>
                           <TableCell  onClick={() => this.getContratos(n)}><div>{n.name}</div> <div>{n.email}</div></TableCell>
                           {n.status ?  <TableCell  onClick={() => this.getContratos(n)}>Activo</TableCell> : <TableCell>Pendiente</TableCell>}
-
-                       
                         </TableRow>
                       );
                     })}
                   </Fragment>
                 </TableBody>
               </Table>
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={count}
+                    onChange={this.handlePageChange}
+                />
             </div>
           </RctCollapsibleCard>
           <Dialog
@@ -295,7 +304,7 @@ toggleEditCustomerModal = () => {
                         </Button>
                     </DialogActions>
                 </Dialog>
-{/* Customer Edit Modal*/}
+            {/* Customer Edit Modal*/}
                 {editCustomerModal &&
                     <Modal
                         isOpen={editCustomerModal}
