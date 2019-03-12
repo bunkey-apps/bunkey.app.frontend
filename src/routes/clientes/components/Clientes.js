@@ -230,10 +230,9 @@ handlePageChange = (pageNumber) => {
 }
 
       render() {
-        const { items, loading, count, limit, activePage } = this.props;
+        const { items = [], loading, count, limit, activePage } = this.props;
         const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
-        console.log('items',items);
-        
+
         return (       
         <div>
             <RctCollapsibleCard>
