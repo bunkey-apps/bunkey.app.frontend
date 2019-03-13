@@ -233,6 +233,9 @@ handlePageChange = (pageNumber) => {
         const { items = [], loading, count, limit, activePage } = this.props;
         const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
 
+        let me = localStorage.getItem('user_me');
+        me = JSON.parse(me);
+
         console.log('items clientes', items);
         
 
@@ -279,16 +282,18 @@ handlePageChange = (pageNumber) => {
                   </Fragment>
                 </TableBody>
               </Table>
-              <div className="d-flex justify-content-center mt-4">
-              <Pagination
-                    activePage={activePage}
-                    itemsCountPerPage={limit}
-                    totalItemsCount={count}
-                    onChange={this.handlePageChange}
-                    itemClass="page-item"
-                    linkClass="page-link"
-                />
-              </div>
+              { me.role ==='admin' &&
+                    <div className="d-flex justify-content-center mt-4">
+                    <Pagination
+                            activePage={activePage}
+                            itemsCountPerPage={limit}
+                            totalItemsCount={count}
+                            onChange={this.handlePageChange}
+                            itemClass="page-item"
+                            linkClass="page-link"
+                        />
+                    </div>
+              }
             </div>
           </RctCollapsibleCard>
           <Dialog
