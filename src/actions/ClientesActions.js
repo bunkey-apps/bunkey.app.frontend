@@ -74,8 +74,12 @@ export const getClientesById = (workClients,position,arrayClientes,history) => (
         dispatch(getClienteById(workClients[position],position, workClients,arrayClientes,history))
     }else{
 
-        if(arrayClientes && arrayClientes.length > 1){
-            dispatch({ type: GET_CLIENTES_SUCCES, payload: arrayClientes });
+        if(arrayClientes.length > 1){
+            const data = {
+                data : arrayClientes
+            }
+
+            dispatch({ type: GET_CLIENTES_SUCCES, payload: data });
         }else{
             localStorage.setItem("clienteSelect", JSON.stringify(arrayClientes[0]));
             
