@@ -23,6 +23,7 @@ import RctCollapsibleCard from '../../../components/RctCollapsibleCard/RctCollap
 
 // app config
 import AppConfig from '../../../constants/AppConfig';
+import Pagination from "react-js-pagination";
 
   // redux action
   import {
@@ -68,7 +69,8 @@ class Usuarios extends Component {
                 clietntOwner: '',
                 passwordRepeat: '',
                 passInvalid : false
-            }
+            },
+          activePage: 1
       }
       this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
       this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -189,10 +191,17 @@ deleteCustomer() {
 
 }
 
+handlePageChange = (pageNumber) => {
+  console.log(`active page is ${pageNumber}`);
+
+  this.setState({activePage: pageNumber});
+}
+
       render() {
-        const { items, loading } = this.props;
+        const { items = [], loading} = this.props;
         const { newCustomers, sectionReload, alertDialog, editCustomerModal, addNewCustomerForm, editCustomer, snackbar, successMessage, addNewCustomerDetails } = this.state;
-        
+        // const {activePage} = this.state;
+
         return (       
           
           
@@ -247,6 +256,16 @@ deleteCustomer() {
                   </Fragment>
                 </TableBody>
               </Table>
+              {/* <div className="d-flex justify-content-center mt-4">
+              <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={3}
+                    totalItemsCount={items.length}
+                    onChange={this.handlePageChange}
+                    itemClass="page-item"
+                    linkClass="page-link"
+                />
+              </div> */}
             </div>
           </RctCollapsibleCard>
 

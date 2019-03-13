@@ -285,6 +285,8 @@ handlePageChange = (pageNumber) => {
                     itemsCountPerPage={limit}
                     totalItemsCount={count}
                     onChange={this.handlePageChange}
+                    itemClass="page-item"
+                    linkClass="page-link"
                 />
               </div>
             </div>

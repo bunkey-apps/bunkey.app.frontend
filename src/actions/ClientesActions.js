@@ -63,18 +63,21 @@ export const getClientes = (activePage) => (dispatch) => {
 
 
 export const getClientesById = (workClients,position,arrayClientes,history) => (dispatch) => {
+
     dispatch({ type: GET_CLIENTES });
     if(!position){
         position = 0;
     }
 
     
-    
     if(position < workClients.length){
+
         dispatch(getClienteById(workClients[position],position, workClients,arrayClientes,history))
+
     }else{
 
         if(arrayClientes.length > 1){
+
             const data = {
                 data : arrayClientes
             }
@@ -105,6 +108,8 @@ export const getClienteById = (workClient,position,workClients, arrayClientes,hi
    
     instance2.get('v1/clients/' + workClient)
         .then((response) => {
+            console.log('getClienteById', response.data);
+            
             arrayClientes.push(response.data);
             dispatch(getClientesById(workClients,position+1,arrayClientes,history))
             
@@ -113,7 +118,6 @@ export const getClienteById = (workClient,position,workClients, arrayClientes,hi
             // error handling
             dispatch(getClientesById(workClients,position+1))
            
-
         })
 }
 

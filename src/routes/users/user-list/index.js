@@ -18,6 +18,7 @@ import { RctCard } from '../../../components/RctCard';
 // app config
 import AppConfig from '../../../constants/AppConfig';
 
+
 export default class UserComponent extends Component {
 
   state = {

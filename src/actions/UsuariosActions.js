@@ -30,9 +30,13 @@ import AppConfig from '../constants/AppConfig';
 /**
  * Redux Action To Get Contratos
  */
-export const getUsuarios = () => (dispatch) => {
+export const getUsuarios = (activePage) => (dispatch) => {
     dispatch({ type: GET_USUARIOS });
     const token = localStorage.getItem('user_id');
+
+    if(!activePage){
+        activePage = 1
+    }
 
     const tokenJson = JSON.parse(token);
     const clienteSelect = localStorage.getItem('clienteSelect');
@@ -44,10 +48,17 @@ export const getUsuarios = () => (dispatch) => {
         headers: {'Content-Type': 'application/json','Authorization': 'Bearer ' + tokenJson.accessToken}
       });
    
-    instance2.get('v1/clients/' + clienteSelectJson._id + '/workspaces')
+    instance2.get(`v1/clients/${clienteSelectJson._id}/workspaces?page=${activePage}`)
         .then((response) => {
-            console.log('response usuarios2',response);
-            dispatch({ type: GET_USUARIOS_SUCCES, payload: response.data });
+            console.log('headers',response.headers);
+            
+            const data ={
+                data: response.data,
+                limit: response.headers['x-pagination-limit'], 
+                count: response.headers['x-pagination-total-count'], 
+                activePage:activePage
+            }
+            dispatch({ type: GET_USUARIOS_SUCCES, payload: data });
         })
         .catch(error => {
             // error handling
